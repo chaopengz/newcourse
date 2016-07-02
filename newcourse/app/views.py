@@ -1,3 +1,3 @@
 from django.shortcuts import render
-print 'hellonihao miao'
+print 'hellonihao miaohua'
 # Create your views here.
