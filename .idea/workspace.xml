@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2c70f08d-dc20-43fb-af49-03331ac776b1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" afterPath="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" />
     </list>
     <ignored path="newcourse.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,11 +39,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/newcourse/newcourse/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="837">
-              <caret line="31" column="58" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
+            <state relative-caret-position="186">
+              <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
               <folding>
                 <element signature="e#642#682#0" expanded="true" />
               </folding>
@@ -70,11 +71,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jiaowu_term.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="jiaowu_term.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+            <state relative-caret-position="270">
+              <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -160,12 +161,12 @@
         <option value="$PROJECT_DIR$/newcourse/app/jiaowu.py" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/teacher_course.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/student_course.html" />
-        <option value="$PROJECT_DIR$/newcourse/newcourse/urls.py" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/teacher.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/student.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/course.html" />
         <option value="$PROJECT_DIR$/newcourse/newcourse/settings.py" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" />
+        <option value="$PROJECT_DIR$/newcourse/newcourse/urls.py" />
       </list>
     </option>
   </component>
@@ -273,28 +274,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newcourse" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newcourse" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newcourse" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -758,7 +737,14 @@
       <option name="project" value="LOCAL" />
       <updated>1467584585079</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="学期管理的前端代码">
+      <created>1467584601017</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1467584601017</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -819,7 +805,8 @@
     <MESSAGE value="add initial view for all kinds of role" />
     <MESSAGE value="add jiaowu.py" />
     <MESSAGE value="学期管理的前段代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="学期管理的前段代码" />
+    <MESSAGE value="学期管理的前端代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="学期管理的前端代码" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1082,16 +1069,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcourse/newcourse/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="837">
-          <caret line="31" column="58" selection-start-line="31" selection-start-column="58" selection-end-line="31" selection-end-column="58" />
-          <folding>
-            <element signature="e#642#682#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/newcourse/app/templates/student_course.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1214,9 +1191,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+        <state relative-caret-position="270">
+          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcourse/newcourse/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+          <folding>
+            <element signature="e#642#682#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
