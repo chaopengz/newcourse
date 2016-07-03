@@ -7,7 +7,7 @@ from django.db import models
 class User(models.Model):
     name = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
-    is_admin = models.BooleanField()
+    type = models.IntegerField()
 
 
 class Term(models.Model):
@@ -29,6 +29,7 @@ class Course(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     term = models.ForeignKey('Term')
+    teacher = models.ForeignKey('User')
 
 
 class Resource(models.Model):
