@@ -28,7 +28,7 @@ def modifyTerm(request):
         term.start_date =start_y + '-' + start_m + '-' + start_d
         term.end_date = end_y + '-' + end_m + '-' + end_d
         term.save()
-        return HttpResponse(start)
+        return render_to_response('jiaowu_term_success.html')
     else:
         list_num = 1
         page_name = '学期管理'
