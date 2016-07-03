@@ -16,7 +16,6 @@ class Term(models.Model):
     week = models.IntegerField()
 
 
-
 class Group(models.Model):
     name = models.CharField(max_length=30)
     is_allowed = models.BooleanField()
