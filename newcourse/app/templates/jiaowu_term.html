@@ -23,22 +23,39 @@
 
      <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">起止日期</h3>
+              <h3 class="box-title">起始日期</h3>
             </div>
             <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="text" name="time" class="form-control pull-right" id="reservation">
+                  <input type="text" name="start" class="form-control pull-right" id="start">
             </div>
             <!-- /.box-body -->
     </div>
-
+    <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">截止日期</h3>
+            </div>
+            <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" name="end" class="form-control pull-right" id="end">
+            </div>
+            <!-- /.box-body -->
+    </div>
     <button type="submit" class="btn bg-olive margin">提交</button>
     </div>
 </form>
 <script>
     //Date range picker
-    $('#reservation').daterangepicker();
+   // $('#reservation').daterangepicker();
+ $('#start').datepicker({
+      autoclose: true
+    });
+ $('#end').datepicker({
+      autoclose: true
+    });
     </script>
 {% endblock %}

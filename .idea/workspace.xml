@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2c70f08d-dc20-43fb-af49-03331ac776b1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/app/jiaowu.py" afterPath="$PROJECT_DIR$/newcourse/app/jiaowu.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" afterPath="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" />
     </list>
     <ignored path="newcourse.iws" />
@@ -39,13 +40,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/newcourse/newcourse/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+            <state relative-caret-position="270">
+              <caret line="10" column="73" selection-start-line="10" selection-start-column="73" selection-end-line="10" selection-end-column="73" />
               <folding>
                 <element signature="e#642#682#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="jiaowu.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/newcourse/app/jiaowu.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="351">
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+              <folding>
+                <element signature="e#24#78#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="jiaowu_term.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="jiaowu_term.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
+            <state relative-caret-position="204">
+              <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -158,15 +171,15 @@
         <option value="$PROJECT_DIR$/newcourse/app/administrator.py" />
         <option value="$PROJECT_DIR$/newcourse/app/course.py" />
         <option value="$PROJECT_DIR$/newcourse/app/student.py" />
-        <option value="$PROJECT_DIR$/newcourse/app/jiaowu.py" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/teacher_course.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/student_course.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/teacher.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/student.html" />
         <option value="$PROJECT_DIR$/newcourse/app/templates/course.html" />
         <option value="$PROJECT_DIR$/newcourse/newcourse/settings.py" />
-        <option value="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" />
         <option value="$PROJECT_DIR$/newcourse/newcourse/urls.py" />
+        <option value="$PROJECT_DIR$/newcourse/app/jiaowu.py" />
+        <option value="$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html" />
       </list>
     </option>
   </component>
@@ -744,7 +757,14 @@
       <option name="project" value="LOCAL" />
       <updated>1467584601017</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="学期管理的前端代码">
+      <created>1467585532433</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1467585532433</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1024,13 +1044,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcourse/app/jiaowu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/newcourse/app/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1189,21 +1202,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/newcourse/newcourse/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="30" column="55" selection-start-line="30" selection-start-column="55" selection-end-line="30" selection-end-column="55" />
+        <state relative-caret-position="270">
+          <caret line="10" column="73" selection-start-line="10" selection-start-column="73" selection-end-line="10" selection-end-column="73" />
           <folding>
             <element signature="e#642#682#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcourse/app/jiaowu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#24#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/newcourse/app/templates/jiaowu_term.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="53" column="20" selection-start-line="53" selection-start-column="20" selection-end-line="53" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
