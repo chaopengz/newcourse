@@ -1,0 +1,10 @@
+{% extends "teacher.html" %}
+
+{% block content %}
+    课程列表
+    {% for course in courses %}
+        <a href="/course/">{{ course }}</a>
+    {% endfor %}
+{% endblock %}
+
+
