@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/group/$', 'app.student.student_group'),
 
+    url(r'^course/$', 'app.course.main'),
+
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]
