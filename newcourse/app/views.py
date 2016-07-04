@@ -29,3 +29,8 @@ def login(request):
                     return HttpResponseRedirect('/student/')
                 if user[0].type == 3:
                      return HttpResponseRedirect('/teacher/')
+
+def logout(request):
+    request.session['name'] = ''
+    request.session['type'] = ''
+    return HttpResponseRedirect('/login/')

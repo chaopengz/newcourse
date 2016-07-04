@@ -10,6 +10,7 @@ import datetime, calendar
 # Create your views here.
 
 def main(request):
+     listnum=2
      links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      courses=Course.objects.all()
@@ -27,6 +28,7 @@ class CourseShow:
         self.course=course
         self.isrun=isrun
 
+# 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
 def compare_time(time1,time2):
     nowtime=datetime.date.today()
     print (time2-nowtime).days

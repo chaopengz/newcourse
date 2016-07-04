@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
+    url(r'^logout/$', 'app.views.logout'),
     url(r'^student/$', 'app.student.student'),
     url(r'^teacher/$', 'app.teacher.teacher'),
     url(r'^administrator/$', 'app.administrator.administrator'),
