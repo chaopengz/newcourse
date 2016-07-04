@@ -1,0 +1,10 @@
+{% extends "student.html" %}
+
+{% block content %}
+    团队列表
+    {% for group in groups %}
+        <a href="/group/">{{ group }}</a>
+    {% endfor %}
+{% endblock %}
+
+
