@@ -11,7 +11,7 @@ import datetime, calendar
 
 def main(request):
      listnum=2
-     links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/student/'} ]
+     links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/course/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      courses=Course.objects.all()
      res=[]
@@ -19,7 +19,6 @@ def main(request):
 
          isrun=compare_time(course.start_date, course.end_date)
          res.append(CourseShow(course,isrun))
-     print type(courses[0].start_date)
      return render_to_response('administrator_course.html', locals())
 
 
@@ -36,3 +35,16 @@ def compare_time(time1,time2):
         return True
     else:
         return False
+
+
+def courseInfo(request, courseId):
+     listnum=2
+     links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/course/'} , {'name': '课程详情', 'page': '/course/courseInfo'}]
+     user=User.objects.filter(name=request.session['name']).first()
+     courses=Course.objects.all()
+     res=[]
+     for course in courses:
+
+         isrun=compare_time(course.start_date, course.end_date)
+         res.append(CourseShow(course,isrun))
+     return render_to_response('administrator_courseInfo.html', locals())
