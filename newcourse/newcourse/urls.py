@@ -34,6 +34,8 @@ urlpatterns = [
 
     url(r'^course/$', 'app.course.main'),
     url(r'^course/(?P<courseId>\d+)/$', 'app.course.course_teacher_info'),
+    url(r'^course/resource/$', 'app.course.course_resource'),
+    url(r'^course/resource_publish/$', 'app.course.course_resource_publish'),
     url(r'^course/task/$', 'app.course.course_task'),
     url(r'^course/task_publish/$', 'app.course.course_task_publish'),
     url(r'^course/task_info/(?P<task_id>\d+)/$', 'app.course.course_task_info'),
