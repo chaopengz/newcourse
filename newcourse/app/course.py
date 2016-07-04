@@ -43,10 +43,7 @@ def courseInfo(request, courseId):
      page_name = '课程详情'
      links=[{'name': '课程管理', 'page': '/course/'} , {'name': '课程详情', 'page': '/course/courseInfo'}]
      user=User.objects.filter(name=request.session['name']).first()
-     courses=Course.objects.all()
-     res=[]
-     for course in courses:
-
-         isrun=compare_time(course.start_date, course.end_date)
-         res.append(CourseShow(course,isrun))
+     course=Course.objects.filter(id=courseId).first()
+     isrun=compare_time(course.start_date, course.end_date)
+     res = CourseShow(course,isrun)
      return render_to_response('administrator_courseInfo.html', locals())
