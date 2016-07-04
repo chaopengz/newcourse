@@ -34,6 +34,10 @@ urlpatterns = [
 
     url(r'^course/$', 'app.course.main'),
     url(r'^course/courseInfo/(?P<courseId>\d+)/$', 'app.course.courseInfo'),
+    url(r'^course/changeCourse/(?P<courseId>\d+)/$', 'app.course.changeCourseShow'),
+    url(r'^course/addCourse/$', 'app.course.addCourseShow'),
+    url(r'^course/saveCourse/$', 'app.course.save_course'),
+
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]
