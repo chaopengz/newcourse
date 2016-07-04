@@ -5,7 +5,7 @@ from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
 import datetime, calendar
-
+import json
 # Create your views here.
 
 def main(request):
@@ -195,3 +195,21 @@ def course_task_info(request, task_id):
      task = TaskRequirement.objects.get(pk=task_id)
      task_file =task.taskfile_set.all()
      return render_to_response('course_task_info.html', locals())
+
+
+def course_task_grade(request):
+    id = request.POST['task_id']
+    grade = request.POST['grade']
+    task_file = TaskFile.objects.get(pk=id)
+    task_file.grade=grade
+    task_file.save()
+    return HttpResponse(json.dumps(True))
+
+
+def course_task_comment(request):
+    id = request.POST['task_id']
+    commnet = request.POST['comment']
+    task_file = TaskFile.objects.get(pk=id)
+    task_file.comment = commnet
+    task_file.save()
+    return HttpResponse(json.dumps(True))

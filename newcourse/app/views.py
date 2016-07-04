@@ -4,7 +4,7 @@ from django.http import *
 from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
-
+import json
 
 # Create your views here.
 def index(request):
@@ -34,3 +34,5 @@ def logout(request):
     request.session['name'] = ''
     request.session['type'] = ''
     return HttpResponseRedirect('/login/')
+
+

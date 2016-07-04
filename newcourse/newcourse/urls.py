@@ -44,4 +44,6 @@ urlpatterns = [
 
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
+    url(r'^course/task_grade/$', 'app.course.course_task_grade'),
+    url(r'^course/task_comment/$', 'app.course.course_task_comment'),
 ]
