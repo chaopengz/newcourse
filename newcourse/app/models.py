@@ -1,3 +1,4 @@
+# coding:utf-8
 from __future__ import unicode_literals
 
 from django.db import models
@@ -11,6 +12,7 @@ class User(models.Model):
 
 
 class Term(models.Model):
+    name = models.CharField(max_length=40, default='学期名')
     start_date = models.DateField()
     end_date = models.DateField()
     week = models.IntegerField()
