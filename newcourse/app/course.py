@@ -5,7 +5,7 @@ from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
 import datetime, calendar
-
+from django import forms
 # Create your views here.
 
 def main(request):
@@ -125,10 +125,7 @@ def save_course(request):
          )
         course.save()
 
-
     return HttpResponseRedirect('/course/courseInfo/'+str(course.id))
-
-
 
 def course_teacher_info(request, courseId):
      page_name = '课程详情'
@@ -142,6 +139,48 @@ def course_teacher_info(request, courseId):
      res = CourseShow(course,isrun)
      return render_to_response('course.html', locals())
 
+
+def course_resource(request):
+    list_num = 2
+    page_name = '资源列表'
+    links = [{'name': '课程管理', 'page': '/course'}, {'name': '资源管理', 'page': '/course/resource'}]
+    course_id = int(request.session['course_id'])
+    resources = Resource.objects.filter(course_id=course_id)
+    return render_to_response('course_resource.html', locals())
+
+class UserForm(forms.Form):
+    Description = forms.CharField(label='资源名称')
+    Folder = forms.CharField(label='文件夹名称')
+    File = forms.FileField(label='文件位置')
+
+def course_resource_publish(request):
+    list_num = 2
+    page_name = '资源列表'
+    links = [{'name': '课程管理', 'page': '/course'}, {'name': '资源管理', 'page': '/course/resource'},
+             {'name': '发布资源', 'page': '/course/resource/resource_publish'} ]
+    course_id = int(request.session['course_id'])
+    resources = Resource.objects.filter(course_id=course_id)
+
+    if request.method == "POST":
+        uf = UserForm(request.POST,request.FILES)
+        if uf.is_valid():
+            # 获取表单信息
+            description = uf.cleaned_data['Description']
+            filepath = uf.cleaned_data['File']
+            folder=uf.cleaned_data['Folder']
+            # 写入数据库
+            resource = Resource()
+            resource.name = description
+            resource.server_path = filepath
+            resource.directory = folder
+            resource.course_id = course_id
+            resource.save()
+            return HttpResponse('upload ok!')
+    else:
+        uf = UserForm()
+
+    return render_to_response('course_resource_publish.html', locals())
+
 def course_task(request):
      list_num = 1
      page_name = '作业列表'
@@ -150,6 +189,7 @@ def course_task(request):
      course_id=int(request.session['course_id'])
      tasks=TaskRequirement.objects.filter(course_id=course_id)
      return render_to_response('course_task.html', locals())
+
 
 def course_task_publish(request):
      list_num = 1
