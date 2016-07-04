@@ -26,7 +26,16 @@ def student_info(request):
 def student_course(request):
      links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
-     courses=['C++', 'Java']
+     #usercourses = UserCourse.objects.filter(user_id=user.id)
+     usercourses = UserCourse.objects.filter(user_id=user.id)
+     courses = []
+     for usercourse in usercourses:
+          courses.append(Course.objects.get(id=usercourse.course_id))
+     course_teachers =[]
+     for course in courses:
+          course_teachers.append([course,User.objects.get(id = course.teacher_id)])
+     #courses = Course.objects.filter(id=usercourses.course_id)
+     #courses=['C++', 'Java']
      return render_to_response('student_course.html', locals())
 
 
