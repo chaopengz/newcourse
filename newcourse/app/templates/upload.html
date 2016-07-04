@@ -1,0 +1,10 @@
+{% extends "teacher.html" %}
+{% block content %}
+
+    <h1>上传</h1>
+    <form method="post" enctype="multipart/form-data" >
+    {{uf.as_p}}
+    <input type="submit" value="ok"/>
+    </form>
+
+{% endblock %}
