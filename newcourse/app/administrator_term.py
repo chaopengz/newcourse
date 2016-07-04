@@ -34,4 +34,4 @@ def modifyTerm(request):
         page_name = '学期管理'
         links=[{'name': '学期管理', 'page': '/term/'}]
         user=User.objects.filter(name=request.session['name']).first()
-        return render_to_response('jiaowu_term.html', locals())
+        return render_to_response('administrator_term.html', locals())

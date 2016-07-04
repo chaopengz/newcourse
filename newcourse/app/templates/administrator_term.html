@@ -1,17 +1,27 @@
-{% extends "course.html" %}
+{% extends "administrator.html" %}
 {% block content %}
-    <form method="post" action="/course/task_publish/">
+    <form method="post" action="/administrator/term/">
     <div class="col-md-6">
     <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">作业名称</h3>
+              <h3 class="box-title">学期名</h3>
             </div>
             <div class="box-body">
-              <input class="form-control input-lg" name="name" type="text" placeholder="作业名称">
+              <input class="form-control input-lg" name="name" type="text" placeholder="请输入学期名">
             </div>
             <!-- /.box-body -->
     </div>
-  <div class="box box-success">
+    <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">星期数</h3>
+            </div>
+            <div class="box-body">
+              <input class="form-control input-lg" name="week" type="text" placeholder="请输入星期数">
+            </div>
+            <!-- /.box-body -->
+    </div>
+
+     <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">起始日期</h3>
             </div>
@@ -32,15 +42,6 @@
                     <i class="fa fa-calendar"></i>
                   </div>
                   <input type="text" name="end" class="form-control pull-right" id="end">
-            </div>
-            <!-- /.box-body -->
-    </div>
-            <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">作业要求</h3>
-            </div>
-            <div class="box-body">
-              <input class="form-control input-lg" name="requirements" type="text" placeholder="作业要求">
             </div>
             <!-- /.box-body -->
     </div>

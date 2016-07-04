@@ -25,4 +25,4 @@ def teacher_course(request):
      links = [{'name': '教师页面', 'page': '/teacher/'}]
      user = User.objects.filter(name=request.session['name']).first()
      courses = Course.objects.filter(teacher_id=user.id)
-     return render_to_response('teacher_course.html', locals())
+     return render_to_response('teacher_course_info.html', locals())

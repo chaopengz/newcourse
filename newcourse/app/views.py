@@ -12,6 +12,14 @@ def index(request):
 
 
 def login(request):
+     if 'name' in request.session:
+         user=User.objects.filter(name=request.session['name'])
+         if user[0].type == 1:
+              return HttpResponseRedirect('/administrator/')
+         if user[0].type == 2:
+              return HttpResponseRedirect('/student/')
+         if user[0].type == 3:
+              return HttpResponseRedirect('/teacher/')
      if request.method == 'GET':
           return render_to_response('login.html')
      else:
@@ -31,8 +39,8 @@ def login(request):
                      return HttpResponseRedirect('/teacher/')
 
 def logout(request):
-    request.session['name'] = ''
-    request.session['type'] = ''
+    del request.session['name']
+    del request.session['type']
     return HttpResponseRedirect('/login/')
 
 
