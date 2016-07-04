@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^student/group/$', 'app.student.student_group'),
     url(r'^teacher/myinfo/$','app.teacher.teacher_info'),
     url(r'^teacher/mycourse/$','app.teacher.teacher_course'),
-    url(r'^jiaowu/term/$','app.jiaowu.modifyTerm'),
+    url(r'^term/$','app.jiaowu.modifyTerm'),
 
     url(r'^course/$', 'app.course.main'),
     url(r'^course/courseInfo/(.+)/$', 'app.course.courseInfo'),
