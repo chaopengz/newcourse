@@ -7,25 +7,22 @@ from models import *
 
 
 # Create your views here.
-
-def teacher(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '教师页面', 'page': '/teacher/'} ]
+def teacher_info(request):
+     links=[{'name': '教师页面', 'page': '/teacher/'} ]
+     list_num = 1
+     page_name = '作业列表'
      if 'name' in request.session:
           name = request.session['name']
           user=User.objects.filter(name=name).first()
           if user is not None:
-               return render_to_response('teacher.html', locals())
+               return render_to_response('teacher_info.html', locals())
      return HttpResponseRedirect('/login/')
 
 
-def teacher_info(request):
-     links = [{'name': '首页', 'page': '/'}, {'name': '教师页面', 'page': '/teacher/'}]
-     user = User.objects.filter(name=request.session['name']).first()
-     return render_to_response('teacher_info.html', locals())
-
-
 def teacher_course(request):
-     links = [{'name': '首页', 'page': '/'}, {'name': '教师页面', 'page': '/teacher/'}]
+     list_num = 2
+     page_name = '作业列表'
+     links = [{'name': '教师页面', 'page': '/teacher/'}]
      user = User.objects.filter(name=request.session['name']).first()
      courses = Course.objects.filter(teacher_id=user.id)
      return render_to_response('teacher_course.html', locals())

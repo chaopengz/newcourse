@@ -1,6 +1,17 @@
 {% extends "teacher.html" %}
 
 {% block content %}
-    教师信息页面
-    {{ user.name }}
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <i class="fa fa-text-width"></i>
+        <h3 class="box-title">教师信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                  <dt>课程教师</dt><dd>{{ user.name }}</dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
 {% endblock %}
