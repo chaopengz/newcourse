@@ -1,0 +1,10 @@
+{% extends "course.html" %}
+
+{% block content %}
+    课程交流
+    {% for message in messages %}
+        <a href="/message/">{{ message }}</a>
+    {% endfor %}
+{% endblock %}
+
+
