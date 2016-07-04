@@ -30,10 +30,10 @@ urlpatterns = [
     url(r'^student/group/$', 'app.student.student_group'),
     url(r'^teacher/info/$','app.teacher.teacher_info'),
     url(r'^teacher/course/$','app.teacher.teacher_course'),
-    url(r'^jiaowu/term/$','app.jiaowu.modifyTerm'),
+    url(r'^term/$','app.jiaowu.modifyTerm'),
 
     url(r'^course/$', 'app.course.main'),
-    url(r'^course/courseInfo/(.+)/$', 'app.course.courseInfo'),
+    url(r'^course/courseInfo/(?P<courseId>\d+)/$', 'app.course.courseInfo'),
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]
