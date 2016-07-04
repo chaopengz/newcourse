@@ -21,14 +21,19 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
+    url(r'^logout/$', 'app.views.logout'),
     url(r'^student/$', 'app.student.student'),
     url(r'^teacher/$', 'app.teacher.teacher'),
     url(r'^administrator/$', 'app.administrator.administrator'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/group/$', 'app.student.student_group'),
-    url(r'^teacher/myinfo/$','app.teacher.teacher_info'),
-    url(r'^teacher/mycourse/$','app.teacher.teacher_course'),
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
-    url(r'^jiaowu/term/$','app.jiaowu.modifyTerm')
+    url(r'^teacher/info/$','app.teacher.teacher_info'),
+    url(r'^teacher/course/$','app.teacher.teacher_course'),
+    url(r'^term/$','app.jiaowu.modifyTerm'),
+
+    url(r'^course/$', 'app.course.main'),
+    url(r'^course/courseInfo/(.+)/$', 'app.course.courseInfo'),
+
+    url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]

@@ -1,0 +1,10 @@
+{% extends "course.html" %}
+
+{% block content %}
+    课程作业
+    {% for task in tasks %}
+        <a href="/task/">{{ task }}</a>
+    {% endfor %}
+{% endblock %}
+
+

@@ -1,0 +1,10 @@
+{% extends "course.html" %}
+
+{% block content %}
+    课程资源
+    {% for resource in resources %}
+        <a href="/resource/">{{ resource }}</a>
+    {% endfor %}
+{% endblock %}
+
+

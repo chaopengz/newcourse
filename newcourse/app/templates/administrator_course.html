@@ -1,0 +1,52 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+
+
+
+
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">课程列表</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr>
+                  <th>课程名</th>
+                  <th>起止日期</th>
+                  <th>课程类型</th>
+                  <th >状态</th>
+                    <th >操作</th>
+                </tr>
+                  {% for course in res %}
+                    <th> {{ course.course.name }}</th>
+
+                    <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
+                    <th> {% if course.course.is_single %}
+                        普通课程
+                    {% else %}
+                        团队课程
+                    {% endif %}</th>
+                      {% if course.isrun %}
+                        <th style="color: #00ff66">开课中</th>
+                    {% else %}
+                        <th style="color: #ff6600">关闭</th>
+                    {% endif %}
+                    <th><button type="button" class="btn btn-block btn-primary" onclick="checkCourse({{ course.course.id }})">查看</button></th>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+<script>
+    function checkCourse(courseId){
+        self.location.href="/course/courseInfo/"+courseId;
+    }
+</script>
+{% endblock %}
+
+
+

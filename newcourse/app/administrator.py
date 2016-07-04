@@ -8,7 +8,8 @@ from models import *
 
 # Create your views here.
 def administrator(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '教务管理员页面', 'page': '/administrator/'} ]
+     page_name='教务首页'
+     links=[ {'name': '教务管理员页面', 'page': '/administrator/'} ]
      if 'name' in request.session:
           name = request.session['name']
           user=User.objects.filter(name=name).first()
