@@ -29,33 +29,3 @@ def login(request):
                     return HttpResponseRedirect('/student/')
                 if user[0].type == 3:
                      return HttpResponseRedirect('/teacher/')
-
-
-def student(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
-     if 'name' in request.session:
-          name = request.session['name']
-          user=User.objects.filter(name=name).first()
-          if user is not None:
-               return render_to_response('student.html', locals())
-     return HttpResponseRedirect('/login/')
-
-
-def teacher(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '教师页面', 'page': '/teacher/'} ]
-     if 'name' in request.session:
-          name = request.session['name']
-          user=User.objects.filter(name=name).first()
-          if user is not None:
-               return render_to_response('teacher.html', locals())
-     return HttpResponseRedirect('/login/')
-
-
-def administrator(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '教务管理员页面', 'page': '/administrator/'} ]
-     if 'name' in request.session:
-          name = request.session['name']
-          user=User.objects.filter(name=name).first()
-          if user is not None:
-               return render_to_response('administrator.html', locals())
-     return HttpResponseRedirect('/login/')
