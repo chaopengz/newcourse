@@ -49,7 +49,13 @@ def courseInfo(request, courseId):
      course.start_date=course.start_date.strftime("%Y年%m月%d日")
      course.end_date=course.end_date.strftime("%Y年%m月%d日")
      res = CourseShow(course,isrun)
-     teacher=User.objects.filter(id=course.teacher_id).first()
+     return render_to_response('administrator_courseInfo.html', locals())
+
+def course_task(request):
+     list_num = 2
+     page_name = '作业列表'
+     links=[{'name': '作业管理', 'page': '/course/'} , {'name': '作业详情', 'page': '/course/task'}]
+     user=User.objects.filter(name=request.session['name']).first()     teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
      term.start_date=term.start_date.strftime("%Y年%m月%d日")
      term.end_date=term.end_date.strftime("%Y年%m月%d日")

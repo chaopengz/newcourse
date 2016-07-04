@@ -11,6 +11,7 @@ class User(models.Model):
 
 
 class Term(models.Model):
+    name = models.CharField(max_length=30)
     start_date = models.DateField()
     end_date = models.DateField()
     week = models.IntegerField()
@@ -47,6 +48,7 @@ class Message(models.Model):
 
 
 class TaskRequirement(models.Model):
+    name = models.CharField(max_length=30)
     base_requirements = models.CharField(max_length=300)
     start_date = models.DateField()
     end_date = models.DateField()
