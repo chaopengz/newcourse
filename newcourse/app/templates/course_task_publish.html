@@ -1,6 +1,6 @@
 {% extends "course.html" %}
 {% block content %}
-    <form method="post" action="http://10.138.210.10:8000/term/">
+    <form method="post" action="/course/task_publish/">
     <div class="col-md-6">
     <div class="box box-success">
             <div class="box-header with-border">
@@ -49,6 +49,12 @@
 </form>
 <script>
     //Date range picker
-    $('#reservation').daterangepicker();
+   // $('#reservation').daterangepicker();
+ $('#start').datepicker({
+      autoclose: true
+    });
+ $('#end').datepicker({
+      autoclose: true
+    });
     </script>
 {% endblock %}
