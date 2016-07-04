@@ -2,7 +2,7 @@
 
 {% block content %}
 
-
+<button type="button" class="btn btn-block btn-primary" onclick="addCourse()">添加课程</button>
 
 
     <div class="box">
@@ -44,6 +44,10 @@
 <script>
     function checkCourse(courseId){
         self.location.href="/course/courseInfo/"+courseId;
+    }
+
+    function addCourse(){
+        self.location.href="/course/addCourse/";
     }
 </script>
 {% endblock %}
