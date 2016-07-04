@@ -1,32 +1,15 @@
-{% extends "teacher.html" %}
-
-{% block content %}
-     <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">我教授的课程信息</h3>
-
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
+<!-- /.box-header -->
+ {% extends "teacher.html" %}
+   {% block content %}
+       <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
                 <tr>
                   <th>课程序号</th>
                   <th>课程名</th>
                   <th>上课时间</th>
                   <th>是否允许团体选课</th>
-                  <th>课程简介</th>
                 </tr>
+                  <th>课程简介</th>
                   {% for course in courses %}
                     <tr href="/course/">
                         <td>{{ course.id }}</td>
@@ -42,16 +25,7 @@
                     </tr>
                   {% endfor %}
 
-              </table>
-            </div>
+           </table>
+       </div>
             <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-      </div>
-    </section>
-    <!-- /.content -->
-  </div>
-{% endblock %}
-
-
+    {% endblock %}
