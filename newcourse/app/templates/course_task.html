@@ -1,10 +1,36 @@
 {% extends "course.html" %}
 
 {% block content %}
-    课程作业
-    {% for task in tasks %}
-        <a href="/task/">{{ task }}</a>
-    {% endfor %}
+
+    <div>
+    <input class="btn bg-olive-active" type="button"  value="发布新作业" onclick="javascrtpt:window.location.href='/course/task_publish'">
+    </div>
+    <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+                <tr>
+                  <th>作业序号</th>
+                    <th>作业名称</th>
+                  <th>作业时间</th>
+                    <th>是否团队作业</th>
+                    <th>作业要求</th>
+                </tr>
+                  {% for task in tasks %}
+                    <tr href="/task/">
+                        <td>{{ task.id }}</td>
+                        <td><a href="/task/task/{{task.id  }}">{{ task.name }}</a></td>
+                        <td>{{ task.start_date }}--{{ task.end_date }}</td>
+                        {% ifequal task.is_single 1 %}
+                            <td><span class="label label-success">不允许</span></td>
+                        {% endifequal %}
+                        {% ifequal task.is_single 0 %}
+                            <td><span class="label label-primary">允许</span></td>
+                        {% endifequal %}
+                        <td>{{ task.base_requirements }}</td>
+                    </tr>
+                  {% endfor %}
+
+           </table>
+       </div>
 {% endblock %}
 
 

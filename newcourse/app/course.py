@@ -55,13 +55,38 @@ def courseInfo(request, courseId):
      term.end_date=term.end_date.strftime("%Y年%m月%d日")
      return render_to_response('administrator_courseInfo.html', locals())
 
-def course_task(request):
+
+def course_teacher_info(request, courseId):
      list_num = 2
+     page_name = '课程详情'
+     links=[{'name': '课程管理', 'page': '/course/'} , {'name': '课程详情', 'page': '/course/courseInfo'}]
+     request.session['course_id'] = courseId
+     user=User.objects.filter(name=request.session['name']).first()
+     course=Course.objects.filter(id=courseId).first()
+     isrun=compare_time(course.start_date, course.end_date)
+     res = CourseShow(course,isrun)
+     return render_to_response('course.html', locals())
+
+def course_task(request):
+     list_num = 1
      page_name = '作业列表'
      links=[{'name': '作业管理', 'page': '/course/'} , {'name': '作业详情', 'page': '/course/task'}]
      user=User.objects.filter(name=request.session['name']).first()
-     teacher=User.objects.filter(id=course.teacher_id).first()
-     term=Term.objects.filter(id=course.term_id).first()
-     term.start_date=term.start_date.strftime("%Y年%m月%d日")
-     term.end_date=term.end_date.strftime("%Y年%m月%d日")
-     return render_to_response('administrator_courseInfo.html', locals())
+     course_id=int(request.session['course_id'])
+     tasks=TaskRequirement.objects.filter(course_id=course_id)
+     return render_to_response('course_task.html', locals())
+
+def course_task_publish(request):
+     if request.method=='GET':
+        list_num = 1
+        page_name = '作业列表'
+        links=[{'name': '作业管理', 'page': '/course/'} , {'name': '作业详情', 'page': '/course/task'}]
+        user=User.objects.filter(name=request.session['name']).first()
+        course_id=int(request.session['course_id'])
+        return render_to_response('course_task_publish.html', locals())
+     else:
+        name = request.POST['name']
+        start = request.POST['start']
+        end = request.POST['end']
+        end = request.POST['requirements']
+        task = TaskRequirement()

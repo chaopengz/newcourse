@@ -33,7 +33,10 @@ urlpatterns = [
     url(r'^term/$','app.jiaowu.modifyTerm'),
 
     url(r'^course/$', 'app.course.main'),
+    url(r'^course/task/$', 'app.course.course_task'),
+    url(r'^course/task_publish/$', 'app.course.course_task_publish'),
     url(r'^course/courseInfo/(?P<courseId>\d+)/$', 'app.course.courseInfo'),
+    url(r'^course/(?P<courseId>\d+)/$', 'app.course.course_teacher_info'),
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]
