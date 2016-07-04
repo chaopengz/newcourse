@@ -17,8 +17,9 @@ def main(request):
      courses=Course.objects.all()
      res=[]
      for course in courses:
-
          isrun=compare_time(course.start_date, course.end_date)
+         course.start_date=course.start_date.strftime("%Y年%m月%d日");
+         course.end_date=course.end_date.strftime("%Y年%m月%d日");
          res.append(CourseShow(course,isrun))
      return render_to_response('administrator_course.html', locals())
 
@@ -45,5 +46,11 @@ def courseInfo(request, courseId):
      user=User.objects.filter(name=request.session['name']).first()
      course=Course.objects.filter(id=courseId).first()
      isrun=compare_time(course.start_date, course.end_date)
+     course.start_date=course.start_date.strftime("%Y年%m月%d日")
+     course.end_date=course.end_date.strftime("%Y年%m月%d日")
      res = CourseShow(course,isrun)
-     return render_to_response('administrator_courseInfo.html', locals())
+     teacher=User.objects.filter(id=course.teacher_id).first()
+     term=Term.objects.filter(id=course.term_id).first()
+     term.start_date=term.start_date.strftime("%Y年%m月%d日")
+     term.end_date=term.end_date.strftime("%Y年%m月%d日")
+     return render_to_response('courseInfo.html', locals())
