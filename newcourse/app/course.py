@@ -47,3 +47,9 @@ def courseInfo(request, courseId):
      isrun=compare_time(course.start_date, course.end_date)
      res = CourseShow(course,isrun)
      return render_to_response('administrator_courseInfo.html', locals())
+
+def course_task(request):
+     list_num = 2
+     page_name = '作业列表'
+     links=[{'name': '作业管理', 'page': '/course/'} , {'name': '作业详情', 'page': '/course/task'}]
+     user=User.objects.filter(name=request.session['name']).first()
