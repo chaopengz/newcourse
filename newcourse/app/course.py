@@ -10,8 +10,9 @@ import datetime, calendar
 # Create your views here.
 
 def main(request):
-     listnum=2
-     links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/course/'} ]
+     list_num=2
+     page_name='课程管理'
+     links=[ {'name': '课程管理', 'page': '/course/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      courses=Course.objects.all()
      res=[]
@@ -38,8 +39,9 @@ def compare_time(time1,time2):
 
 
 def courseInfo(request, courseId):
-     listnum=2
-     links=[{'name': '首页', 'page': '/'}, {'name': '课程管理', 'page': '/course/'} , {'name': '课程详情', 'page': '/course/courseInfo'}]
+     list_num = 2
+     page_name = '课程详情'
+     links=[{'name': '课程管理', 'page': '/course/'} , {'name': '课程详情', 'page': '/course/courseInfo'}]
      user=User.objects.filter(name=request.session['name']).first()
      courses=Course.objects.all()
      res=[]
