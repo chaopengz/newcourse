@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^jiaowu/term/$','app.jiaowu.modifyTerm'),
 
     url(r'^course/$', 'app.course.main'),
+    url(r'^course/courseInfo/(.+)/$', 'app.course.courseInfo'),
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 ]
