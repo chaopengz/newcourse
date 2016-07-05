@@ -5,7 +5,6 @@ from django.template import loader,context, RequestContext
 import MySQLdb,json
 from models import *
 import datetime, calendar
-from django import forms
 # Create your views here.
 
 def main(request):

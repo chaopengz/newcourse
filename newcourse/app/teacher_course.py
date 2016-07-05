@@ -71,7 +71,10 @@ def course_resource_publish(request):
             resource.directory = folder
             resource.course_id = course_id
             resource.save()
-            return HttpResponse('upload ok!')
+
+            course_id = int(request.session['course_id'])
+            resources = Resource.objects.filter(course_id=course_id)
+            return render_to_response('teacher_course_resource.html',locals())
     else:
         uf = UserForm()
 
