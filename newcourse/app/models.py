@@ -36,7 +36,7 @@ class Course(models.Model):
 class Resource(models.Model):
     name = models.CharField(max_length=30)
     directory = models.CharField(max_length=500)
-    server_path = models.FilePathField()
+    server_path = models.FileField(upload_to="./upload/")
     course = models.ForeignKey('Course')
 
 
