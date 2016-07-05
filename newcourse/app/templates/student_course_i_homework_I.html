@@ -44,7 +44,6 @@
                   <th>提交时间</th>
                     <th>打分</th>
                     <th>评论</th>
-                    <th>提交作业</th>
                 </tr>
                   {% for task in tasks %}
                     <tr href="/task/">
@@ -52,7 +51,6 @@
                         <td>{{ task.submit_time }}</td>
                         <td>{{ task.grade }}</td>
                         <td>{{ task.comment }}</td>
-                        <td><a href="upload" >上传作业 </a></td>
                     </tr>
                   {% endfor %}
 

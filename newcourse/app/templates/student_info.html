@@ -1,8 +1,17 @@
 {% extends "student.html" %}
-
-{% block content %}
-    学生信息页面
-    {{ user.name }}
+   {% block content %}
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <i class="fa fa-text-width"></i>
+        <h3 class="box-title">学生信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                  <dt>用户名</dt><dd>{{ user.name }}</dd>
+                  <dt>真实姓名</dt><dd>{{ user.real_name }}</dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
 {% endblock %}
-
-
