@@ -17,7 +17,7 @@
                   <dt>可执行操作</dt>
                   <dd>
                     <div>
-                      <input class="btn bg-olive-active" type="button"  value="一键下载" onclick="">
+                      <input class="btn btn-info" type="button"  value="一键下载" onclick="javascript:window.location.href='/one_click_download/'">
                     </div>
                   </dd>
               </dl>
@@ -44,11 +44,13 @@
                         <td><input type="text" id="{{ task.id }}" value="{{ task.comment }}"></td>
                         {% ifequal task.is_file 1 %}
                             <td>
-                            <input class="btn bg-olive-active" type="button"  value="下载" onclick="">
+                            <input class="btn btn-info" type="button"  value="有" onclick="javascript:window.location.href='/download/{{ task.content }}'">
                             </td>
                         {% endifequal %}
                         {% ifequal task.is_file 0 %}
-                            <td><span class="label label-primary">无</span></td>
+                            <td>
+                             <input class="btn" type="button"  value="无" disabled="true">
+                            </td>
                         {% endifequal %}
                     </tr>
                   {% endfor %}

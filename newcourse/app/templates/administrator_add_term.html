@@ -1,0 +1,85 @@
+{% extends "administrator.html" %}
+{% block content %}
+    <div class="center-block" style="display: block; margin-left: 25%;margin-right: 25%">
+    <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">添加学期</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" method="post" id="form1" action="/administrator/term/">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">学期名</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" placeholder=""请输入学期名">
+                  </div>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">星期数</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="weeek" placeholder=""请输入星期数">
+                  </div>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2 control-label">起始日期</label>
+                  <div class="col-sm-10">
+
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                         </div>
+                      <input type="text" class="form-control pull-right" id="start" name="t_date">
+                     </div>
+                  </div>
+                </div>
+              </div>
+            <div class="box-body">
+                <div class="form-group">
+                     <label for="inputEmail3" class="col-sm-2 control-label">截止日期</label>
+                  <div class="col-sm-10">
+
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                         </div>
+                      <input type="text" class="form-control pull-right" id="end" name="t_date">
+                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- /.box-body -->
+
+              <!-- /.box-footer -->
+            </form>
+             <div class="box-footer">
+                 <button type="button" class="btn btn-info pull-right" onclick="saveTerm()">保存</button>
+              </div>
+          </div>
+    </div>
+
+<script>
+    //Date range picker
+   // $('#reservation').daterangepicker();
+ $('#start').datepicker({
+      autoclose: true
+    });
+ $('#end').datepicker({
+      autoclose: true
+    });
+
+function saveTerm(){
+
+    if($("#name").val().length<=0 || $('#week').val().length<=0){
+            alert("请写入学期名和星期数！");
+    }else{
+        $('#form1').submit();
+    }
+}
+    </script>
+{% endblock %}

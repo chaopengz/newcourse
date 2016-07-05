@@ -83,14 +83,16 @@
                 </div>
                   </div>
                 </div>
-              </div>
               <!-- /.box-body -->
 
               <!-- /.box-footer -->
             </form>
-             <div class="box-footer">
-                <button type="button" class="btn btn-block btn-primary" onclick="changeCourse({{ course.id }})">修改</button>
-              </div>
+             <div class="box-footer ">
+                 <div class="btn-group">
+                     <button type="button" style="max-width:100px"  class="btn btn-primary" onclick="changeCourse({{ course.id }})">修改</button>
+                    <button type="button" style="max-width:200px"  class="btn btn-primary" onclick="add_student({{ course.id }})">管理选课学生</button>
+                 </div>
+</div>
           </div>
 <script>
 
@@ -99,7 +101,9 @@
     function changeCourse(courseId){
         self.location.href="/administrator/course/changeCourse/"+courseId;
     }
-
+ function add_student(courseId){
+        self.location.href="/administrator/course/student/?cid="+courseId;
+    }
 
 </script>
 

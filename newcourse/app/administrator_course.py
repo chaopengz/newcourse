@@ -5,7 +5,6 @@ from django.template import loader,context, RequestContext
 import MySQLdb,json
 from models import *
 import datetime, calendar
-from django import forms
 # Create your views here.
 
 def main(request):
@@ -128,4 +127,62 @@ def save_course(request):
         course.save()
 
     return HttpResponseRedirect('/administrator/course/courseInfo/'+str(course.id))
+
+def student(request):
+    if 'cid' in request.GET:
+        list_num = 2
+        page_name = '选课学生管理'
+        links=[{'name': '课程管理', 'page': '/administrator/course/'} , {'name': '选课学生管理', 'page': '#'}]
+        user=User.objects.filter(name=request.session['name']).first()
+        cid=request.GET.get('cid')
+        allstudents=User.objects.filter(type=2).order_by('name')
+        course=Course.objects.get(id=cid)
+        students=[]
+        studentids=UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
+        for s in studentids:
+            students.append(s.user)
+        return render_to_response('administrator_course_add_student.html', locals())
+    else:
+        return HttpResponseRedirect('/administrator/course/')
+
+def add_student(request):
+    if 'cid' in request.GET:
+        cid=request.GET.get('cid')
+        sid=request.GET.get('sid')
+        try:
+            course=Course.objects.filter(id=cid).first()
+            student=User.objects.filter(id=sid).first()
+        except:
+            return HttpResponseRedirect('/administrator/course/student/?cid='+cid)
+        if student != None:
+            try:
+                UserCourse.objects.get(user=student,course=course)
+            except UserCourse.DoesNotExist:
+                uc=UserCourse(
+                    user=student,
+                    course=course
+                )
+                uc.save()
+        return HttpResponseRedirect('/administrator/course/student/?cid='+cid)
+    else:
+        return HttpResponseRedirect('/administrator/course/')
+
+def remove_student(request):
+    if 'cid' in request.GET:
+        cid=request.GET.get('cid')
+        sid=request.GET.get('sid')
+        try:
+            course=Course.objects.filter(id=cid).first()
+            student=User.objects.filter(id=sid).first()
+        except:
+            return HttpResponseRedirect('/administrator/course/student/?cid='+cid)
+        if student != None:
+            try:
+                uc=UserCourse.objects.get(user=student,course=course)
+                uc.delete()
+            except UserCourse.DoesNotExist:
+                return HttpResponseRedirect('/administrator/course/student/?cid='+cid)
+        return HttpResponseRedirect('/administrator/course/student/?cid='+cid)
+    else:
+        return HttpResponseRedirect('/administrator/course/')
 

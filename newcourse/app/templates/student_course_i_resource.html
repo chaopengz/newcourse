@@ -1,0 +1,42 @@
+{% extends "student_course.html" %}
+{% block sidebar %}
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header">菜单</li>
+        <!-- Optionally, you can add icons to the links -->
+          <li id="list1">
+            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
+          </li>
+          <li id="list2">
+            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+          </li>
+          <li id="list3">
+            <a href="/student/course/{{ course.id }}/communication"><i class="fa fa-link"></i> <span>交流区</span></a>
+          </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+
+     {% endblock %}
+{% block content %}
+
+    <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+                <tr>
+                  <th>资源序号</th>
+                  <th>资源名称</th>
+                    <th>所在目录</th>
+                    <th>下载链接</th>
+                </tr>
+                  {% for resource in resources %}
+                    <tr href="/teacher/resource/">
+                        <td>{{ resource.id }}</td>
+                        <td>{{ resource.name }}</td>
+                        <td>{{ resource.directory}}</td>
+                        <td><a href="{{ resource.id }}/download">下载</a> </td>
+                    </tr>
+                  {% endfor %}
+           </table>
+       </div>
+{% endblock %}
+
+
