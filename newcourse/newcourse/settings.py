@@ -57,8 +57,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 'E:/Project/newcourse/newcourse/app/templates',
-                 'E:/myproject/python/newcourse/newcourse/app/templates',
                  'D:/KeJian/ShengChanShiXi/newcourse/newcourse/app/templates']
         ,
         'APP_DIRS': True,

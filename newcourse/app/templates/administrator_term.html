@@ -1,61 +1,50 @@
 {% extends "administrator.html" %}
-{% block content %}
-    <form method="post" action="/administrator/term/">
-    <div class="col-md-6">
-    <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">学期名</h3>
-            </div>
-            <div class="box-body">
-              <input class="form-control input-lg" name="name" type="text" placeholder="请输入学期名">
-            </div>
-            <!-- /.box-body -->
-    </div>
-    <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">星期数</h3>
-            </div>
-            <div class="box-body">
-              <input class="form-control input-lg" name="week" type="text" placeholder="请输入星期数">
-            </div>
-            <!-- /.box-body -->
-    </div>
 
-     <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">起始日期</h3>
+{% block content %}
+
+<button type="button" class="btn btn-block btn-primary" onclick="addTerm()">添加学期</button>
+
+
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">学期列表</h3>
             </div>
-            <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="text" name="start" class="form-control pull-right" id="start">
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr>
+                  <th>学期名</th>
+                  <th>起止日期</th>
+                  <th >状态</th>
+                    <th >操作</th>
+                </tr>
+                  {% for term in res %}
+                    <th> {{ term.term.name }}</th>
+
+                    <th> {{ term.term.start_date }} - {{ term.term.end_date }}</th>
+                      {% if term.isrun %}
+                        <th style="color: #00ff66">进行中</th>
+                    {% else %}
+                        <th style="color: #ff6600">已结束</th>
+                    {% endif %}
+                    <th><button type="button" class="btn btn-block btn-primary" onclick="checkTerm({{ term.term.id }})">查看</button></th>
+                </tr>
+                {% endfor %}
+              </table>
             </div>
             <!-- /.box-body -->
-    </div>
-    <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">截止日期</h3>
-            </div>
-            <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="text" name="end" class="form-control pull-right" id="end">
-            </div>
-            <!-- /.box-body -->
-    </div>
-    <button type="submit" class="btn bg-olive margin">提交</button>
-    </div>
-</form>
+          </div>
+
 <script>
-    //Date range picker
-   // $('#reservation').daterangepicker();
- $('#start').datepicker({
-      autoclose: true
-    });
- $('#end').datepicker({
-      autoclose: true
-    });
-    </script>
+    function checkTerm(termId){
+        self.location.href="/administrator/term/termInfo/"+termId;
+    }
+
+    function addTerm(){
+        self.location.href="/administrator/term/addTerm/";
+    }
+</script>
 {% endblock %}
+
+
+
