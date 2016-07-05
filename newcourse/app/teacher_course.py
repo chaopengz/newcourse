@@ -44,6 +44,7 @@ def course_resource(request):
     page_name = '资源列表'
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'}]
     course_id = int(request.session['course_id'])
+    user = User.objects.filter(name=request.session['name']).first()
     resource_classes = ResourceClass.objects.all()
     resources = Resource.objects.filter(course_id=course_id)
     return render_to_response('teacher_course_resource.html', locals())
@@ -92,6 +93,15 @@ def course_resource_class(request):
     resource.resource_class = resource_class
     resource.save()
     return HttpResponse(json.dumps(True))
+
+
+def course_resource_class_add(request):
+    name = request.POST['resource_class_name']
+    resource_class = ResourceClass()
+    resource_class.name = name
+    resource_class.save()
+    return HttpResponse(json.dumps(True))
+
 
 def course_task(request):
      list_num = 1

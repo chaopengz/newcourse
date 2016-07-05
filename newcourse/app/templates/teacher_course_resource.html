@@ -3,7 +3,12 @@
 {% block content %}
     <div>
     <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascrtpt:window.location.href='/teacher/course/resource_publish'">
+    <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
+
+    <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
     </div>
+
+
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
@@ -44,6 +49,30 @@
                       data: {
                           "resource_id": $(this).attr('id'),
                           "resource_class": $(this).val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+
+ $(function () {
+        $("#save_class").bind('click', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/resource_class_add/",
+                      type: "POST",
+                      data: {
+                          "resource_class_name": $("#new_class").val()
                       },
                       dataType:"json",
                       success: function (data) {
