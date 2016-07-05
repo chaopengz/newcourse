@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
-
+    url(r'^download/$', 'app.views.file_download'),
     url(r'^student/$', 'app.student.student'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^administrator/term/$','app.administrator_term.modifyTerm'),
 
     url(r'^administrator/$', 'app.administrator.administrator'),
-    url(r'^administrator/course/$','app.teacher_course.main'),
+    url(r'^administrator/course/$','app.administrator_course.main'),
     url(r'^administrator/course/courseInfo/(?P<courseId>\d+)/$', 'app.administrator_course.courseInfo'),
     url(r'^administrator/course/changeCourse/(?P<courseId>\d+)/$', 'app.administrator_course.changeCourseShow'),
     url(r'^administrator/course/addCourse/$', 'app.administrator_course.addCourseShow'),
