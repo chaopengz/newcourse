@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
+    url(r'^change_password/$', 'app.views.change_password'),
 
     url(r'^student/$', 'app.student.student'),
     url(r'^student/info/$', 'app.student.student_info'),
