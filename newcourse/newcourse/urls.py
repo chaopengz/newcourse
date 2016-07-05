@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
     url(r'^student/$', 'app.student.student'),
-    url(r'^teacher/$', 'app.teacher.teacher'),
+    url(r'^teacher/$', 'app.teacher.teacher_info'),
     url(r'^administrator/$', 'app.administrator.administrator'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
@@ -34,7 +34,19 @@ urlpatterns = [
     url(r'^term/$','app.jiaowu.modifyTerm'),
 
     url(r'^course/$', 'app.course.main'),
+    url(r'^course/(?P<courseId>\d+)/$', 'app.course.course_teacher_info'),
+    url(r'^course/resource/$', 'app.course.course_resource'),
+    url(r'^course/resource_publish/$', 'app.course.course_resource_publish'),
+    url(r'^course/task/$', 'app.course.course_task'),
+    url(r'^course/task_publish/$', 'app.course.course_task_publish'),
+    url(r'^course/task_info/(?P<task_id>\d+)/$', 'app.course.course_task_info'),
     url(r'^course/courseInfo/(?P<courseId>\d+)/$', 'app.course.courseInfo'),
+    url(r'^course/changeCourse/(?P<courseId>\d+)/$', 'app.course.changeCourseShow'),
+    url(r'^course/addCourse/$', 'app.course.addCourseShow'),
+    url(r'^course/saveCourse/$', 'app.course.save_course'),
+
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
+    url(r'^course/task_grade/$', 'app.course.course_task_grade'),
+    url(r'^course/task_comment/$', 'app.course.course_task_comment'),
 ]

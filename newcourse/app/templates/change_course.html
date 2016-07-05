@@ -8,45 +8,142 @@
 
 
 
-   <div class="box box-solid">
+  <div class="box box-info">
             <div class="box-header with-border">
-              <i class="fa fa-text-width"></i>
-
-              <h3 class="box-title">课程信息</h3>
+              <h3 class="box-title">修改课程</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>课程名</dt><dd>{{ course.name }}</dd>
-                  <dt>课程简介</dt><dd>{{ course.introduction }}</dd>
-                  <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
-                  <dt>课程起止日期</dt><dd>{{ term.start_date }} - {{ term.end_date }}</dd>
-                  <dt>课程所属学期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
-                  <dt>课程类型</dt><dd>
- {% if course.is_single %}
-                        普通课程
-                    {% else %}
-                        团队课程
-                    {% endif %}
-              </dd>
-                  <dt>课程状态</dt><dd>
-{% if res.isrun %}
-                        <th style="color: #00ff66">开课中</th>
-                    {% else %}
-                        <th style="color: #ff6600">关闭</th>
-                    {% endif %}
-              </dd>
-                  <dt>操作</dt><dd><button type="button" class="btn btn-block btn-primary" onclick="changeCourse({{ course.id }})">修改</button></dd>
-              </dl>
-            </div>
-            <!-- /.box-body -->
+            <!-- form start -->
+            <form class="form-horizontal" method="post" id="form1" action="/course/saveCourse/">
+            <input type="hidden" name="t_id" id="cid" value="{{ course.id }}">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程名</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name='t_name' id="name" value="{{ course.name }}">
+                  </div>
+                </div>
+              </div>
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程简介</label>
+                  <div class="col-sm-10">
+                      <input type="hidden" name="t_introduction" id="introduction" value="{{ course.introduction }}">
+                    <textarea id='introduction_text' class="form-control" rows="3" placeholder=""></textarea>
+                  </div>
+                </div>
+              </div>
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程教师</label>
+                  <div class="col-sm-10">
+                       <input type="hidden" name='t_teacher' id="teacher" value="{{ teacher.name }}">
+
+                  <select class="form-control" id="teachers">
+                      {% for t in teachers %}
+                          <option value="{{ t.id }}">{{ t.name }}</option>
+                      {% endfor %}
+                  </select>
+
+                  </div>
+                </div>
+              </div>
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程起止日期</label>
+                  <div class="col-sm-10">
+
+                    <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="date" name="t_date">
+                </div>
+                  </div>
+                </div>
+              </div>
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程所属学期</label>
+                    <input type="hidden" name="t_term"  id="term" value="">
+                  <div class="col-sm-10">
+
+                  <select class="form-control" id="terms">
+                      {% for t in terms %}
+                          <option value="{{ t.id }}">{{ t.name }}</option>
+                      {% endfor %}
+                  </select>
+
+                  </div>
+                </div>
+              </div>
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">课程类型</label>
+                  <div class="col-sm-10">
+                      <input type="hidden"  id="is_single" value="{{ teacher.name }}">
+
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="t_is_single" id="is_single1" value="1" checked="">
+                      普通课程
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="t_is_single" id="is_single2" value="2">
+                      团队课程
+                    </label>
+
+                </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <!-- /.box-footer -->
+            </form>
+             <div class="box-footer">
+                <button type="button" class="btn btn-info pull-right" onclick="saveCourse()">保存</button>
+              </div>
           </div>
 <script>
-    function changeCourse(courseId){
-        self.location.href="/course/changeCourse/"+courseId;
-    }
-</script>
+$('#date').daterangepicker(
+        {
+            startDate:"{{ course.start_date }}",
+            endDate:"{{ course.end_date }}"
+        },
+        function(start, end){
+             $('#reportrange input').val(start.toString('MM/dd/YYYY') + '~' + end.toString('MM/dd/YYYY'));
+        });
 
+function init(){
+    $("#introduction_text").val($("#introduction").val());
+    {% if course.is_simple %}
+
+        $("#is_single1").prop("checked",true);
+        $("#is_single2").prop("checked",false);
+    {% else %}console.log("!");
+        $("#is_single1").prop("checked",false);
+        $("#is_single2").attr("checked",true);
+    {% endif %}
+    $("#teachers").val('{{ teacher.id }}');
+    $('#terms').val('{{ term.id }}');
+    $('#time').val('{{ course.start_time }}'+' - '+'{{ course.end_time }}')
+}
+init();
+
+function saveCourse(){
+    $("#introduction").val($("#introduction_text").val());
+    if($("#is_single1").attr("checked"))$("#is_single").val("1");
+    else $("#is_single").val("2");
+    $('#term').val($('#terms').val());
+    $('#teacher').val($('#teachers').val());
+    $('#form1').submit();
+}
+
+
+</script>
 {% endblock %}
 
 

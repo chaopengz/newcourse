@@ -58,9 +58,11 @@ class TaskRequirement(models.Model):
 
 class TaskFile(models.Model):
     name = models.CharField(max_length=300)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    submit_time = models.DateTimeField()
+    is_file = models.BooleanField(default=False)
     content = models.CharField(max_length=300)
+    grade = models.IntegerField(default=0)
+    comment = models.CharField(max_length=300, default='')
     task_requirement = models.ForeignKey('TaskRequirement')
     user = models.ForeignKey('User')
     group_id = models.IntegerField()
