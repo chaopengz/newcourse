@@ -44,3 +44,9 @@ def student_group(request):
      user=User.objects.filter(name=request.session['name']).first()
      groups=['534team', 'new course']
      return render_to_response('student_group.html', locals())
+
+def student_course_i(request,i):
+     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},{'name':'课程列表','page':'/student/course/'}]
+     user = User.objects.filter(name=request.session['name']).first()
+     course = Course.objects.get(id = i)
+     return render_to_response('student_course_i.html',locals())
