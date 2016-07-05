@@ -83,7 +83,6 @@ def student_course_i_homework_I(request, i,I):
 
 class UserForm(forms.Form):
     Description = forms.CharField(label='资源名称')
-    Folder = forms.CharField(label='文件夹名称')
     File = forms.FileField(label='文件位置')
 
 def student_course_i_homework_I_upload(request, i, I):
@@ -108,14 +107,15 @@ def student_course_i_homework_I_upload(request, i, I):
                # 获取表单信息
                description = uf.cleaned_data['Description']
                filepath = uf.cleaned_data['File']
-               folder = uf.cleaned_data['Folder']
                # 写入数据库
-               resource = Resource()
-               resource.name = description
-               resource.server_path = filepath
-               resource.directory = folder
-               resource.course_id = course.id
-               resource.save()
+               task_file = TaskFile()
+               task_file.name = description
+               task_file.server_path = filepath
+               task_file.is_file = True
+               task_file.group_id = 0
+               task_file.task_requirement = task
+               task_file.user = user
+               task_file.save()
 
                course_id = int(request.session['course_id'])
                resources = Resource.objects.filter(course_id=course_id)
