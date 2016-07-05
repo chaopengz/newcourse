@@ -38,7 +38,7 @@ class Course(models.Model):
 class Resource(models.Model):
     name = models.CharField(max_length=30)
     directory = models.CharField(max_length=500)
-    server_path = models.FileField(upload_to="./upload/")
+    server_path = models.FileField(upload_to="./resource/")
     course = models.ForeignKey('Course')
     submit_time = models.DateTimeField(auto_now_add=True)
 
