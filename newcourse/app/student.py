@@ -4,6 +4,7 @@ from django.http import *
 from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
+from django import forms
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ def student(request):
 
 
 def student_info(request):
-     links=[{'name': '学生页面', 'page': '/student/'} ]
+     links=[ {'name': '学生页面', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      return render_to_response('student_info.html', locals())
 
@@ -46,28 +47,106 @@ def student_group(request):
      return render_to_response('student_group.html', locals())
 
 def student_course_i(request,i):
-     links = [ {'name': '学生页面', 'page': '/student/'},{'name':'课程列表','page':'/student/course/'}]
+     links = [{'name': '学生页面', 'page': '/student/'},{'name':'课程列表','page':'/student/course/'}]
      user = User.objects.filter(name=request.session['name']).first()
      course = Course.objects.get(id = i)
+     teacher = User.objects.get(id = course.teacher_id)
      return render_to_response('student_course_i.html',locals())
 
 
 def student_course_i_homework(request, i):
+     user = User.objects.filter(name=request.session['name']).first()
      list_num = 1
      page_name = '作业列表'
+     course = Course.objects.get(id=i)
+     tasks = TaskRequirement.objects.filter(course_id=course.id)
+     str1 = '/student/course/'
+     str1 = str1 + str(course.id)
+     links = [{'name': '学生页面', 'page': '/student/'},
+              {'name': '课程列表', 'page': '/student/course/'},{'name':course.name,'page':str1}]
+     return render_to_response('student_course_i_homework.html', locals())
+
+
+def student_course_i_homework_I(request, i,I):
+     list_num = 1
+     page_name = '作业详情'
+     course = Course.objects.get(id=i)
+     teacher = User.objects.get(id = course.teacher_id)
+     str1 = '/student/course/'
+     str1 = str1 + str(course.id)
+     links = [ {'name': '学生页面', 'page': '/student/'},
+              {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+
+     user = User.objects.filter(name=request.session['name']).first()
+     tasks = TaskFile.objects.filter(user_id=user.id,task_requirement_id = I)
+     taskrequirement = TaskRequirement.objects.get(id = I)
+     return render_to_response('student_course_i_homework_I.html', locals())
+
+class UserForm(forms.Form):
+    Description = forms.CharField(label='资源名称')
+    File = forms.FileField(label='文件位置')
+
+def student_course_i_homework_I_upload(request, i, I):
+     list_num = 1
+     page_name = '上传作业'
      course = Course.objects.get(id=i)
      str1 = '/student/course/'
      str1 = str1 + str(course.id)
      links = [ {'name': '学生页面', 'page': '/student/'},
-              {'name': '课程列表', 'page': '/student/course/'},{'name':course.name,'page':str1}]
-
-     return render_to_response('student_course_i_homework.html', locals())
-
-
-def course_task(request):
-
+              {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
 
      user = User.objects.filter(name=request.session['name']).first()
-     course_id = int(request.session['course_id'])
-     tasks = TaskRequirement.objects.filter(course_id=course_id)
-     return render_to_response('course_task.html', locals())
+     tasks = TaskRequirement.objects.filter(course_id=course.id)
+     teacher = User.objects.filter(id=course.teacher_id).first()
+     term = Term.objects.filter(id=course.term_id).first()
+     task = TaskRequirement.objects.get(pk=I)
+     task_file = task.taskfile_set.all()
+
+     if request.method == "POST":
+          uf = UserForm(request.POST, request.FILES)
+          if uf.is_valid():
+               # 获取表单信息
+               description = uf.cleaned_data['Description']
+               filepath = uf.cleaned_data['File']
+               # 写入数据库
+               task_file = TaskFile()
+               task_file.name = description
+               task_file.server_path = filepath
+               task_file.is_file = True
+               task_file.group_id = 0
+               task_file.task_requirement = task
+               task_file.user = user
+               task_file.save()
+
+               course_id = int(request.session['course_id'])
+               resources = Resource.objects.filter(course_id=course_id)
+               return render_to_response('student_course_i_homework_I_upload.html', locals())
+     else:
+          uf = UserForm()
+
+     return render_to_response('student_course_i_homework_I_upload.html', locals())
+
+
+def student_course_i_resource(request, i):
+    user = User.objects.filter(name=request.session['name']).first()
+    list_num = 1
+    page_name = '作业列表'
+    course = Course.objects.get(id=i)
+    resources = Resource.objects.filter(course_id=course.id)
+
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+              {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+    return render_to_response('student_course_i_resource.html', locals())
+
+def file_download(request,i,I):
+     resource = Resource.objects.get(id = int(I))
+     filename = resource.server_path
+     f = open('1.txt')
+     data = f.read()
+     f.close()
+
+     response = HttpResponse(data)
+     response['Content-Disposition'] = 'attachment; filename=%s' % filename
+     return response

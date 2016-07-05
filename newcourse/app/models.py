@@ -34,11 +34,14 @@ class Course(models.Model):
     term = models.ForeignKey('Term')
     teacher = models.ForeignKey('User')
 
+def get_resource_path(instance, filename):
+    course_id = instance.course.id
+    return 'resource/' + str(course_id) + '/' + filename
 
 class Resource(models.Model):
     name = models.CharField(max_length=30)
     directory = models.CharField(max_length=500)
-    server_path = models.FileField(upload_to="./resource/")
+    server_path = models.FileField(upload_to=get_resource_path)
     course = models.ForeignKey('Course')
     submit_time = models.DateTimeField(auto_now_add=True)
 
@@ -49,6 +52,12 @@ class Message(models.Model):
     course = models.ForeignKey('Course')
     user = models.ForeignKey('User')
 
+
+def get_task_file_path(instance, filename):
+    user_id = instance.user.id
+    task_id = instance.task_requirement.id
+    course_id = instance.task_requirement.course.id
+    return 'task/' + str(course_id) + '/'+ str(task_id) + '/' + str(user_id) + '/' + filename
 
 class TaskRequirement(models.Model):
     name = models.CharField(max_length=30)
@@ -61,9 +70,10 @@ class TaskRequirement(models.Model):
 
 class TaskFile(models.Model):
     name = models.CharField(max_length=300)
-    submit_time = models.DateTimeField()
+    submit_time = models.DateTimeField(auto_now_add=True)
     is_file = models.BooleanField(default=False)
     content = models.CharField(max_length=300)
+    server_path = models.FileField(upload_to=get_task_file_path, default='/task')
     grade = models.IntegerField(default=0)
     comment = models.CharField(max_length=300, default='')
     task_requirement = models.ForeignKey('TaskRequirement')

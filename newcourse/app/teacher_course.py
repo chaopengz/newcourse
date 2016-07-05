@@ -6,6 +6,9 @@ import MySQLdb,json
 from models import *
 import datetime, calendar
 from django import forms
+import os, tempfile, zipfile
+from django.http import HttpResponse
+from wsgiref.util import FileWrapper
 # Create your views here.
 
 
@@ -133,6 +136,7 @@ def course_task_info(request, task_id):
      term=Term.objects.filter(id=course.term_id).first()
      task = TaskRequirement.objects.get(pk=task_id)
      task_file =task.taskfile_set.all()
+     request.session['task_id'] = task_id
      return render_to_response('teacher_course_task_info.html', locals())
 
 def course_task_grade(request):
@@ -151,3 +155,34 @@ def course_task_comment(request):
     task_file.comment = commnet
     task_file.save()
     return HttpResponse(json.dumps(True))
+
+
+def one_click_download(request):
+    """
+    Create a ZIP file on disk and transmit it in chunks of 8KB,
+    without loading the whole file into memory. A similar approach can
+    be used for large dynamic PDF files.
+    """
+    filename = '1.doc'
+    temp = tempfile.TemporaryFile()
+    archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
+    archive.write(filename)
+    archive.close()
+    wrapper = FileWrapper(temp)
+    response = HttpResponse(wrapper, content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=test.zip'
+    response['Content-Length'] = temp.tell()
+    temp.seek(0)
+    user = User.objects.filter(name=request.session['name']).first()
+    course_id = int(request.session['course_id'])
+    task_id = request.session['task_id']
+    return response
+
+
+def file_download(request, filename):
+        f = open(filename)
+        data = f.read()
+        f.close()
+        response = HttpResponse(data)
+        response['Content-Disposition'] = 'attachment; filename=%s' % filename
+        return response

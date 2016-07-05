@@ -17,20 +17,25 @@ from django.conf.urls import url,include
 from django.contrib import admin
 import settings
 
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
-    url(r'^download/$', 'app.views.file_download'),
     url(r'^change_password/$', 'app.views.change_password'),
 
     url(r'^student/$', 'app.student.student'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/group/$', 'app.student.student_group'),
-    url(r'^student/course/(\d)+/$','app.student.student_course_i'),
-    url(r'^student/course/(\d)+/homework/$','app.student.student_course_i_homework'),
+    url(r'^student/course/(\d+)/$','app.student.student_course_i'),
+    url(r'^student/course/(\d+)/homework/$','app.student.student_course_i_homework'),
+    url(r'^student/course/(\d+)/homework/(\d+)/$','app.student.student_course_i_homework_I'),
+    url(r'^student/course/(\d+)/homework/(\d+)/upload/$','app.student.student_course_i_homework_I_upload'),
+    url(r'^student/course/(\d+)/resource/$','app.student.student_course_i_resource'),
+    url(r'^student/course/(\d+)/resource/(\d+)/download$','app.student.file_download'),
 
 
     url(r'^teacher/$', 'app.teacher.teacher_info'),
@@ -44,8 +49,15 @@ urlpatterns = [
     url(r'^teacher/course/task_info/(?P<task_id>\d+)/$','app.teacher_course.course_task_info'),
     url(r'^teacher/course/task_grade/$','app.teacher_course.course_task_grade'),
     url(r'^teacher/course/task_comment/$','app.teacher_course.course_task_comment'),
+    url(r'^download/(?P<filename>.*)$', 'app.teacher_course.file_download'),
+    url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 
-    url(r'^administrator/term/$','app.administrator_term.modifyTerm'),
+    url(r'^administrator/term/$', 'app.administrator_term.main'),
+    url(r'^administrator/term/termInfo/(?P<termId>\d+)/$','app.administrator_term.termInfo'),
+    url(r'^administrator/term/changeTerm/(?P<termId>\d+)/$','app.administrator_term.changeTermShow'),
+    url(r'^administrator/term/addTerm/$', 'app.administrator_term.modifyTerm'),
+    url(r'^administrator/term/saveTerm/$','app.administrator_term.save_term'),
+
 
     url(r'^administrator/$', 'app.administrator.administrator'),
     url(r'^administrator/course/$','app.administrator_course.main'),
