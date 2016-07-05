@@ -1,0 +1,69 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">添加学生</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+              <div class="box-body">
+                  <label for="sid" class="col-sm-2 control-label">请选择学号</label>
+                  <div class="col-sm-4">
+                      <input type="hidden" id="cid" value="{{ cid }}">
+                      <select class="form-control" name='sid' id="sid">
+                          {% for s in allstudents %}
+                              <option value="{{ s.id }}">{{ s.name }}</option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  <div class="col-sm-4">
+                      <button type="button"  class="btn btn-info pull-left" onclick="add_student()">添加</button>
+                  </div>
+              </div>
+
+
+
+
+          </div>
+
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">{{ course.name }} - 已有学生列表</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr>
+                  <th>学号</th>
+                  <th>姓名</th>
+                    <th >操作</th>
+                </tr>
+                  {% for student in students %}
+                    <th> {{ student.name }}</th>
+                      <th> {{ student.real_name }}</th>
+                    <th><button type="button" class="btn btn-primary" onclick="remove_student({{ student.id }})">移除</button></th>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+<script>
+    function remove_student(sid){
+        cid=$('#cid').val()
+        self.location.href="/administrator/course/remove_student/?cid="+cid+"&sid="+sid;
+    }
+
+    function add_student(){
+        sid=$('#sid').val()
+        cid=$('#cid').val()
+        self.location.href="/administrator/course/add_student/?cid="+cid+"&sid="+sid;
+    }
+</script>
+{% endblock %}
+
+
+

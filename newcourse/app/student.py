@@ -9,7 +9,7 @@ from django import forms
 
 # Create your views here.
 def student(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
+     links=[{'name': '学生页面', 'page': '/student/'} ]
      if 'name' in request.session:
           name = request.session['name']
           user=User.objects.filter(name=name).first()
@@ -19,13 +19,13 @@ def student(request):
 
 
 def student_info(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
+     links=[ {'name': '学生页面', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      return render_to_response('student_info.html', locals())
 
 
 def student_course(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
+     links=[ {'name': '学生页面', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      #usercourses = UserCourse.objects.filter(user_id=user.id)
      usercourses = UserCourse.objects.filter(user_id=user.id)
@@ -41,13 +41,13 @@ def student_course(request):
 
 
 def student_group(request):
-     links=[{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'} ]
+     links=[ {'name': '学生页面', 'page': '/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
      groups=['534team', 'new course']
      return render_to_response('student_group.html', locals())
 
 def student_course_i(request,i):
-     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},{'name':'课程列表','page':'/student/course/'}]
+     links = [{'name': '学生页面', 'page': '/student/'},{'name':'课程列表','page':'/student/course/'}]
      user = User.objects.filter(name=request.session['name']).first()
      course = Course.objects.get(id = i)
      teacher = User.objects.get(id = course.teacher_id)
@@ -55,13 +55,14 @@ def student_course_i(request,i):
 
 
 def student_course_i_homework(request, i):
+     user = User.objects.filter(name=request.session['name']).first()
      list_num = 1
      page_name = '作业列表'
      course = Course.objects.get(id=i)
      tasks = TaskRequirement.objects.filter(course_id=course.id)
      str1 = '/student/course/'
      str1 = str1 + str(course.id)
-     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},
+     links = [{'name': '学生页面', 'page': '/student/'},
               {'name': '课程列表', 'page': '/student/course/'},{'name':course.name,'page':str1}]
      return render_to_response('student_course_i_homework.html', locals())
 
@@ -73,7 +74,7 @@ def student_course_i_homework_I(request, i,I):
      teacher = User.objects.get(id = course.teacher_id)
      str1 = '/student/course/'
      str1 = str1 + str(course.id)
-     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},
+     links = [ {'name': '学生页面', 'page': '/student/'},
               {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
 
      user = User.objects.filter(name=request.session['name']).first()
@@ -91,7 +92,7 @@ def student_course_i_homework_I_upload(request, i, I):
      course = Course.objects.get(id=i)
      str1 = '/student/course/'
      str1 = str1 + str(course.id)
-     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},
+     links = [ {'name': '学生页面', 'page': '/student/'},
               {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
 
      user = User.objects.filter(name=request.session['name']).first()
@@ -119,7 +120,7 @@ def student_course_i_homework_I_upload(request, i, I):
 
                course_id = int(request.session['course_id'])
                resources = Resource.objects.filter(course_id=course_id)
-               return render_to_response('teacher_course_resource.html', locals())
+               return render_to_response('student_course_i_homework_I_upload.html', locals())
      else:
           uf = UserForm()
 
@@ -127,21 +128,22 @@ def student_course_i_homework_I_upload(request, i, I):
 
 
 def student_course_i_resource(request, i):
-     list_num = 1
-     page_name = '作业列表'
-     course = Course.objects.get(id=i)
-     resources = Resource.objects.filter(course_id=course.id)
+    user = User.objects.filter(name=request.session['name']).first()
+    list_num = 1
+    page_name = '作业列表'
+    course = Course.objects.get(id=i)
+    resources = Resource.objects.filter(course_id=course.id)
 
-     str1 = '/student/course/'
-     str1 = str1 + str(course.id)
-     links = [{'name': '首页', 'page': '/'}, {'name': '学生页面', 'page': '/student/'},
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
               {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
-     return render_to_response('student_course_i_resource.html', locals())
+    return render_to_response('student_course_i_resource.html', locals())
 
 def file_download(request,i,I):
      resource = Resource.objects.get(id = int(I))
      filename = resource.server_path
-     f = open(r'G:\cee\newcourse\newcourse\1.docx')
+     f = open('1.txt')
      data = f.read()
      f.close()
 
