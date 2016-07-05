@@ -139,7 +139,12 @@ function saveCourse(){
     else $("#is_single").val("2");
     $('#term').val($('#terms').val());
     $('#teacher').val($('#teachers').val());
-    $('#form1').submit();
+
+        if($("#term").val().length<=0 || $('#teacher').val().length<=0){
+        alert("请选择学期与任课教师！");
+    }else{
+        $('#form1').submit();
+    }
 }
 
 

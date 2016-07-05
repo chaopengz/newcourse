@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^administrator/term/$','app.administrator_term.modifyTerm'),
 
     url(r'^administrator/$', 'app.administrator.administrator'),
-    url(r'^administrator/course/$','app.teacher_course.main'),
+    url(r'^administrator/course/$','app.administrator_course.main'),
     url(r'^administrator/course/courseInfo/(?P<courseId>\d+)/$', 'app.administrator_course.courseInfo'),
     url(r'^administrator/course/changeCourse/(?P<courseId>\d+)/$', 'app.administrator_course.changeCourseShow'),
     url(r'^administrator/course/addCourse/$', 'app.administrator_course.addCourseShow'),
