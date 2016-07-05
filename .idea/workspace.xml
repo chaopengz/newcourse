@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2c70f08d-dc20-43fb-af49-03331ac776b1" name="Default" comment="学期管理的">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/newcourse/app/templates/administrator_add_term.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/newcourse/app/templates/administrator_term.html" afterPath="" />
+    <list default="true" id="2c70f08d-dc20-43fb-af49-03331ac776b1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/app/administrator_term.py" afterPath="$PROJECT_DIR$/newcourse/app/administrator_term.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/newcourse/settings.py" afterPath="$PROJECT_DIR$/newcourse/newcourse/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/newcourse/newcourse/urls.py" afterPath="$PROJECT_DIR$/newcourse/newcourse/urls.py" />
     </list>
     <ignored path="newcourse.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -945,7 +940,14 @@
       <option name="project" value="LOCAL" />
       <updated>1467585532433</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="学期管理的修改学期信息，增加学期，显示学期信息等的py和html">
+      <created>1467679247946</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1467679247946</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1029,7 +1031,8 @@
     <MESSAGE value="add jiaowu.py" />
     <MESSAGE value="学期管理的前段代码" />
     <MESSAGE value="学期管理的前端代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="学期管理的前端代码" />
+    <MESSAGE value="学期管理的修改学期信息，增加学期，显示学期信息等的py和html" />
+    <option name="LAST_COMMIT_MESSAGE" value="学期管理的修改学期信息，增加学期，显示学期信息等的py和html" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
