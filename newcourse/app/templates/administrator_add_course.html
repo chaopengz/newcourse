@@ -10,12 +10,11 @@
 
   <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">修改课程</h3>
+              <h3 class="box-title">添加课程</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" id="form1" action="/course/saveCourse/">
-            <input type="hidden" name="t_id" id="cid" value="{{ course.id }}">
+            <form class="form-horizontal" method="post" id="form1" action="/administrator/course/saveCourse/">
               <div class="box-body">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">课程名</label>
@@ -94,8 +93,8 @@
                       <input type="radio" name="t_is_single" id="is_single2" value="2">
                       团队课程
                     </label>
+                  </div>
 
-                </div>
                   </div>
                 </div>
               </div>
@@ -108,35 +107,27 @@
               </div>
           </div>
 <script>
-$('#date').daterangepicker(
-        {
-            startDate:"{{ course.start_date }}",
-            endDate:"{{ course.end_date }}"
-        },
-        function(start, end){
-             $('#reportrange input').val(start.toString('MM/dd/YYYY') + '~' + end.toString('MM/dd/YYYY'));
-        });
+$('#date').daterangepicker();
 
 function init(){
     $("#introduction_text").val($("#introduction").val());
     {% if course.is_simple %}
-
-        $("#is_single1").prop("checked",true);
+        $("#is_single1").prop("checked",this.checked);
         $("#is_single2").prop("checked",false);
-    {% else %}console.log("!");
+    {% else %}
         $("#is_single1").prop("checked",false);
-        $("#is_single2").attr("checked",true);
+        $("#is_single2").prop("checked",this.checked);
     {% endif %}
-    $("#teachers").val('{{ teacher.id }}');
-    $('#terms').val('{{ term.id }}');
-    $('#time').val('{{ course.start_time }}'+' - '+'{{ course.end_time }}')
+
 }
-init();
+
 
 function saveCourse(){
     $("#introduction").val($("#introduction_text").val());
-    if($("#is_single1").attr("checked"))$("#is_single").val("1");
-    else $("#is_single").val("2");
+    if($("#is_single1").attr("checked"))
+        $("#is_single").val("1");
+    else
+        $("#is_single").val("2");
     $('#term').val($('#terms').val());
     $('#teacher').val($('#teachers').val());
     $('#form1').submit();

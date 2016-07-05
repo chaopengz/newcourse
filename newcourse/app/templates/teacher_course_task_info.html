@@ -1,4 +1,4 @@
-{% extends "course.html" %}
+{% extends "teacher_course.html" %}
 
 {% block content %}
     <div class="box box-solid">
@@ -61,7 +61,7 @@
         $("input[type='number']").bind('change', function () {
             $.ajax(
                   {
-                      url: "/course/task_grade/",
+                      url: "/teacher/course/task_grade/",
                       type: "POST",
                       data: {
                           "task_id": $(this).attr('id'),
@@ -85,7 +85,7 @@
         $("input[type='text']").bind('change', function () {
             $.ajax(
                   {
-                      url: "/course/task_comment/",
+                      url: "/teacher/course/task_comment/",
                       type: "POST",
                       data: {
                           "task_id": $(this).attr('id'),

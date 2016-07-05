@@ -1,9 +1,9 @@
-{% extends "course.html" %}
+{% extends "teacher_course.html" %}
 
 {% block content %}
 
     <div>
-    <input class="btn bg-olive-active" type="button"  value="发布新作业" onclick="javascrtpt:window.location.href='/course/task_publish'">
+    <input class="btn bg-olive-active" type="button"  value="发布新作业" onclick="javascrtpt:window.location.href='/teacher/course/task_publish'">
     </div>
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
@@ -17,7 +17,7 @@
                   {% for task in tasks %}
                     <tr href="/task/">
                         <td>{{ task.id }}</td>
-                        <td><a href="/course/task_info/{{task.id  }}">{{ task.name }}</a></td>
+                        <td><a href="/teacher/course/task_info/{{task.id  }}">{{ task.name }}</a></td>
                         <td>{{ task.start_date }}--{{ task.end_date }}</td>
                         {% ifequal task.is_single 1 %}
                             <td><span class="label label-success">不允许</span></td>
