@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
     url(r'^download/$', 'app.views.file_download'),
+    url(r'^change_password/$', 'app.views.change_password'),
+
     url(r'^student/$', 'app.student.student'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
@@ -51,7 +53,10 @@ urlpatterns = [
     url(r'^administrator/course/changeCourse/(?P<courseId>\d+)/$', 'app.administrator_course.changeCourseShow'),
     url(r'^administrator/course/addCourse/$', 'app.administrator_course.addCourseShow'),
     url(r'^administrator/course/saveCourse/$', 'app.administrator_course.save_course'),
-
+    url(r'^chatpost/','app.course_chat.Post'),
+    url(r'^teacher/course/message/','app.course_chat.Home'),
+    url(r'^messages/$', 'app.course_chat.Messages', name='messages'),
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
+
 ]

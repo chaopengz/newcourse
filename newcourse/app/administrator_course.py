@@ -61,7 +61,8 @@ def addCourseShow(request):
     user=User.objects.get(name=request.session['name'])
     #下拉列表的东西
     teachers=User.objects.filter(type=3)
-    terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
+    terms=Term.objects.all()
+    # terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
 
     return render_to_response('administrator_add_course.html', locals())
 
@@ -80,7 +81,8 @@ def changeCourseShow(request,courseId):
     term=Term.objects.get(id=course.term_id)
     #下拉列表的东西
     teachers=User.objects.filter(type=3)
-    terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
+    terms=Term.objects.all()
+    # terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
     return render_to_response('administrator_change_course.html', locals())
 
 def save_course(request):
