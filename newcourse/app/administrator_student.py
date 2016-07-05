@@ -10,31 +10,31 @@ from django import forms
 
 def main(request):
      is_success='0'
-     list_num=3
-     page_name='教师管理'
-     links=[ {'name': '教师管理', 'page': '/administrator/teacher/'} ]
+     list_num=4
+     page_name='学生管理'
+     links=[ {'name': '学生管理', 'page': '/administrator/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
-     teachers=User.objects.filter(type=3)
-     return render_to_response('administrator_teacher.html', locals())
+     students=User.objects.filter(type=2)
+     return render_to_response('administrator_student.html', locals())
 
 def reset_password(request,tId):
-     teacher=User.objects.filter(type=3).get(id=tId)
-     teacher.password='123'
-     teacher.save()
+     student=User.objects.filter(type=2).get(id=tId)
+     student.password='123'
+     student.save()
      is_success='1'
-     list_num=3
-     page_name='教师管理'
-     links=[ {'name': '教师管理', 'page': '/administrator/teacher/'} ]
+     list_num=4
+     page_name='学生管理'
+     links=[{'name': '学生管理', 'page': '/administrator/student/'} ]
      user=User.objects.filter(name=request.session['name']).first()
-     teachers=User.objects.filter(type=3)
-     return render_to_response('administrator_teacher.html', locals())
+     students=User.objects.filter(type=2)
+     return render_to_response('administrator_student.html', locals())
 
-def add_teacher(request):
-    list_num = 2
-    page_name = '添加教师'
-    links=[{'name': '教师管理', 'page': '/administrator/teacher/'} , {'name': '添加教师', 'page': '/administrator/teacher/add_teacher'}]
+def add_student(request):
+    list_num = 4
+    page_name = '添加学生'
+    links=[{'name': '学生管理', 'page': '/administrator/student/'} , {'name': '添加学生', 'page': '/administrator/student/add_student'}]
     user=User.objects.get(name=request.session['name'])
-    return render_to_response('administrator_add_teacher.html', locals())
+    return render_to_response('administrator_add_student.html', locals())
 
 def changeCourseShow(request,courseId):
     list_num = 2
@@ -55,22 +55,22 @@ def changeCourseShow(request,courseId):
     # terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
     return render_to_response('administrator_change_course.html', locals())
 
-def save_teacher(request):
+def save_student(request):
     tname=request.POST['t_name']
     trealname=request.POST['t_realname']
     if request.POST.get('t_id'):
-        teacher=User.objects.get(id=request.POST.get('t_id'))
-        teacher.name=tname
-        teacher.real_name=trealname
-        teacher.save()
+        student=User.objects.get(id=request.POST.get('t_id'))
+        student.name=tname
+        student.real_name=trealname
+        student.save()
     else:
-        teacher=User(
+        student=User(
             name=tname,
             password='123',
             real_name=trealname,
-            type=3
+            type=2
          )
-        teacher.save()
+        student.save()
 
-    return HttpResponseRedirect('/administrator/teacher/')
+    return HttpResponseRedirect('/administrator/student/')
 
