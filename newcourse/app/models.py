@@ -8,6 +8,8 @@ class User(models.Model):
     name = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     type = models.IntegerField()
+    real_name = models.CharField(max_length=30)
+    pic = models.CharField(max_length=50,default='none')
 
 
 class Term(models.Model):
@@ -38,6 +40,7 @@ class Resource(models.Model):
     directory = models.CharField(max_length=500)
     server_path = models.FileField(upload_to="./upload/")
     course = models.ForeignKey('Course')
+    submit_time = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
@@ -83,3 +86,13 @@ class GroupCourse(models.Model):
     group = models.ForeignKey('Group')
     course = models.ForeignKey('Course')
     is_allowed = models.BooleanField()
+
+
+class Chat(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('User')
+    message = models.CharField(max_length=200)
+    courseid = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.message
