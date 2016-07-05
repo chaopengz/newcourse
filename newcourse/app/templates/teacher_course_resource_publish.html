@@ -1,8 +1,44 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
-    <form method="post" enctype="multipart/form-data" >
-    {{uf.as_p}}
-    <input type="submit" value="上传"/>
-    </form>
+        <div class="box box-info">
+     <div class="box-header with-border">
+        <h3 class="box-header with-border"> 上传资源
+        </h3>
+     </div>
+             <div class="box box-info">
+            <form method = "post" class="form-horizontal" enctype="multipart/form-data" >
+
+                <div class="box-body">
+                    <div class="form-group">
+                    <label  class="col-sm-2 control-label">资源描述</label>
+                    <div class="col-sm-10">
+                        {{ uf.Description }}
+                    </div>
+                </div>
+              </div>
+                <div class="box-body">
+                    <div class="form-group">
+                    <label  class="col-sm-2 control-label">文件夹</label>
+                    <div class="col-sm-10">
+                        {{ uf.Folder }}
+                    </div>
+                </div>
+              </div>
+                <div class="box-body">
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">文件</label>
+                    <div class="col-sm-10">
+                        {{ uf.File }}
+                    </div>
+                </div>
+              </div>
+                <div class="box-footer">
+                <button type="submit" class="btn btn-info pull-right">上传</button>
+              </div>
+{#            <input type="submit"   value=""/>#}
+        </form>
+    </div>
+    </div>
+
 {% endblock %}

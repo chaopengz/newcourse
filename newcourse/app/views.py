@@ -70,3 +70,15 @@ def change_password(request):
     else:
         return HttpResponseRedirect('/login/')
 
+def file_download(request):
+    filename = "1.doc"
+    f = open(filename)
+    data = f.read()
+    f.close()
+
+    response = HttpResponse(data)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
+
+
+
