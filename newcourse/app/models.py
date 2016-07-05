@@ -38,10 +38,14 @@ def get_resource_path(instance, filename):
     course_id = instance.course.id
     return 'resource/' + str(course_id) + '/' + filename
 
+class ResourceClass(models.Model):
+    name = models.CharField(max_length=30)
+
+
 class Resource(models.Model):
     name = models.CharField(max_length=30)
-    directory = models.CharField(max_length=500)
     server_path = models.FileField(upload_to=get_resource_path)
+    resource_class = models.ForeignKey('ResourceClass')
     course = models.ForeignKey('Course')
     submit_time = models.DateTimeField(auto_now_add=True)
 

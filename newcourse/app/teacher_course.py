@@ -44,12 +44,12 @@ def course_resource(request):
     page_name = '资源列表'
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'}]
     course_id = int(request.session['course_id'])
+    resource_classes = ResourceClass.objects.all()
     resources = Resource.objects.filter(course_id=course_id)
     return render_to_response('teacher_course_resource.html', locals())
 
 class UserForm(forms.Form):
     Description = forms.CharField(label='资源名称')
-    Folder = forms.CharField(label='文件夹名称')
     File = forms.FileField(label='文件位置')
 
 def course_resource_publish(request):
@@ -59,29 +59,39 @@ def course_resource_publish(request):
              {'name': '发布资源', 'page': '/teacher/course/resource/resource_publish'} ]
     course_id = int(request.session['course_id'])
     resources = Resource.objects.filter(course_id=course_id)
-
+    user=User.objects.filter(name=request.session['name']).first()
     if request.method == "POST":
         uf = UserForm(request.POST,request.FILES)
         if uf.is_valid():
             # 获取表单信息
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
-            folder=uf.cleaned_data['Folder']
             # 写入数据库
             resource = Resource()
+            resource_class = ResourceClass.objects.get(pk=1)
             resource.name = description
             resource.server_path = filepath
-            resource.directory = folder
+            resource.resource_class = resource_class
             resource.course_id = course_id
             resource.save()
 
             course_id = int(request.session['course_id'])
             resources = Resource.objects.filter(course_id=course_id)
-            return render_to_response('teacher_course_resource.html',locals())
+            return HttpResponseRedirect('/teacher/course/resource/')
     else:
         uf = UserForm()
 
     return render_to_response('teacher_course_resource_publish.html', locals())
+
+
+def course_resource_class(request):
+    id = request.POST['resource_id']
+    resource_class_id = request.POST['resource_class']
+    resource = Resource.objects.get(pk=id)
+    resource_class = ResourceClass.objects.get(pk=resource_class_id)
+    resource.resource_class = resource_class
+    resource.save()
+    return HttpResponse(json.dumps(True))
 
 def course_task(request):
      list_num = 1
