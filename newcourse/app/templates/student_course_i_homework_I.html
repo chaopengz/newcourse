@@ -1,0 +1,114 @@
+{% extends "main_template.html" %}
+   {% block sidebar %}
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header">菜单</li>
+        <!-- Optionally, you can add icons to the links -->
+          <li id="list1">
+            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
+          </li>
+          <li id="list2">
+            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+          </li>
+          <li id="list3">
+            <a href="/student/course/{{ course.id }}/communication"><i class="fa fa-link"></i> <span>交流区</span></a>
+          </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+
+     {% endblock %}
+{% block content %}
+    <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
+
+              <h3 class="box-title">作业信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                  <dt>作业名称</dt><dd>{{ taskrequirement.name }}</dd>
+                  <dt>作业要求</dt><dd>{{ taskrequirement.base_requirements }}</dd>
+                  <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
+                  <dt>作业可提交日期</dt><dd>{{ taskrequirement.start_date }} - {{ taskrequirement.end_date }}</dd>
+                  <dt>提交作业</dt><dd><a href="upload" >上传作业 </a></dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+    <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+                <tr>
+                    <th>作业名称</th>
+                  <th>提交时间</th>
+                    <th>打分</th>
+                    <th>评论</th>
+                    <th>提交作业</th>
+                </tr>
+                  {% for task in tasks %}
+                    <tr href="/task/">
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.submit_time }}</td>
+                        <td>{{ task.grade }}</td>
+                        <td>{{ task.comment }}</td>
+                        <td><a href="upload" >上传作业 </a></td>
+                    </tr>
+                  {% endfor %}
+
+           </table>
+       </div>
+
+<script>
+    $(function () {
+        $("input[type='number']").bind('change', function () {
+            $.ajax(
+                  {
+                      url: "/course/task_grade/",
+                      type: "POST",
+                      data: {
+                          "task_id": $(this).attr('id'),
+                          "grade": $(this).val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+ $(function () {
+        $("input[type='text']").bind('change', function () {
+            $.ajax(
+                  {
+                      url: "/course/task_comment/",
+                      type: "POST",
+                      data: {
+                          "task_id": $(this).attr('id'),
+                          "comment": $(this).val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+</script>
+
+{% endblock %}
+
