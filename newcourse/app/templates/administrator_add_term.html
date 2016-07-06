@@ -7,12 +7,12 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" id="form1" action="/administrator/term/">
+            <form class="form-horizontal" method="post" id="form1" action="/administrator/term/saveTerm/">
               <div class="box-body">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">学期名</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" placeholder=""请输入学期名">
+                    <input type="text" class="form-control" name="t_name" id="name" placeholder=""请输入学期名">
                   </div>
                 </div>
               </div>
@@ -20,7 +20,7 @@
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">星期数</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="weeek" placeholder=""请输入星期数">
+                    <input type="text" class="form-control" name="t_week" id="week" placeholder=""请输入星期数">
                   </div>
                 </div>
               </div>
@@ -33,7 +33,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                          </div>
-                      <input type="text" class="form-control pull-right" id="start" name="t_date">
+                      <input type="text" class="form-control pull-right" id="start" name="t_sdate">
                      </div>
                   </div>
                 </div>
@@ -47,7 +47,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                          </div>
-                      <input type="text" class="form-control pull-right" id="end" name="t_date">
+                      <input type="text" class="form-control pull-right" id="end" name="t_edate">
                      </div>
                   </div>
                 </div>

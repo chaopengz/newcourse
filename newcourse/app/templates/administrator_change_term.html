@@ -1,0 +1,78 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+
+  <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">修改学期</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" method="post" id="form1" action="/administrator/term/saveTerm/">
+            <input type="hidden" name="t_id" id="cid" value="{{ term.id }}">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">学期名</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name='t_name' id="name" value="{{ term.name }}">
+                  </div>
+                </div>
+              </div>
+            <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">星期数</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name='t_week' id="week" value="{{ term.week }}">
+                  </div>
+                </div>
+              </div>
+
+                              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">学期起止日期</label>
+                  <div class="col-sm-10">
+
+                    <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" id="date" name="t_date">
+                </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <!-- /.box-footer -->
+            </form>
+             <div class="box-footer">
+                <button type="button" class="btn btn-info pull-right" onclick="saveTerm()">保存</button>
+              </div>
+          </div>
+<script>
+$('#date').daterangepicker(
+        {
+            startDate:"{{ term.start_date }}",
+            endDate:"{{ term.end_date }}"
+        },
+        function(start, end){
+             $('#reportrange input').val(start.toString('MM/dd/YYYY') + '~' + end.toString('MM/dd/YYYY'));
+        });
+
+
+
+function saveTerm(){
+
+    if($("#name").val().length<=0 || $('#week').val().length<=0){
+            alert("请选择学期与任课教师！");
+    }else{
+        $('#form1').submit();
+    }
+}
+
+
+</script>
+{% endblock %}
+
+
+

@@ -1,0 +1,23 @@
+{% extends "main_template.html" %}
+{% block title %}Error Page{% endblock %}
+{% block content %}
+    <section class="content">
+
+      <div class="error-page">
+        <h2 class="headline text-red">500</h2>
+
+        <div class="error-content" style="padding-top: 25px">
+          <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
+
+          <p>
+            We will work on fixing that right away.
+            Meanwhile, you may <a href="login.html">return to login</a> or try using the search form.
+          </p>
+
+
+        </div>
+      </div>
+      <!-- /.error-page -->
+
+    </section>
+{% endblock %}
