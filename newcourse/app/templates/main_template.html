@@ -12,6 +12,7 @@
       </title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link REL="SHORTCUT ICON" HREF="/static/bitbug_favicon.ico">
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
@@ -102,20 +103,33 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-
-          <!-- User Account Menu -->
+        {% if user %}
+            <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="/static/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+              <img src=
+                {% if user and user.pic != '' %}
+                     "{{ user.pic }}"
+                {% else %}
+                    "/static/dist/img/default.jpg"
+                {% endif %}
+
+                           class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">欢迎你，{{ user.real_name }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="/static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src=
+                {% if user and user.pic != '' %}
+                     "{{ user.pic }}"
+                {% else %}
+                    "/static/dist/img/default.jpg"
+                {% endif %}
+                 class="img-circle" alt="User Image">
 
                 <p>
                   {{ user.real_name }}
@@ -144,6 +158,9 @@
               </li>
             </ul>
           </li>
+        {% endif %}
+
+
         </ul>
       </div>
     </nav>
@@ -154,10 +171,18 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
 
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
+
+    {% if user %}
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel">
         <div class="pull-left image">
-          <img src="/static/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src=
+                {% if user and user.pic != '' %}
+                     "{{ user.pic }}"
+                {% else %}
+                    "/static/dist/img/default.jpg"
+                {% endif %}
+           class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ user.real_name }}</p>
@@ -175,6 +200,8 @@
           </a>
         </div>
       </div>
+    {% endif %}
+
 
 
       <!-- Sidebar Menu -->
