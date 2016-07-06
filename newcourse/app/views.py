@@ -48,6 +48,19 @@ def logout(request):
     del request.session['type']
     return HttpResponseRedirect('/login/')
 
+def userinfo(request):
+    page_name = '管理个人信息'
+    links=[{'name': '管理个人信息', 'page': '#'} ]
+    user=User.objects.filter(name=request.session['name']).first()
+    return render_to_response('userinfo.html', locals())
+
+def save_info(request):
+    if 'realname' in request.POST:
+        user=User.objects.get(name=request.session['name'])
+        user.real_name=request.POST['realname']
+        user.save()
+    return HttpResponseRedirect('/userinfo/')
+
 def change_password(request):
     if 'name' in request.session:
         user=User.objects.get(name=request.session['name'])

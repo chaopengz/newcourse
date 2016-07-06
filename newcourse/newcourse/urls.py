@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
+    url(r'^userinfo/$', 'app.views.userinfo'),
+    url(r'^save_info/$', 'app.views.save_info'),
     url(r'^change_password/$', 'app.views.change_password'),
 
     url(r'^student/$', 'app.student.student'),
