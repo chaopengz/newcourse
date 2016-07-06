@@ -40,6 +40,7 @@ def course_resource(request):
     list_num = 2
     page_name = '资源列表'
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'}]
+    user = User.objects.filter(name=request.session['name']).first()
     course_id = int(request.session['course_id'])
     resources = Resource.objects.filter(course_id=course_id)
     return render_to_response('teacher_course_resource.html', locals())
@@ -51,6 +52,7 @@ class UserForm(forms.Form):
 
 def course_resource_publish(request):
     list_num = 2
+    user = User.objects.filter(name=request.session['name']).first()
     page_name = '资源列表'
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'},
              {'name': '发布资源', 'page': '/teacher/course/resource/resource_publish'} ]
