@@ -6,8 +6,9 @@ from models import *
 
 def Home(request):
     courseId = request.session['course_id']
+    user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
-    return render(request, "teacher_course_message.html", {'chat': c})
+    return render(request, "teacher_course_message.html", locals())
 
 
 def Post(request):
