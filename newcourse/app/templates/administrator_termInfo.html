@@ -1,0 +1,81 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+
+
+
+
+
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">学期信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal" method="post" id="form1" action="/administrator/term/saveTerm/">
+            <input type="hidden" name="t_id" id="cid" value="{{ term.id }}">
+              <div class="box-body">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">学期名</label>
+                  <div class="col-sm-10">
+                    <label class="control-label">{{ term.name }}</label>
+                  </div>
+                </div>
+              </div>
+                <div class="box-body">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">星期数</label>
+                  <div class="col-sm-10">
+                    <label class="control-label">{{ term.week }}</label>
+                  </div>
+                </div>
+              </div>
+                 <div class="box-body">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">学期起止日期</label>
+                  <div class="col-sm-10">
+                        <label class="control-label">{{ term.start_date }} - {{ term.end_date }}</label>
+
+                  </div>
+                </div>
+              </div>
+                             <div class="box-body">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">学期状态</label>
+                  <div class="col-sm-10">
+                        <label class="control-label">
+                            {% if res.isrun %}
+                        <th style="color: #00ff66">进行中</th>
+                    {% else %}
+                        <th style="color: #ff6600">已结束</th>
+                    {% endif %}
+                        </label>
+
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- /.box-body -->
+
+              <!-- /.box-footer -->
+            </form>
+             <div class="box-footer">
+                <button type="button" class="btn btn-primary" onclick="changeTerm({{ term.id }})">修改</button>
+              </div>
+          </div>
+<script>
+
+
+
+    function changeTerm(termId){
+        self.location.href="/administrator/term/changeTerm/"+termId;
+    }
+
+
+</script>
+
+{% endblock %}
+
+
+
