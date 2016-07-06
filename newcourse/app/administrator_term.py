@@ -105,8 +105,9 @@ def save_term(request):
 
     tname=request.POST['t_name']
     tweek=request.POST['t_week']
-    sdatestr=request.POST['t_sdate']
-    edatestr=request.POST['t_edate']
+    tdate=request.POST['t_date']
+    sdatestr=tdate[0:10]
+    edatestr=tdate[13:23]
     sdate=datetime.datetime.strptime(sdatestr, "%m/%d/%Y").date()
     edate=datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
 

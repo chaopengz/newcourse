@@ -26,32 +26,19 @@
               </div>
               <div class="box-body">
                 <div class="form-group">
-                     <label for="inputEmail3" class="col-sm-2 control-label">起始日期</label>
+                     <label for="inputEmail3" class="col-sm-2 control-label">起止日期</label>
                   <div class="col-sm-10">
 
                     <div class="input-group">
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                          </div>
-                      <input type="text" class="form-control pull-right" id="start" name="t_sdate">
+                      <input type="text" class="form-control pull-right" id="date" name="t_date">
                      </div>
                   </div>
                 </div>
               </div>
-            <div class="box-body">
-                <div class="form-group">
-                     <label for="inputEmail3" class="col-sm-2 control-label">截止日期</label>
-                  <div class="col-sm-10">
 
-                    <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                         </div>
-                      <input type="text" class="form-control pull-right" id="end" name="t_edate">
-                     </div>
-                  </div>
-                </div>
-              </div>
 
               <!-- /.box-body -->
 
@@ -65,7 +52,7 @@
 
 <script>
     //Date range picker
-   // $('#reservation').daterangepicker();
+    $('#date').daterangepicker();
  $('#start').datepicker({
       autoclose: true
     });
