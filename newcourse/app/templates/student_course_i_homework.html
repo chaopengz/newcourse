@@ -1,22 +1,4 @@
-{% extends "main_template.html" %}
-   {% block sidebar %}
-      <!-- Sidebar Menu -->
-      <ul class="sidebar-menu">
-        <li class="header">菜单</li>
-        <!-- Optionally, you can add icons to the links -->
-          <li id="list1">
-            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
-          </li>
-          <li id="list2">
-            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
-          </li>
-          <li id="list3">
-            <a href="/student/course/{{ course.id }}/communication"><i class="fa fa-link"></i> <span>交流区</span></a>
-          </li>
-      </ul>
-      <!-- /.sidebar-menu -->
-
-     {% endblock %}
+{% extends "student_course_i.html" %}
 {% block content %}
 
 
