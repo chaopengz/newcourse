@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^student/course/(\d+)/homework/$','app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$','app.student.student_course_i_homework_I'),
     url(r'^student/course/(\d+)/homework/(\d+)/upload/$','app.student.student_course_i_homework_I_upload'),
+    url(r'^student/course/(\d+)/homework/(\d+)/content/$','app.student.student_course_i_homework_I_content'),
     url(r'^student/course/(\d+)/resource/$','app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$','app.student.file_download'),
 
@@ -54,6 +55,7 @@ urlpatterns = [
     url(r'^teacher/course/task_info/(?P<task_id>\d+)/$','app.teacher_course.course_task_info'),
     url(r'^teacher/course/task_grade/$','app.teacher_course.course_task_grade'),
     url(r'^teacher/course/task_comment/$','app.teacher_course.course_task_comment'),
+    url(r'^teacher/course/task_content/$','app.teacher_course.course_task_content'),
     url(r'^download/(?P<filename>.*)$', 'app.teacher_course.file_download'),
     url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 
@@ -82,8 +84,10 @@ urlpatterns = [
     url(r'^administrator/student/add_student/$', 'app.administrator_student.add_student'),
     url(r'^administrator/student/save_student/$', 'app.administrator_student.save_student'),
     url(r'^chatpost/','app.course_chat.Post'),
-    url(r'^teacher/course/message/','app.course_chat.Home'),
+    url(r'^teacher/course/message/','app.course_chat.t_Home'),
+    url(r'^student/course/message/','app.course_chat.s_Home'),
     url(r'^messages/$', 'app.course_chat.Messages', name='messages'),
+
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 

@@ -46,10 +46,7 @@ def login(request):
 def logout(request):
     del request.session['name']
     del request.session['type']
-    request.session['message'] = "登出成功"
-    request.session['nexturl'] = "/login/"
-    return HttpResponseRedirect('/info/')
-    # return HttpResponseRedirect('/login/')
+    return HttpResponseRedirect('/login/')
 
 def userinfo(request):
     page_name = '管理个人信息'
@@ -62,9 +59,7 @@ def save_info(request):
         user=User.objects.get(name=request.session['name'])
         user.real_name=request.POST['realname']
         user.save()
-    request.session['message'] = "保存个人信息成功"
-    request.session['nexturl'] = "/userinfo/"
-    return HttpResponseRedirect('/info/')
+    return HttpResponseRedirect('/userinfo/')
 
 def change_password(request):
     if 'name' in request.session:
@@ -88,6 +83,7 @@ def change_password(request):
     else:
         return HttpResponseRedirect('/login/')
 
+
 def info(request):
     if 'message' in request.session:
         message=request.session['message']
@@ -96,5 +92,4 @@ def info(request):
     # page_name = '提示信息'
     # links=[{'name': '提示信息', 'page': '#'} ]
     return render_to_response('info.html', locals())
-
 

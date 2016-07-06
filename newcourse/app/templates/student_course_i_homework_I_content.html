@@ -1,32 +1,37 @@
-{% extends "teacher_course.html" %}
+{% extends "student_course_i.html" %}
 
 {% block content %}
-    <div class="box box-info">
+        <div class="box box-info">
      <div class="box-header with-border">
-        <h3 class="box-header with-border"> 上传资源
+        <h3 class="box-header with-border"> 上传作业
         </h3>
      </div>
+             <div class="box box-info">
             <form method = "post" class="form-horizontal" enctype="multipart/form-data" >
 
                 <div class="box-body">
                     <div class="form-group">
-                    <label  class="col-sm-2 control-label">资源描述</label>
+                    <label  class="col-sm-2 control-label">作业描述</label>
                     <div class="col-sm-10">
                         {{ uf.Description }}
                     </div>
-                    </div>
+                </div>
               </div>
+
                 <div class="box-body">
                     <div class="form-group">
-                    <label class="col-sm-2 control-label">文件</label>
+                    <label class="col-sm-2 control-label">作业内容</label>
                     <div class="col-sm-10">
-                        {{ uf.File }}
+                        {{ uf.Content }}
                     </div>
                 </div>
               </div>
                 <div class="box-footer">
-                <button id="submit" type="submit" class="btn btn-primary">上传</button>
+                <button type="submit" class="btn btn-primary">上传</button>
               </div>
+{#            <input type="submit"   value=""/>#}
         </form>
     </div>
+    </div>
+
 {% endblock %}
