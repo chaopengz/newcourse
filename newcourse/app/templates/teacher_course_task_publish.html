@@ -1,52 +1,55 @@
 {% extends "teacher_course.html" %}
 {% block content %}
-    <form method="post" action="/teacher/course/task_publish/">
-    <div class="col-md-6">
-    <div class="box box_info">
-            <div class="box-header with-border">
-              <h3 class="box-title">作业名称</h3>
-            </div>
+    <div class="box box-info">
+         <div class="box-header with-border">
+            <h3 class="box-header with-border"> 发布作业
+            </h3>
+         </div>
+
+        <form method = "post" action="/teacher/course/task_publish/" class="form-horizontal" enctype="multipart/form-data" >
+
             <div class="box-body">
-              <input class="form-control input-lg" name="name" type="text" placeholder="作业名称">
+              <div class="form-group">
+                    <label  class="col-sm-2 control-label">作业名称</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" name="name" type="text" placeholder="作业名称">
+                    </div>
+                </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">起始日期</label>
+                <div class="col-sm-10">
+                       <div class="input-group">
+                             <span class="input-group-addon">
+                                 <i class="fa fa-calendar"></i>
+                             </span>
+                             <input type="text" name="start" class="form-control pull-right" id="start">
+                       </div>
+                </div>
             </div>
-            <!-- /.box-body -->
-    </div>
-  <div class="box box_info">
-            <div class="box-header with-border">
-              <h3 class="box-title">起始日期</h3>
-            </div>
-            <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
+            <div class="form-group">
+                  <label class="col-sm-2 control-label">截止日期</label>
+                  <div class="col-sm-10">
+                        <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                                <input type="text" name="end" class="form-control pull-right" id="end">
+                        </div>
                   </div>
-                  <input type="text" name="start" class="form-control pull-right" id="start">
             </div>
-            <!-- /.box-body -->
+            <div class="form-group">
+                <label class="col-sm-2 control-label">作业要求</label>
+                <div class="col-sm-10">
+                     <textarea name="requirements" class="form-control" rows="3" type="text" placeholder="作业要求"></textarea>
+
+                </div>
+            </div>
+            <div class="box-footer">
+                     <button type="submit" class="btn btn-info pull-left">提交</button>
+            </div>
+            </div>
+        </form>
     </div>
-    <div class="box box_info">
-            <div class="box-header with-border">
-              <h3 class="box-title">截止日期</h3>
-            </div>
-            <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="text" name="end" class="form-control pull-right" id="end">
-            </div>
-            <!-- /.box-body -->
-    </div>
-            <div class="box box_info">
-            <div class="box-header with-border">
-              <h3 class="box-title">作业要求</h3>
-            </div>
-            <div class="box-body">
-              <input class="form-control input-lg" name="requirements" type="text" placeholder="作业要求">
-            </div>
-            <!-- /.box-body -->
-    </div>
-    <button type="submit" class="btn btn-primary margin">提交</button>
-    </div>
-</form>
 <script>
     //Date range picker
    // $('#reservation').daterangepicker();

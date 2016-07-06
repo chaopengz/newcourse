@@ -32,6 +32,7 @@
                   <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
                   <dt>作业可提交日期</dt><dd>{{ taskrequirement.start_date }} - {{ taskrequirement.end_date }}</dd>
                   <dt>提交作业</dt><dd><a href="upload" >上传作业 </a></dd>
+                  <dt>填写答案</dt><dd><a href="content">网页填写</a></dd>
               </dl>
             </div>
             <!-- /.box-body -->
@@ -42,7 +43,7 @@
                 <tr>
                     <th>作业名称</th>
                   <th>提交时间</th>
-                    <th>打分</th>
+                    <th>分数</th>
                     <th>评论</th>
                 </tr>
                   {% for task in tasks %}
