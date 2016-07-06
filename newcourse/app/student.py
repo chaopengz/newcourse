@@ -20,12 +20,14 @@ def student(request):
 
 def student_info(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
+    list_num = 1
     user = User.objects.filter(name=request.session['name']).first()
     return render_to_response('student_info.html', locals())
 
 
 def student_course(request):
     page_name = '课程列表'
+    list_num = 2
     links = [{'name': '学生页面', 'page': '/student/'}]
     user = User.objects.filter(name=request.session['name']).first()
     # usercourses = UserCourse.objects.filter(user_id=user.id)
@@ -43,6 +45,7 @@ def student_course(request):
 
 def student_group(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
+    list_num = 3
     user = User.objects.filter(name=request.session['name']).first()
     groups = ['534team', 'new course']
     return render_to_response('student_group.html', locals())
@@ -134,7 +137,7 @@ def student_course_i_homework_I_upload(request, i, I):
 
 class UserForm_content(forms.Form):
     Description = forms.CharField(label='作业名字')
-    Content = forms.CharField(label='作业内容')
+    Content = forms.CharField(label='作业内容',widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
 
 
 def student_course_i_homework_I_content(request, i, I):
@@ -186,7 +189,7 @@ def student_course_i_homework_I_content(request, i, I):
 
 def student_course_i_resource(request, i):
     user = User.objects.filter(name=request.session['name']).first()
-    list_num = 1
+    list_num = 2
     page_name = '资源列表'
     course = Course.objects.get(id=i)
     resources = Resource.objects.filter(course_id=course.id)
