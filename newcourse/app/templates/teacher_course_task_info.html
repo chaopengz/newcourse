@@ -1,6 +1,13 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <div id="dialog-form" hidden>
+    <textarea id="ta" style="width: 350px;height: 300px"> </textarea>
+    </div>
     <div class="box box-solid">
             <div class="box-header with-border">
               <i class="fa fa-text-width"></i>
@@ -33,7 +40,7 @@
                   <th>提交时间</th>
                     <th>打分</th>
                     <th>评论</th>
-                    <th>有无附件</th>
+                    <th>作业内容</th>
                 </tr>
                   {% for task in task_file %}
                     <tr href="/task/">
@@ -44,12 +51,12 @@
                         <td><input type="text" id="{{ task.id }}" value="{{ task.comment }}"></td>
                         {% ifequal task.is_file 1 %}
                             <td>
-                            <input class="btn btn-info" type="button"  value="有" onclick="javascript:window.location.href='/download/{{ task.server_path }}'">
+                            <input class="btn btn-info" type="button"  value="下载" onclick="javascript:window.location.href='/download/{{ task.server_path }}'">
                             </td>
                         {% endifequal %}
                         {% ifequal task.is_file 0 %}
                             <td>
-                             <input class="btn" type="button"  value="无" disabled="true">
+                             <input class="btn" type="button" id="{{ task.id }}" value="查看">
                             </td>
                         {% endifequal %}
                     </tr>
@@ -100,6 +107,34 @@
                           } else {
                               alert("修改失败");
                           }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+$(function () {
+        $("input[type='button'][value='查看']").bind('click', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/task_content/",
+                      type: "POST",
+                      data: {
+                          "task_id": $(this).attr('id'),
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          dialog = $( "#dialog-form" ).dialog({
+                              autoOpen: false,
+                              height: 300,
+                              width: 350,
+                              modal: true,
+                              close: function() {
+                              }
+		                });
+                           $("#ta").val(data);
+                          dialog.dialog( "open" );
                       },
                       error: function () {
                           alert("连接失败");

@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^teacher/course/task_info/(?P<task_id>\d+)/$','app.teacher_course.course_task_info'),
     url(r'^teacher/course/task_grade/$','app.teacher_course.course_task_grade'),
     url(r'^teacher/course/task_comment/$','app.teacher_course.course_task_comment'),
+    url(r'^teacher/course/task_content/$','app.teacher_course.course_task_content'),
     url(r'^download/(?P<filename>.*)$', 'app.teacher_course.file_download'),
     url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 
