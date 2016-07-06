@@ -28,7 +28,9 @@ def compare_time(time1,time2):
 
 def course_teacher_info(request, courseId):
      page_name = '课程详情'
-     links=[{'name': '课程管理', 'page': '/teacher/course/'} ]
+     course_id = int(request.session['course_id'])
+     course = Course.objects.get(id=course_id)
+     links=[{'name': '课程管理', 'page': '/teacher/course/'} ,{'name':course.name,'page': '/teacher/course'}]
      request.session['course_id'] = courseId
      user=User.objects.filter(name=request.session['name']).first()
      course=Course.objects.filter(id=courseId).first()
@@ -42,7 +44,10 @@ def course_teacher_info(request, courseId):
 def course_resource(request):
     list_num = 2
     page_name = '资源列表'
-    links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'}]
+    course_id = int(request.session['course_id'])
+    course = Course.objects.get(id=course_id)
+    links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name':course.name,'page': '/teacher/course'},
+             {'name': '资源管理', 'page': '/teacher/course/resource'}]
     user = User.objects.filter(name=request.session['name']).first()
     course_id = int(request.session['course_id'])
     user = User.objects.filter(name=request.session['name']).first()
@@ -58,7 +63,10 @@ def course_resource_publish(request):
     list_num = 2
     user = User.objects.filter(name=request.session['name']).first()
     page_name = '资源列表'
-    links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': '资源管理', 'page': '/teacher/course/resource'},
+    course_id = int(request.session['course_id'])
+    course=Course.objects.get(id=course_id)
+    links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name':course.name,'page': '/teacher/course'},
+             {'name': '资源管理', 'page': '/teacher/course/resource'},
              {'name': '发布资源', 'page': '/teacher/course/resource/resource_publish'} ]
     course_id = int(request.session['course_id'])
     resources = Resource.objects.filter(course_id=course_id)
@@ -108,7 +116,10 @@ def course_resource_class_add(request):
 def course_task(request):
      list_num = 1
      page_name = '作业列表'
-     links=[{'name': '课程管理', 'page': '/teacher/course'} , {'name': '作业管理', 'page': '/teacher/course/task'}]
+     course_id = int(request.session['course_id'])
+     course = Course.objects.get(id=course_id)
+     links=[{'name': '课程管理', 'page': '/teacher/course'} , {'name':course.name,'page': '/teacher/course'},
+            {'name': '作业管理', 'page': '/teacher/course/task'}]
      user=User.objects.filter(name=request.session['name']).first()
      course_id=int(request.session['course_id'])
      tasks=TaskRequirement.objects.filter(course_id=course_id)
@@ -118,7 +129,10 @@ def course_task(request):
 def course_task_publish(request):
      list_num = 1
      page_name = '作业列表'
-     links=[{'name': '课程管理', 'page': '/teacher/course'} ,{'name': '作业管理', 'page': '/teacher/course/task'} ,
+     course_id = int(request.session['course_id'])
+     course = Course.objects.get(id=course_id)
+     links=[{'name': '课程管理', 'page': '/teacher/course'} ,{'name':course.name,'page': '/teacher/course'},
+            {'name': '作业管理', 'page': '/teacher/course/task'} ,
             {'name': '作业提交', 'page': '/teacher/course/task_publish'}]
      if request.method=='GET':
         user=User.objects.filter(name=request.session['name']).first()
@@ -149,7 +163,10 @@ def course_task_publish(request):
 def course_task_info(request, task_id):
      list_num = 1
      page_name = '作业列表'
-     links = [{'name': '课程管理', 'page': '/teacher/course'} ,{'name': '作业管理', 'page': '/teacher/course/task'} ,
+     course_id = int(request.session['course_id'])
+     course = Course.objects.get(id=course_id)
+     links = [{'name': '课程管理', 'page': '/teacher/course'} ,{'name':course.name,'page': '/teacher/course'},
+              {'name': '作业管理', 'page': '/teacher/course/task'} ,
               {'name': '作业详情', 'page': '/teacher/course/task_info'}]
      user = User.objects.filter(name=request.session['name']).first()
      course_id = int(request.session['course_id'])

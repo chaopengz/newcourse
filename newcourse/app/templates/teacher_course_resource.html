@@ -2,7 +2,7 @@
 
 {% block content %}
     <div>
-    <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascrtpt:window.location.href='/teacher/course/resource_publish'">
+    <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
     <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
 
     <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
@@ -15,6 +15,7 @@
                   <th>资源序号</th>
                   <th>资源名称</th>
                     <th>所在分类</th>
+                    <th>上传时间</th>
                 </tr>
                   {% for resource in resources %}
                     <tr href="/teacher/resource/">
@@ -33,6 +34,7 @@
                       {% endfor %}
                   </select>
                         </td>
+                        <td>{{ resource.submit_time}}</td>
                     </tr>
                   {% endfor %}
            </table>
@@ -42,6 +44,7 @@
 <script>
  $(function () {
         $("select").bind('change', function () {
+
             $.ajax(
                   {
                       url: "/teacher/course/resource_class/",
@@ -52,7 +55,7 @@
                       },
                       dataType:"json",
                       success: function (data) {
-                          if (data == true) {
+                          if ( data==true ) {
                               alert("修改并保存成功");
                           } else {
                               alert("修改失败");
@@ -63,10 +66,15 @@
                       }
                   });
         });
+
         });
 
  $(function () {
         $("#save_class").bind('click', function () {
+            if ( $("#new_class").val().length<=0){
+                alert("请输入新分类");
+            }
+            else{
             $.ajax(
                   {
                       url: "/teacher/course/resource_class_add/",
@@ -86,6 +94,7 @@
                           alert("连接失败");
                       }
                   });
+            }
         });
         });
 </script>
