@@ -24,15 +24,15 @@
                 <tr>
                   <th>资源序号</th>
                   <th>资源名称</th>
-                    <th>所在目录</th>
+                    <th>资源类型</th>
                     <th>下载链接</th>
                 </tr>
-                  {% for resource in resources %}
+                  {% for resourceclass in resourcesclasses %}
                     <tr href="/teacher/resource/">
-                        <td>{{ resource.id }}</td>
-                        <td>{{ resource.name }}</td>
-                        <td>{{ resource.directory}}</td>
-                        <td><a href="{{ resource.id }}/download">下载</a> </td>
+                        <td>{{ resourceclass.0.id }}</td>
+                        <td>{{ resourceclass.0.name }}</td>
+                        <td>{{ resourceclass.1.name }}</td>
+                        <td><a href="{{ resourceclass.0.id }}/download">下载</a> </td>
                     </tr>
                   {% endfor %}
            </table>
