@@ -11,13 +11,14 @@ def t_Home(request):
     return render(request, "teacher_course_message.html", locals())
 
 
-def s_Home(request):
-    for key, value in request.session.items():
-        print key, ' ', value
+def s_Home(request, i):
+    # for key, value in request.session.items():
+    #     print key, ' ', value
     # print request.session
     # courseId = 0
     # if 'course_id' in request.session:
     courseId = request.session['course_id']
+    course = Course.objects.get(id=i)
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
     return render(request, "student_course_message.html", locals())
