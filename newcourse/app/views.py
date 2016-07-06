@@ -84,5 +84,12 @@ def change_password(request):
         return HttpResponseRedirect('/login/')
 
 
-
+def info(request):
+    if 'message' in request.session:
+        message=request.session['message']
+        nexturl=request.session['nexturl']
+    # user=User.objects.get(name=request.session['name'])
+    # page_name = '提示信息'
+    # links=[{'name': '提示信息', 'page': '#'} ]
+    return render_to_response('info.html', locals())
 
