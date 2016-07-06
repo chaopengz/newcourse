@@ -2,24 +2,93 @@
 
 {% block content %}
     <div>
-    <input class="btn bg-olive-active" type="button"  value="发布新资源" onclick="javascrtpt:window.location.href='/teacher/course/resource_publish'">
+    <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascrtpt:window.location.href='/teacher/course/resource_publish'">
+    <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
+
+    <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
     </div>
+
+
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
                   <th>资源序号</th>
                   <th>资源名称</th>
-                    <th>所在目录</th>
+                    <th>所在分类</th>
                 </tr>
                   {% for resource in resources %}
                     <tr href="/teacher/resource/">
                         <td>{{ resource.id }}</td>
                         <td><a href="/teacher/resource/{{resource.id  }}">{{ resource.name }}</a></td>
-                        <td>{{ resource.directory}}</td>
+                        <td>
+                            <select class="form-control" style="max-width: 100px" id="{{resource.id}}">
+                      {% for t in resource_classes %}
+                          {% ifequal t.id resource.resource_class.id %}
+                               <option value="{{ t.id }}" selected="selected">{{ t.name }}</option>
+                          {% endifequal %}
+                          {% ifnotequal t.id resource.resource_class.id %}
+                               <option value="{{ t.id }}">{{ t.name }}</option>
+                          {% endifnotequal %}
+
+                      {% endfor %}
+                  </select>
+                        </td>
                     </tr>
                   {% endfor %}
            </table>
        </div>
+
+
+<script>
+ $(function () {
+        $("select").bind('change', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/resource_class/",
+                      type: "POST",
+                      data: {
+                          "resource_id": $(this).attr('id'),
+                          "resource_class": $(this).val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+
+ $(function () {
+        $("#save_class").bind('click', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/resource_class_add/",
+                      type: "POST",
+                      data: {
+                          "resource_class_name": $("#new_class").val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+</script>
 {% endblock %}
 
 

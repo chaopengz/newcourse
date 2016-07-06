@@ -1,0 +1,53 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+
+<button type="button" style="max-width:100px" class="btn btn-block btn-primary" onclick="add_teacher()">添加教师</button>
+
+
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">教师列表</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr>
+                    <th >#</th>
+                    <th>用户名</th>
+                    <th>真实姓名</th>
+                    <th >操作</th>
+                </tr>
+                  {% for teacher in teachers %}
+                      <th> {{ forloop.counter }}</th>
+                      <th> {{ teacher.name }}</th>
+                    <th> {{ teacher.real_name }}</th>
+                    <th><button type="button" class="btn btn-block btn-primary" style="max-width:100px" onclick="resetPassword({{ teacher.id }})">重置密码</button></th>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+<script>
+    function resetPassword(tId){
+        if(confirm('要将该用户密码重置为 123 吗？')){
+            self.location.href="/administrator/teacher/reset_password/"+tId;
+        }
+
+    }
+    function init(){
+        if("{{ is_success }}"=='1'){
+            alert("重置成功！");
+        }
+    }
+    function add_teacher(){
+        self.location.href="/administrator/teacher/add_teacher/";
+    }
+init()
+</script>
+{% endblock %}
+
+
+

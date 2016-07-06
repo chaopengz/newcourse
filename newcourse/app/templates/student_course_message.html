@@ -1,0 +1,56 @@
+     {% extends "main_template.html" %}
+
+     {% block sidebar %}
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header">菜单</li>
+        <!-- Optionally, you can add icons to the links -->
+          <li id="list1">
+            <a href="/teacher/course/task/"><i class="fa fa-link"></i> <span>课程作业</span></a>
+          </li>
+          <li id="list2">
+            <a href="/teacher/course/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+          </li>
+          <li id="list3">
+            <a href="/teacher/course/message/"><i class="fa fa-link"></i> <span>课程交流</span></a>
+          </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+     {% endblock %}
+     {% block content %}
+        <!-- Chat box -->
+          <div class="box box-success">
+            <div class="box-header">
+              <i class="fa fa-comments-o"></i>
+              <h3 class="box-title">课程交流</h3>
+
+
+            <div class="box-body chat" id="chat-body">
+              {% for obj in chat %}
+    <div class="item">
+        <img src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg" alt="user image" class="online">
+        <p class="message">
+                  <a href="#" class="name">
+                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ obj.created }}</small>{{ obj.user }}
+                      </a>
+         {{ obj.message }}</p>
+              </div>
+        {% endfor %}
+              <!-- /.item -->
+            </div>
+            <!-- /.chat -->
+              <form id="chat-form" method="post" action="/post/">
+            <div class="box-footer">
+              <div class="input-group">
+                <input class="form-control" id="chat-msg" name="chat-msg" placeholder="Type message...">
+
+                <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                </div>
+              </div>
+            </div>
+            </form>
+          </div>
+    <script src="/static/chat.js"></script>
+
+    {% endblock %}
