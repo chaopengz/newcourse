@@ -3,15 +3,15 @@
      {% block content %}
 <div class="pad margin no-print">
       <div class="callout callout-info" style="margin-bottom: 0!important;">
-        <h4><i class="fa fa-info"></i>提示信息:</h4>
-        {{ message }} 将在<label id="second">2</label> 秒后为您自动跳转
+        <h4><i class="fa fa-info"></i> 提示信息:</h4>
+        {{ message }} 将在 <label id="second">2</label> 秒后为您自动跳转。
       </div>
     </div>
 
          <script>
          var cnt = 2;
         function lod(){
-            if(cnt < 0){
+            if(cnt <= 0){
                 self.location.href="{{ nexturl }}";
             }else{
                 $('#second').text(cnt);

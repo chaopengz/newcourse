@@ -31,8 +31,9 @@ def login(request):
           try:
               user=User.objects.get(name=name, password=password)
           except User.DoesNotExist:
-                return HttpResponseRedirect('/')
-
+              request.session['message']="用户名或密码错误，请重新登录"
+              request.session['nexturl']="/login/"
+              return HttpResponseRedirect('/info/')
           else:
                 request.session['name'] = name
                 request.session['type'] = user.type
@@ -73,18 +74,21 @@ def change_password(request):
             #修改密码
             if request.POST.get('t_oldpw') == user.password:
                 #改密码
-                is_success='1'
                 user.password=request.POST.get('t_newpw')
                 user.save()
+                request.session['message']="密码修改成功。请重新登录。"
+                request.session['nexturl']="/logout/"
             else:
                 #旧密码输错
-                is_success='0'
+                request.session['message']="旧密码输入错误，请重新确认。"
+                request.session['nexturl']="/change_password/"
         else:
             #get方法，返回修改页
             page_name = '课程详情'
             links=[{'name': '修改密码', 'page': '/change_password/'} ]
             user=User.objects.filter(name=request.session['name']).first()
-        return render_to_response('change_password.html', locals())
+            return render_to_response('change_password.html', locals())
+        return HttpResponseRedirect('/info/')
     else:
         return HttpResponseRedirect('/login/')
 
@@ -92,9 +96,10 @@ def info(request):
     if 'message' in request.session:
         message=request.session['message']
         nexturl=request.session['nexturl']
-    # user=User.objects.get(name=request.session['name'])
-    # page_name = '提示信息'
-    # links=[{'name': '提示信息', 'page': '#'} ]
+    if 'name' in request.session:
+        user=User.objects.get(name=request.session['name'])
+        page_name = '提示信息'
+        links=[{'name': '提示信息', 'page': '#'} ]
     return render_to_response('info.html', locals())
 
 
