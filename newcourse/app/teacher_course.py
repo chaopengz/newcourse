@@ -177,6 +177,12 @@ def course_task_comment(request):
     return HttpResponse(json.dumps(True))
 
 
+def course_task_content(request):
+    id = request.POST['task_id']
+    task_file = TaskFile.objects.get(pk=id)
+    return HttpResponse(json.dumps(task_file.content))
+
+
 def one_click_download(request):
     """
     Create a ZIP file on disk and transmit it in chunks of 8KB,
