@@ -226,7 +226,7 @@ def one_click_download(request):
 
 
 def file_download(request, filename):
-        f = open(filename)
+        f = open('media/'+filename)
         data = f.read()
         f.close()
         response = HttpResponse(data)

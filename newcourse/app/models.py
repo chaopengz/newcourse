@@ -9,7 +9,7 @@ class User(models.Model):
     password = models.CharField(max_length=30)
     type = models.IntegerField()
     real_name = models.CharField(max_length=30)
-    pic = models.CharField(max_length=50,default='none')
+    pic = models.CharField(max_length=50, default='none')
 
 
 class Term(models.Model):
@@ -34,9 +34,11 @@ class Course(models.Model):
     term = models.ForeignKey('Term')
     teacher = models.ForeignKey('User')
 
+
 def get_resource_path(instance, filename):
     course_id = instance.course.id
     return 'resource/' + str(course_id) + '/' + filename
+
 
 class ResourceClass(models.Model):
     name = models.CharField(max_length=30)
@@ -61,7 +63,8 @@ def get_task_file_path(instance, filename):
     user_id = instance.user.id
     task_id = instance.task_requirement.id
     course_id = instance.task_requirement.course.id
-    return 'task/' + str(course_id) + '/'+ str(task_id) + '/' + str(user_id) + '/' + filename
+    return 'task/' + str(course_id) + '/' + str(task_id) + '/' + str(user_id) + '/' + filename
+
 
 class TaskRequirement(models.Model):
     name = models.CharField(max_length=30)

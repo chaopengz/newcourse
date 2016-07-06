@@ -51,7 +51,7 @@
                         <td><input type="text" id="{{ task.id }}" value="{{ task.comment }}"></td>
                         {% ifequal task.is_file 1 %}
                             <td>
-                            <input class="btn btn-info" type="button"  value="下载" onclick="javascript:window.location.href='/download/{{ task.server_path }}'">
+                            <input class="btn btn-info" type="button"  value="下载" onclick="javascript:window.location.href='/media/{{ task.server_path }}'">
                             </td>
                         {% endifequal %}
                         {% ifequal task.is_file 0 %}
