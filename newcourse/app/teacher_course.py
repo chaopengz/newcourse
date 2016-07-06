@@ -28,10 +28,11 @@ def compare_time(time1,time2):
 
 def course_teacher_info(request, courseId):
      page_name = '课程详情'
+     request.session['course_id'] = courseId
+
      course_id = int(request.session['course_id'])
      course = Course.objects.get(id=course_id)
      links=[{'name': '课程管理', 'page': '/teacher/course/'} ,{'name':course.name,'page': '/teacher/course'}]
-     request.session['course_id'] = courseId
      user=User.objects.filter(name=request.session['name']).first()
      course=Course.objects.filter(id=courseId).first()
      teacher=User.objects.filter(id=course.teacher_id).first()
