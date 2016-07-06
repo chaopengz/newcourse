@@ -24,6 +24,8 @@ urlpatterns = [
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
     url(r'^logout/$', 'app.views.logout'),
+    url(r'^userinfo/$', 'app.views.userinfo'),
+    url(r'^save_info/$', 'app.views.save_info'),
     url(r'^change_password/$', 'app.views.change_password'),
 
     url(r'^student/$', 'app.student.student'),
@@ -34,6 +36,7 @@ urlpatterns = [
     url(r'^student/course/(\d+)/homework/$','app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$','app.student.student_course_i_homework_I'),
     url(r'^student/course/(\d+)/homework/(\d+)/upload/$','app.student.student_course_i_homework_I_upload'),
+    url(r'^student/course/(\d+)/homework/(\d+)/content/$','app.student.student_course_i_homework_I_content'),
     url(r'^student/course/(\d+)/resource/$','app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$','app.student.file_download'),
 
