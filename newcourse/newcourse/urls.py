@@ -20,6 +20,7 @@ import settings
 
 
 urlpatterns = [
+
     url(r'^admin/', admin.site.urls),
     url(r'^$', 'app.views.login'),
     url(r'^login/$', 'app.views.login'),
@@ -87,7 +88,6 @@ urlpatterns = [
     url(r'^teacher/course/message/','app.course_chat.t_Home'),
     url(r'^student/course/message/','app.course_chat.s_Home'),
     url(r'^messages/$', 'app.course_chat.Messages', name='messages'),
-
 
     url( r'^static/(?P<path>.*)$', 'django.views.static.serve',{ 'document_root': settings.STATIC_URL}),
 
