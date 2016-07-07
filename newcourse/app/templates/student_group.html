@@ -1,10 +1,48 @@
 {% extends "student.html" %}
 
 {% block content %}
-    团队列表
-    {% for group in groups %}
-        <a href="/group/">{{ group }}</a>
-    {% endfor %}
-{% endblock %}
 
+    <button type="button" style="max-width:100px" class="btn btn-block btn-primary" onclick="addGroup()">创建团队</button>
+
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">团队列表</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <table class="table table-striped">
+                <tr>
+                    <th>团队名</th>
+                    <th>上限人数</th>
+                    <th>团队负责人</th>
+                    <th>操作</th>
+                </tr>
+                {% for obj in g %}
+                    <th> {{ obj.name }}</th>
+
+                    <th> {{ obj.max_number }}</th>
+                    <th> {{ obj.leader.realname }}</th>
+                    <th>
+                        <button type="button" class="btn btn-block btn-primary"
+                                onclick="checkCourse({{ obj.id }})">查看
+                        </button>
+                    </th>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <script>
+        function checkCourse(groupId) {
+            self.location.href = "/student/group/groupInfo/" + groupId;
+        }
+
+        function addGroup() {
+            self.location.href = "/student/group/addGroup/";
+        }
+    </script>
+{% endblock %}
 

@@ -22,7 +22,7 @@ class Term(models.Model):
 
 class Group(models.Model):
     name = models.CharField(max_length=30)
-    is_allowed = models.BooleanField()
+    user = models.ForeignKey('User')
     max_number = models.IntegerField()
 
 
