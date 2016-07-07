@@ -33,7 +33,7 @@ def Post(request):
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
         createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        msg += createTime
+        # msg += createTime
         c = Chat(created=createTime, user=user, message=msg, courseid=courseId)
         if msg != '':
             c.save()
