@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from models import *
 import time
+from django.utils import timezone
 
 
 def t_Home(request):
@@ -31,7 +32,7 @@ def Post(request):
         user = User.objects.filter(name=request.session['name']).first()
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
-        createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        createTime = time.strftime("%Y-%m-%d %H:%M:%S", timezone.localtime(timezone.now()))
         msg += createTime
         c = Chat(created=createTime, user=user, message=msg, courseid=courseId)
         if msg != '':
