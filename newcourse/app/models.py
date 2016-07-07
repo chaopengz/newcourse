@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -106,7 +107,7 @@ class GroupCourse(models.Model):
 
 
 class Chat(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey('User')
     message = models.CharField(max_length=200)
     courseid = models.IntegerField(default=0)
