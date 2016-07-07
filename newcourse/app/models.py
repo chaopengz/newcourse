@@ -97,7 +97,7 @@ class UserCourse(models.Model):
 class UserGroup(models.Model):
     user = models.ForeignKey('User')
     group = models.ForeignKey('Group')
-    is_allowed = models.BooleanField()
+    is_allowed = models.IntegerField(default=0)
 
 
 class GroupCourse(models.Model):
