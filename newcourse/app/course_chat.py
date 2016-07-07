@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from models import *
+import time
 
 
 def t_Home(request):
@@ -30,7 +31,9 @@ def Post(request):
         user = User.objects.filter(name=request.session['name']).first()
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
-        c = Chat(user=user, message=msg, courseid=courseId)
+        createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+        c = Chat(created=createTime, user=user, message=msg, courseid=courseId)
         if msg != '':
             c.save()
         return JsonResponse({'msg': msg, 'user': c.user.real_name})
