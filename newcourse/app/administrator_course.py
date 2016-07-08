@@ -5,6 +5,10 @@ from django.template import loader, context, RequestContext
 import MySQLdb, json
 from models import *
 import datetime, calendar
+import os
+import time
+import random
+import csv
 
 
 # Create your views here.
@@ -15,6 +19,7 @@ def main(request):
     links = [{'name': '课程管理', 'page': '/administrator/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
     courses = Course.objects.all()
+    terms = Term.objects.all()
     res = []
     for course in courses:
         isrun = compare_time(course.start_date, course.end_date)
@@ -70,6 +75,61 @@ def addCourseShow(request):
     # terms=Term.objects.filter(start_date__lte=datetime.date.today()).filter(end_date__gte=datetime.date.today())
 
     return render_to_response('administrator_add_course.html', locals())
+
+def add_course_many(request):
+    if 'infolist' in request.FILES:
+        file = request.FILES.get('infolist', None)
+        filedata=file.read()
+        basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
+
+
+        path='%s/uploads/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media'))
+        # 如果文件夹不存在，创建文件夹
+        if not os.path.exists(path):
+            os.makedirs(path)
+        fullpath=path+basename
+        f = open(fullpath, 'wb')
+        f.write(filedata)
+        f.close()
+
+        error_list=[]
+
+        term_id=request.POST.get('term_id')
+
+        with open(fullpath,'rb') as f:
+            reader = csv.reader(f)
+            rownum=0
+            for row in reader:
+                if rownum>0:
+                    if Course.objects.filter(name=row[0].decode('gb2312')).count() == 0:
+                        if User.objects.filter(name=row[2].decode('gb2312'),type=3).count < 0:
+                            error_list.append(row)
+                        else:
+                            tid=User.objects.get(name=row[2].decode('gb2312'),type=3).id
+
+                            if row[5].decode('gb2312')=='是':
+                                is_s='0'
+                            else:
+                                is_s='1'
+                            new_course=Course(
+                                name=row[0].decode('gb2312'),
+                                introduction=row[1].decode('gb2312'),
+                                teacher_id=tid,
+                                start_date=time.strptime(row[3].decode('gb2312'), "%Y年%m月%d日"),
+                                end_date=time.strptime(row[4].decode('gb2312'), "%Y年%m月%d日"),
+                                is_single=is_s,
+                                term_id=term_id
+                            )
+                            new_course.save()
+                rownum+=1
+        os.remove(fullpath)
+        response_data = {}
+        response_data['error_list'] = 'success'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        response_data = {}
+        response_data['error_list'] = 'success'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 def changeCourseShow(request, courseId):
