@@ -4,8 +4,8 @@
     <div class="box box-solid">
             <div class="box-header with-border">
               <i class="fa fa-text-width"></i>
-
               <h3 class="box-title">作业信息</h3>
+                <h3 class="hidden" id="url">{{ myurl }}</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -15,10 +15,56 @@
                   <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
                   <dt>作业可提交日期</dt><dd>{{ taskrequirement.start_date }} - {{ taskrequirement.end_date }}</dd>
                   <dt>提交作业</dt><dd><a href="upload" >上传作业 </a></dd>
-                  <dt>填写答案</dt><dd><a href="content">网页填写</a></dd>
+                  <dt>填写答案</dt>
+                  <dd>
+{#                      <a href="content">网页填写</a>#}
+
+                     <button type="button" class="btn btn-success" title="在线填写" data-html="true"
+                          data-container="body" data-toggle="popover" data-placement="bottom"
+                          data-content='<div><textarea id="answer" style="width: 250px; height: 300px"></textarea></div>
+                          <button id="submitbutton" onclick="submit()">提交</button>'>
+                          在线填写
+                     </button>
+                  </dd>
               </dl>
             </div>
             <!-- /.box-body -->
+    <script>
+        $(function ()
+      {
+          $("[data-toggle='popover']").popover();
+      });
+        function submit(){
+            if($('#answer').val().length<=0) {
+                               alert("请填写内容！");
+            }
+            else {
+                $.ajax(
+                        {
+                            url: $('#url').val(),
+                            type: "POST",
+                            data: {
+                                "content": $("#answer").val(),
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == true) {
+                                    alert("上传成功!");
+                                    window.location.reload();
+                                }
+                                else {
+                                    alert("上传失败!");
+                                }
+                            },
+                            error: function () {
+                                alert("上传失败");
+                            }
+                        });
+
+                $("[data-toggle='popover']").popover("hide");
+            }
+        };
+   </script>
           </div>
 
     <div class="box-body table-responsive no-padding">
@@ -40,57 +86,5 @@
 
            </table>
        </div>
-
-<script>
-    $(function () {
-        $("input[type='number']").bind('change', function () {
-            $.ajax(
-                  {
-                      url: "/course/task_grade/",
-                      type: "POST",
-                      data: {
-                          "task_id": $(this).attr('id'),
-                          "grade": $(this).val()
-                      },
-                      dataType:"json",
-                      success: function (data) {
-                          if (data == true) {
-                              alert("修改并保存成功");
-                          } else {
-                              alert("修改失败");
-                          }
-                      },
-                      error: function () {
-                          alert("连接失败");
-                      }
-                  });
-        });
-        });
- $(function () {
-        $("input[type='text']").bind('change', function () {
-            $.ajax(
-                  {
-                      url: "/course/task_comment/",
-                      type: "POST",
-                      data: {
-                          "task_id": $(this).attr('id'),
-                          "comment": $(this).val()
-                      },
-                      dataType:"json",
-                      success: function (data) {
-                          if (data == true) {
-                              alert("修改并保存成功");
-                          } else {
-                              alert("修改失败");
-                          }
-                      },
-                      error: function () {
-                          alert("连接失败");
-                      }
-                  });
-        });
-        });
-</script>
-
 {% endblock %}
 
