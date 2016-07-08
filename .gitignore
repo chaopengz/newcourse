@@ -3,3 +3,5 @@ newcourse/.idea/
 *.pyc
 resource/
 task/
+media/
+newcourse/static/avatars/

@@ -2,28 +2,25 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from models import *
-import time
-from django.utils import timezone
 
 
 def t_Home(request):
     courseId = request.session['course_id']
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
+    user = User.objects.filter(name=request.session['name']).first()
     return render(request, "teacher_course_message.html", locals())
 
 
-def s_Home(request, i):
-    # for key, value in request.session.items():
-    #     print key, ' ', value
-    # print request.session
-    # courseId = 0
-    # if 'course_id' in request.session:
+def s_Home(request,i):
+
     courseId = request.session['course_id']
-    course = Course.objects.get(id=i)
+    course=Course.objects.get(id=i)
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
+
     return render(request, "student_course_message.html", locals())
+
 
 
 def Post(request):
@@ -32,9 +29,7 @@ def Post(request):
         user = User.objects.filter(name=request.session['name']).first()
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
-        createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        # msg += createTime
-        c = Chat(created=createTime, user=user, message=msg, courseid=courseId)
+        c = Chat(user=user, message=msg, courseid=courseId)
         if msg != '':
             c.save()
         return JsonResponse({'msg': msg, 'user': c.user.real_name})

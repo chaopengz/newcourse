@@ -37,9 +37,11 @@ urlpatterns = [
     url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
     url(r'^student/course/(\d+)/homework/(\d+)/upload/$', 'app.student.student_course_i_homework_I_upload'),
-    url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
+   # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
     url(r'^student/course/(\d+)/resource/$', 'app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$', 'app.student.file_download'),
+    url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
+
 
     # Follow urls are added by chaopengz
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
@@ -61,6 +63,8 @@ urlpatterns = [
     url(r'^teacher/course/task_grade/$', 'app.teacher_course.course_task_grade'),
     url(r'^teacher/course/task_comment/$', 'app.teacher_course.course_task_comment'),
     url(r'^teacher/course/task_content/$', 'app.teacher_course.course_task_content'),
+    url(r'^teacher/course/group_accept/$', 'app.teacher_course.group_accept'),
+    url(r'^teacher/course/group_refuse/$', 'app.teacher_course.group_refuse'),
     url(r'^media/(?P<filename>.*)$', 'app.teacher_course.file_download'),
     url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 
@@ -82,10 +86,12 @@ urlpatterns = [
     url(r'^administrator/teacher/$', 'app.administrator_teacher.main'),
     url(r'^administrator/teacher/reset_password/(?P<tId>\d+)/$', 'app.administrator_teacher.reset_password'),
     url(r'^administrator/teacher/add_teacher/$', 'app.administrator_teacher.add_teacher'),
+    url(r'^administrator/teacher/add_teacher_many/$', 'app.administrator_teacher.add_teacher_many'),
     url(r'^administrator/teacher/save_teacher/$', 'app.administrator_teacher.save_teacher'),
     url(r'^administrator/student/$', 'app.administrator_student.main'),
     url(r'^administrator/student/reset_password/(?P<tId>\d+)/$', 'app.administrator_student.reset_password'),
     url(r'^administrator/student/add_student/$', 'app.administrator_student.add_student'),
+    url(r'^administrator/student/add_student_many/$', 'app.administrator_student.add_student_many'),
     url(r'^administrator/student/save_student/$', 'app.administrator_student.save_student'),
     url(r'^chatpost/', 'app.course_chat.Post'),
     url(r'^teacher/course/message/', 'app.course_chat.t_Home'),

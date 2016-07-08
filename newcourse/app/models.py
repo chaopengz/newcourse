@@ -106,7 +106,7 @@ class UserGroup(models.Model):
 class GroupCourse(models.Model):
     group = models.ForeignKey('Group')
     course = models.ForeignKey('Course')
-    is_allowed = models.BooleanField()
+    is_allowed = models.IntegerField(default=0)
 
 
 class Chat(models.Model):

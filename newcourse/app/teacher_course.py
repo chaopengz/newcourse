@@ -37,6 +37,9 @@ def course_teacher_info(request, courseId):
      course=Course.objects.filter(id=courseId).first()
      teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
+     coursegroups = GroupCourse.objects.filter(course=course)
+     # groups = Group.objects.filter(id in GroupCourse.objects.filter(course=course).values('group'))
+     groups = [Group.objects.get(pk = u.group_id) for u in coursegroups]
      isrun=compare_time(course.start_date, course.end_date)
      res = CourseShow(course,isrun)
      return render_to_response('teacher_course.html', locals())
@@ -203,30 +206,52 @@ def course_task_content(request):
     return HttpResponse(json.dumps(task_file.content))
 
 
+def group_accept(request):
+    id = request.POST['course_group_id']
+    course_group = GroupCourse.objects.get(pk=id)
+    course_group.is_allowed = 1
+    course_group.save()
+    return HttpResponse(json.dumps(True))
+
+
+def group_refuse(request):
+    id = request.POST['course_group_id']
+    course_group = GroupCourse.objects.get(pk=id)
+    course_group.is_allowed = 2
+    course_group.save()
+    return HttpResponse(json.dumps(True))
+
+
+def zip_dir(dirname,zipfilename):
+    filelist = []
+    if os.path.isfile(dirname):
+        filelist.append(dirname)
+    else :
+        for root, dirs, files in os.walk(dirname):
+            for name in files:
+                filelist.append(os.path.join(root, name))
+
+    zf = zipfile.ZipFile(zipfilename, "w", zipfile.zlib.DEFLATED)
+    for tar in filelist:
+        arcname = tar[len(dirname):]
+        #print arcname
+        zf.write(tar,arcname)
+    zf.close()
+
+
 def one_click_download(request):
-    """
-    Create a ZIP file on disk and transmit it in chunks of 8KB,
-    without loading the whole file into memory. A similar approach can
-    be used for large dynamic PDF files.
-    """
-    filename = '1.doc'
-    temp = tempfile.TemporaryFile()
-    archive = zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED)
-    archive.write(filename)
-    archive.close()
-    wrapper = FileWrapper(temp)
-    response = HttpResponse(wrapper, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename=test.zip'
-    response['Content-Length'] = temp.tell()
-    temp.seek(0)
     user = User.objects.filter(name=request.session['name']).first()
-    course_id = int(request.session['course_id'])
+    course_id = request.session['course_id']
     task_id = request.session['task_id']
-    return response
+    dir = '/media/task/' + course_id + '/' + task_id
+    file = '/media/temp.zip'
+    root_dir = os.path.dirname(__file__)
+    zip_dir(root_dir[:-4] + dir, root_dir[:-4] + file)
+    return HttpResponseRedirect(file)
 
 
 def file_download(request, filename):
-        f = open('media/'+filename)
+        f = open('media/' + filename)
         data = f.read()
         f.close()
         response = HttpResponse(data)
