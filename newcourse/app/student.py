@@ -6,7 +6,8 @@ import MySQLdb
 from models import *
 from django import forms
 import json
-
+import os, tempfile, zipfile
+from teacher_course import zip_dir
 # Create your views here.
 def student(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
@@ -123,7 +124,7 @@ def student_course_i_homework_I_upload(request, i, I):
             # 获取表单信息
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
-            # 写入数据库
+            # 写入数据库】
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
@@ -135,7 +136,7 @@ def student_course_i_homework_I_upload(request, i, I):
 
             course_id = int(request.session['course_id'])
             resources = Resource.objects.filter(course_id=course_id)
-            return render_to_response('student_course_i_homework_I_upload.html', locals())
+            return HttpResponseRedirect('/student/course/' + i + '/homework/' + I + '/')
     else:
         uf = UserForm()
 
@@ -221,6 +222,16 @@ def file_download(request, i, I):
     response = HttpResponse(data)
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
+
+
+def one_click_download(request):
+    user = User.objects.filter(name=request.session['name']).first()
+    course_id = request.session['course_id']
+    dir = '/media/resource/' + course_id
+    file = '/media/temp.zip'
+    root_dir = os.path.dirname(__file__)
+    zip_dir(root_dir[:-4] + dir, root_dir[:-4] + file)
+    return HttpResponseRedirect(file)
 
 
 def student_group(request):

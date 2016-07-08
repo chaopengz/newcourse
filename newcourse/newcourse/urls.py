@@ -31,14 +31,16 @@ urlpatterns = [
     url(r'^student/$', 'app.student.student'),
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
-    url(r'^student/group/$', 'app.student.student_group'),
-    url(r'^student/course/(\d+)/$','app.student.student_course_i'),
-    url(r'^student/course/(\d+)/homework/$','app.student.student_course_i_homework'),
-    url(r'^student/course/(\d+)/homework/(\d+)/$','app.student.student_course_i_homework_I'),
-    url(r'^student/course/(\d+)/homework/(\d+)/upload/$','app.student.student_course_i_homework_I_upload'),
-    # url(r'^student/course/(\d+)/homework/(\d+)/content/$','app.student.student_course_i_homework_I_content'),
-    url(r'^student/course/(\d+)/resource/$','app.student.student_course_i_resource'),
-    url(r'^student/course/(\d+)/resource/(\d+)/download$','app.student.file_download'),
+    url(r'^student/groups/$', 'app.student.student_group'),
+    url(r'^student/groups/handle_application/$','app.student_group.handle_application'),
+    url(r'^student/course/(\d+)/$', 'app.student.student_course_i'),
+    url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
+    url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
+    url(r'^student/course/(\d+)/homework/(\d+)/upload/$', 'app.student.student_course_i_homework_I_upload'),
+   # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
+    url(r'^student/course/(\d+)/resource/$', 'app.student.student_course_i_resource'),
+    url(r'^student/course/(\d+)/resource/(\d+)/download$', 'app.student.file_download'),
+    url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
 
 
     # Follow urls are added by chaopengz
@@ -61,6 +63,8 @@ urlpatterns = [
     url(r'^teacher/course/task_grade/$', 'app.teacher_course.course_task_grade'),
     url(r'^teacher/course/task_comment/$', 'app.teacher_course.course_task_comment'),
     url(r'^teacher/course/task_content/$', 'app.teacher_course.course_task_content'),
+    url(r'^teacher/course/group_accept/$', 'app.teacher_course.group_accept'),
+    url(r'^teacher/course/group_refuse/$', 'app.teacher_course.group_refuse'),
     url(r'^media/(?P<filename>.*)$', 'app.teacher_course.file_download'),
     url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 

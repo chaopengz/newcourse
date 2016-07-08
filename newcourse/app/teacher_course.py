@@ -37,6 +37,9 @@ def course_teacher_info(request, courseId):
      course=Course.objects.filter(id=courseId).first()
      teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
+     coursegroups = GroupCourse.objects.filter(course=course)
+     # groups = Group.objects.filter(id in GroupCourse.objects.filter(course=course).values('group'))
+     groups = [Group.objects.get(pk = u.group_id) for u in coursegroups]
      isrun=compare_time(course.start_date, course.end_date)
      res = CourseShow(course,isrun)
      return render_to_response('teacher_course.html', locals())
@@ -201,6 +204,22 @@ def course_task_content(request):
     id = request.POST['task_id']
     task_file = TaskFile.objects.get(pk=id)
     return HttpResponse(json.dumps(task_file.content))
+
+
+def group_accept(request):
+    id = request.POST['course_group_id']
+    course_group = GroupCourse.objects.get(pk=id)
+    course_group.is_allowed = 1
+    course_group.save()
+    return HttpResponse(json.dumps(True))
+
+
+def group_refuse(request):
+    id = request.POST['course_group_id']
+    course_group = GroupCourse.objects.get(pk=id)
+    course_group.is_allowed = 2
+    course_group.save()
+    return HttpResponse(json.dumps(True))
 
 
 def zip_dir(dirname,zipfilename):
