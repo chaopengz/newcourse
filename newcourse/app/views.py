@@ -5,8 +5,10 @@ from django.template import loader, context, RequestContext
 import MySQLdb
 from models import *
 import json
-
-
+import os
+import random
+import json
+from PIL import Image
 # Create your views here.
 def index(request):
     return render_to_response('index.html')
@@ -52,8 +54,6 @@ def logout(request):
     request.session['message'] = "登出成功"
     request.session['nexturl'] = "/login/"
     return HttpResponseRedirect('/info/')
-    # return HttpResponseRedirect('/login/')
-
 
 def userinfo(request):
     page_name = '管理个人信息'
@@ -61,8 +61,59 @@ def userinfo(request):
     user = User.objects.filter(name=request.session['name']).first()
     return render_to_response('userinfo.html', locals())
 
+# 图片裁切
+def deal_image(name,data):
+    im = Image.open(name)
+    im = im.rotate(data['rotate']*-1)
+    # box = im.copy() #直接复制图像
+    box = (int(data['x']), int(data['y']), int(data['width']+data['x']), int(data['height'] +data['y']))
+    region = im.crop(box)
+    # region = region.rotate(data['rotate']*-1)
+    # im.paste(region, box)
+    region.save(name,"gif")
 
 def save_info(request):
+    if 'avatar_data' in request.POST:
+        user = User.objects.get(name=request.session['name'])
+
+        file = request.FILES.get('avatar_file', None)
+        filedata=json.loads(request.POST.get('avatar_data'))
+        # height width x y rotate
+        aimage=file.read()
+        # aimage = Image.open(file.name)
+        ext=file.name.split('.')[-1]
+        sub_folder_name=str(random.randint(0,10))
+        path='%s/avatars/%s/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static') ,sub_folder_name)
+
+        # 如果文件夹不存在，创建文件夹
+        if not os.path.exists(path):
+            os.makedirs(path)
+        import time
+        ext = ext.lower()
+        basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
+        filename=basename+'.'+ext
+        bfilename=basename+'.jpg'
+        ret_filename='/static/avatars/%s/%s' % (sub_folder_name,bfilename)
+        filename=path+filename
+        filename=filename.lower()
+        # 删除原图
+        try:
+            os.remove(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+user.pic)
+        except:
+            print 'file remove error'
+        #直接保存原图
+        imgfile = open(filename, 'wb')
+
+        imgfile.write(aimage)
+        imgfile.close()
+        # 裁剪图片
+        deal_image(filename,filedata)
+
+        user.pic=ret_filename
+        user.save()
+        response_data = {}
+        response_data['result'] = 'success'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
     if 'realname' in request.POST:
         user = User.objects.get(name=request.session['name'])
         user.real_name = request.POST['realname']

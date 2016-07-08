@@ -16,20 +16,13 @@
                     <th>团队名</th>
                     <th>上限人数</th>
                     <th>团队负责人</th>
-                    <th>加入情况</th>
                     <th>操作</th>
                 </tr>
-                {% for obj in uG %}
-                    <th> {{ obj.group.name }}</th>
+                {% for obj in g %}
+                    <th> {{ obj.name }}</th>
 
-                    <th> {{ obj.group.max_number }}</th>
+                    <th> {{ obj.max_number }}</th>
                     <th> {{ obj.user.real_name }}</th>
-
-                    {% if obj.is_allowed == 1 %}
-                        <th style="color: #00ff66">已加入</th>
-                    {% else %}
-                        <th style="color: #ff6600">待审核</th>
-                    {% endif %}
 
                     <th>
                         <button type="button" class="btn btn-block btn-primary"
