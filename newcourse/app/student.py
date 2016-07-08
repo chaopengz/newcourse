@@ -5,8 +5,9 @@ from django.template import loader, context, RequestContext
 import MySQLdb
 from models import *
 from django import forms
-
-
+import json
+import os, tempfile, zipfile
+from teacher_course import zip_dir
 # Create your views here.
 def student(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
@@ -79,7 +80,21 @@ def student_course_i_homework_I(request, i, I):
     user = User.objects.filter(name=request.session['name']).first()
     tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
     taskrequirement = TaskRequirement.objects.get(id=I)
-    return render_to_response('student_course_i_homework_I.html', locals())
+    myurl = "/student/course/" + str(course.id)+"/homework/" + str(I)+"/"
+
+    if request.method == "POST":
+            task_file = TaskFile()
+            task_file.name = taskrequirement.name
+            task_file.is_file = False
+            task_file.content = request.POST['content']
+            task_file.group_id = 0
+            task_file.task_requirement_id = taskrequirement.id
+            task_file.user_id = user.id
+            task_file.save()
+            return HttpResponse(json.dumps(True))
+    else:
+        return render_to_response('student_course_i_homework_I.html', locals())
+
 
 
 class UserForm(forms.Form):
@@ -109,7 +124,7 @@ def student_course_i_homework_I_upload(request, i, I):
             # 获取表单信息
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
-            # 写入数据库
+            # 写入数据库】
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
@@ -121,7 +136,7 @@ def student_course_i_homework_I_upload(request, i, I):
 
             course_id = int(request.session['course_id'])
             resources = Resource.objects.filter(course_id=course_id)
-            return render_to_response('student_course_i_homework_I_upload.html', locals())
+            return HttpResponseRedirect('/student/course/' + i + '/homework/' + I + '/')
     else:
         uf = UserForm()
 
@@ -133,52 +148,52 @@ class UserForm_content(forms.Form):
     Content = forms.CharField(label='作业内容',
                               widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
 
-
-def student_course_i_homework_I_content(request, i, I):
-    list_num = 1
-    page_name = '上传作业'
-    course = Course.objects.get(id=i)
-    str1 = '/student/course/'
-    str1 = str1 + str(course.id)
-    str2 = str1 + '/homework'
-    str3 = str2 + '/' + str(I)
-    links = [{'name': '学生页面', 'page': '/student/'},
-             {'name': '课程列表', 'page': '/student/course/'},
-             {'name': course.name, 'page': str1},
-             {'name': '作业列表', 'page': str2},
-             {'name': '作业信息', 'page': str3}]
-
-    user = User.objects.filter(name=request.session['name']).first()
-    tasks = TaskRequirement.objects.filter(course_id=course.id)
-    teacher = User.objects.filter(id=course.teacher_id).first()
-    term = Term.objects.filter(id=course.term_id).first()
-    task = TaskRequirement.objects.get(pk=I)
-    task_file = task.taskfile_set.all()
-
-    if request.method == "POST":
-        uf = UserForm_content(request.POST, request.FILES)
-        if uf.is_valid():
-            # 获取表单信息
-            description = uf.cleaned_data['Description']
-            content = uf.cleaned_data['Content']
-            # 写入数据库
-            task_file = TaskFile()
-            task_file.name = description
-            # task_file.server_path = filepath
-            task_file.is_file = False
-            task_file.content = content
-            task_file.group_id = 0
-            task_file.task_requirement = task
-            task_file.user = user
-            task_file.server_path = ''
-            task_file.save()
-
-            resources = Resource.objects.filter(course_id=i)
-            return render_to_response('student_course_i_homework_I_content.html', locals())
-    else:
-        uf = UserForm_content()
-
-    return render_to_response('student_course_i_homework_I_content.html', locals())
+#
+# def student_course_i_homework_I_content(request, i, I):
+#     list_num = 1
+#     page_name = '上传作业'
+#     course = Course.objects.get(id=i)
+#     str1 = '/student/course/'
+#     str1 = str1 + str(course.id)
+#     str2 = str1 + '/homework'
+#     str3 = str2 + '/' + str(I)
+#     links = [{'name': '学生页面', 'page': '/student/'},
+#              {'name': '课程列表', 'page': '/student/course/'},
+#              {'name': course.name, 'page': str1},
+#              {'name': '作业列表', 'page': str2},
+#              {'name': '作业信息', 'page': str3}]
+#
+#     user = User.objects.filter(name=request.session['name']).first()
+#     tasks = TaskRequirement.objects.filter(course_id=course.id)
+#     teacher = User.objects.filter(id=course.teacher_id).first()
+#     term = Term.objects.filter(id=course.term_id).first()
+#     task = TaskRequirement.objects.get(pk=I)
+#     task_file = task.taskfile_set.all()
+#
+#     if request.method == "POST":
+#         uf = UserForm_content(request.POST, request.FILES)
+#         if uf.is_valid():
+#             # 获取表单信息
+#             description = uf.cleaned_data['Description']
+#             content = uf.cleaned_data['Content']
+#             # 写入数据库
+#             task_file = TaskFile()
+#             task_file.name = description
+#             # task_file.server_path = filepath
+#             task_file.is_file = False
+#             task_file.content = content
+#             task_file.group_id = 0
+#             task_file.task_requirement = task
+#             task_file.user = user
+#             task_file.server_path = ''
+#             task_file.save()
+#
+#             resources = Resource.objects.filter(course_id=i)
+#             return render_to_response('student_course_i_homework_I_content.html', locals())
+#     else:
+#         uf = UserForm_content()
+#
+#     return render_to_response('student_course_i_homework_I_content.html', locals())
 
 
 def student_course_i_resource(request, i):
@@ -207,6 +222,16 @@ def file_download(request, i, I):
     response = HttpResponse(data)
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
+
+
+def one_click_download(request):
+    user = User.objects.filter(name=request.session['name']).first()
+    course_id = request.session['course_id']
+    dir = '/media/resource/' + course_id
+    file = '/media/temp.zip'
+    root_dir = os.path.dirname(__file__)
+    zip_dir(root_dir[:-4] + dir, root_dir[:-4] + file)
+    return HttpResponseRedirect(file)
 
 
 def student_group(request):

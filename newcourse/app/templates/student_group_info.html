@@ -20,34 +20,61 @@
       </ul>
       <!-- /.sidebar-menu -->
      {% endblock %}
+
 {% block content %}
-    <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+ <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
+
+              <h3 class="box-title">团队信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                <dt>团队名</dt><dd>{{group.name}}</dd>
+                  <dt>团队最大人数</dt><dd>{{ group.max_number }}</dd>
+                  <dt>团队负责人</dt><dd>{{ group_user.real_name }}</dd>
+                  <dt>团队现有人数</dt><dd>{{ group.number }}</dd>
+                  <dt>团队状态</dt><dd>
+                    {% if group.end %}
+                        已停止接受组队请求
+                    {% else %}
+                        可接受组队请求
+                    {% endif %}
+              </dd>
+              </dl>
+            </div>
+ </div>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">团队成员列表</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <table class="table table-striped">
                 <tr>
-                  <th>课程序号</th>
-                  <th>课程名</th>
-                  <th>上课时间</th>
-                  <th>是否允许团体选课</th>
-                    <th>课程简介</th>
+                    <th>成员昵称</th>
+                    <th>成员姓名</th>
+                    <th>成员身份</th>
                 </tr>
+                <tr>
+                    <th>{{ group_user.name }}</th>
+                    <th>{{ group_user.real_name }}</th>
+                    <th>团队负责人</th>
+                </tr>
+                {% for obj in member_list %}
+                    <tr>
+                    <th> {{ obj.name }}</th>
 
-                  {% for course in courses %}
-                    <tr href="/course/">
-                        <td>{{ course.id }}</td>
-                        <td><a href="/teacher/course/{{course.id  }}">{{ course.name }}</a></td>
-                        <td>{{ course.start_date }}--{{ course.end_date }}</td>
-                        {% ifequal course.is_single 1 %}
-                            <td><span class="label label-success">允许</span></td>
-                        {% endifequal %}
-                        {% ifequal course.is_single 0 %}
-                            <td><span class="label label-primary">不允许</span></td>
-                        {% endifequal %}
-                        <td>{{ course.introduction }}</td>
+                    <th> {{ obj.real_name }}</th>
+
+                    <th>团队成员</th>
                     </tr>
-                  {% endfor %}
-
-           </table>
-       </div>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
     {% if uG_len == 0 %}
         <a href="/student/group/join/">加入团队</a>
     {% else %}

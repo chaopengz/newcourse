@@ -25,6 +25,7 @@ class Group(models.Model):
     name = models.CharField(max_length=30)
     user = models.ForeignKey('User')  # 团队负责人
     max_number = models.IntegerField()
+    number = models.IntegerField(default=1)
     end = models.IntegerField(default=1)  # 1代表目前还可以申请加入
     number = models.IntegerField(default=1)
 
@@ -106,7 +107,7 @@ class UserGroup(models.Model):
 class GroupCourse(models.Model):
     group = models.ForeignKey('Group')
     course = models.ForeignKey('Course')
-    is_allowed = models.BooleanField()
+    is_allowed = models.IntegerField(default=0)
 
 
 class Chat(models.Model):
