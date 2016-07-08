@@ -32,23 +32,22 @@ urlpatterns = [
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/groups/$', 'app.student.student_group'),
-    url(r'^student/groups/handle_application/$','app.student_group.handle_application'),
+    url(r'^student/groups/handle_application/$', 'app.student_group.handle_application'),
     url(r'^student/course/(\d+)/$', 'app.student.student_course_i'),
     url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
     url(r'^student/course/(\d+)/homework/(\d+)/upload/$', 'app.student.student_course_i_homework_I_upload'),
-   # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
+    # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
     url(r'^student/course/(\d+)/resource/$', 'app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$', 'app.student.file_download'),
     url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
-
 
     # Follow urls are added by chaopengz
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
     url(r'^student/mygroup/$', 'app.student_group.myGroup'),
     url(r'^student/group/join/$', 'app.student_group.join'),
     url(r'^student/group/groupInfo/(\d+)$', 'app.student_group.info'),
-
+    url(r'^student/groups/handle_group/$', 'app.student_group.handle_group'),
     url(r'^teacher/$', 'app.teacher.teacher_info'),
     url(r'^teacher/info/$', 'app.teacher.teacher_info'),
     url(r'^teacher/course/$', 'app.teacher.teacher_course'),

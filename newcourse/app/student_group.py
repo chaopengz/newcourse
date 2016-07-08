@@ -19,7 +19,7 @@ def addGroup(request):
         groupId = g.id
         uG = UserGroup(group_id=groupId, user=user, is_allowed=1)
         uG.save()
-        return render_to_response('student_mygroup.html')
+        return HttpResponseRedirect('/student/mygroup/')
     else:
         return render_to_response('student_add_group.html')
 
@@ -75,6 +75,7 @@ def handle_application(request):
         group = Group.objects.filter(id=request.POST['group_id']).first()
         group.number += 1
         group.save()
+        ug.save()
         return HttpResponse("1")
     else:
         ug.save()
@@ -82,4 +83,16 @@ def handle_application(request):
 
 
 def handle_group(request):
-    return HttpResponse("处理团队申请")
+    if request.method == 'POST':
+        gid = request.POST['group_id']
+        handle_type = request.POST['type']
+        if handle_type == "1":
+            group = Group.objects.filter(id=gid).first()
+            group.end = 0
+            group.save()
+            return HttpResponse("成功关闭组队申请！")
+        else:
+            UserGroup.objects.filter(group_id=gid).delete()
+            GroupCourse.objects.filter(group_id=gid).delete()
+            Group.objects.get(id=gid).delete()
+            return HttpResponse("成功解散团队!")
