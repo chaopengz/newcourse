@@ -109,7 +109,7 @@ def student_course_i_homework_I_upload(request, i, I):
             # 获取表单信息
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
-            # 写入数据库
+            # 写入数据库】
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath

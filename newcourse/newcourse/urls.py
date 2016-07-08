@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/groups/$', 'app.student.student_group'),
+    url(r'^student/groups/handle_application/$','app.student_group.handle_application'),
     url(r'^student/course/(\d+)/$', 'app.student.student_course_i'),
     url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
