@@ -1,26 +1,46 @@
 {% extends "administrator.html" %}
 
 {% block content %}
-
-<div class='btn-group'>
-    <button type="button" class="btn btn-primary" onclick="add_teacher()">添加教师</button>
-
-</div>
-    <form enctype="multipart/form-data"  class="form-inline" method="post" action="/administrator/teacher/add_teacher_many/">
-        <div class="box">
-            <div class="box-body no-padding">
-                <div class="form-group">
-                    <a class="btn btn-default" target="_blank"  href="/media/csv/teacher_info.csv">下载教师信息批量导入模板</a>
-                </div>
-                <div class="form-group">
-                    <input type="file" id="infolist" name="infolist">
-                 </div>
-                <button type="submit" class="btn btn-primary">开始批量导入</button>
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">添加教师</h3>
             </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+              <div class="box-body">
 
-        </div>
+                  <div class="btn-group">
+                      <button type="button" class="btn btn-info" onclick="add_teacher()">添加教师</button>
+                      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal"  >批量导入</button>
+                  </div>
+              </div>
+          </div>
 
-    </form>
+<!-- .modal -->
+<div class="modal" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%" method="post" action="/administrator/teacher/add_teacher_many/">
+                        <div class="form-group">
+                            <a class="btn btn-default" target="_blank"  href="/media/csv/teacher_info.csv">下载教师信息批量导入模板</a>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="infolist" name="infolist">
+                         </div>
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" onclick="javascript:$('#form1').submit()" >导入</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
     <div class="box">
             <div class="box-header">
