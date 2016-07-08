@@ -39,7 +39,7 @@ urlpatterns = [
     # url(r'^student/course/(\d+)/homework/(\d+)/content/$','app.student.student_course_i_homework_I_content'),
     url(r'^student/course/(\d+)/resource/$','app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$','app.student.file_download'),
-
+    url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
 
     # Follow urls are added by chaopengz
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
