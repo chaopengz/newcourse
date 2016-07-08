@@ -1,7 +1,13 @@
 {% extends "student_course_i.html" %}
 
 {% block content %}
-
-    <a href="/student/group/join/">加入团队</a>
-
+    {% if uG_len == 0 %}
+        <a href="/student/group/join/">加入团队</a>
+    {% else %}
+        {% if is_allowed  == 0 %}
+            审核中。。。
+        {% else %}
+            你已加入该团队
+        {% endif %}
+    {% endif %}
 {% endblock %}
