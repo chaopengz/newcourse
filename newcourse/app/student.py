@@ -43,14 +43,6 @@ def student_course(request):
     return render_to_response('student_course.html', locals())
 
 
-def student_group(request):
-    links = [{'name': '学生页面', 'page': '/student/'}]
-    list_num = 3
-    user = User.objects.filter(name=request.session['name']).first()
-    groups = ['534team', 'new course']
-    return render_to_response('student_group.html', locals())
-
-
 def student_course_i(request, i):
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '课程列表', 'page': '/student/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
@@ -152,7 +144,8 @@ def student_course_i_homework_I_upload(request, i, I):
 
 class UserForm_content(forms.Form):
     Description = forms.CharField(label='作业名字')
-    Content = forms.CharField(label='作业内容',widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
+    Content = forms.CharField(label='作业内容',
+                              widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
 
 #
 # def student_course_i_homework_I_content(request, i, I):
@@ -228,3 +221,13 @@ def file_download(request, i, I):
     response = HttpResponse(data)
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response
+
+
+def student_group(request):
+    links = [{'name': '学生页面', 'page': '/student/'}]
+    list_num = 4
+    # user = User.objects.filter(name=request.session['name']).first()
+
+    g = Group.objects.filter()
+
+    return render_to_response('student_allgroups.html', locals())

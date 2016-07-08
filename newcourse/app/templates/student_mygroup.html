@@ -1,0 +1,56 @@
+{% extends "student.html" %}
+
+{% block content %}
+
+    <button type="button" style="max-width:100px" class="btn btn-block btn-primary" onclick="addGroup()">创建团队</button>
+
+
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">团队列表</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body no-padding">
+            <table class="table table-striped">
+                <tr>
+                    <th>团队名</th>
+                    <th>上限人数</th>
+                    <th>团队负责人</th>
+                    <th>加入情况</th>
+                    <th>操作</th>
+                </tr>
+                {% for obj in uG %}
+                    <th> {{ obj.group.name }}</th>
+
+                    <th> {{ obj.group.max_number }}</th>
+                    <th> {{ obj.group.user.real_name }}</th>
+
+                    {% if obj.is_allowed == 1 %}
+                        <th style="color: #00ff66">已加入</th>
+                    {% else %}
+                        <th style="color: #ff6600">待审核</th>
+                    {% endif %}
+
+                    <th>
+                        <button type="button" class="btn btn-block btn-primary"
+                                onclick="checkCourse({{ obj.id }})">查看团队详情
+                        </button>
+                    </th>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- /.box-body -->
+    </div>
+
+    <script>
+        function checkCourse(groupId) {
+            self.location.href = "/student/group/groupInfo/" + groupId;
+        }
+
+        function addGroup() {
+            self.location.href = "/student/group/addGroup/";
+        }
+    </script>
+{% endblock %}
+
