@@ -2,7 +2,101 @@
 
 {% block content %}
 
-<button type="button" style="max-width:100px" class="btn btn-block btn-primary" onclick="addCourse()">添加课程</button>
+<div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">添加学生</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+              <div class="box-body">
+
+                  <div class="btn-group">
+                      <button type="button" class="btn btn-info" onclick="add_course()">添加课程</button>
+                      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal"  >批量导入</button>
+                  </div>
+              </div>
+          </div>
+
+<!-- .modal -->
+<div class="modal" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%" method="post" action="/administrator/course/add_course_many/">
+                        <input type="hidden" name="term_id"  id="term_id" value="">
+                        <div class="form-group">
+                          <select class="form-control" id="term_select">
+                              {% for t in terms %}
+                                  <option value="{{ t.id }}">{{ t.name }}</option>
+                              {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-default" target="_blank"  href="/media/csv/course_info.csv">下载课程信息批量导入模板</a>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="infolist" name="infolist">
+                         </div>
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" onclick="add_course_info()" >导入</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+    <div class="modal" id="mymodal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+                <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">出错的行</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr>
+                    <th>课程名</th>
+                    <th>教师工号</th>
+                    <th>起止日期</th>
+                    <th>课程类型</th>
+                </tr>
+                  {% for course in res %}
+                    <th> {{ course.course.name }}</th>
+                      <th> {{ course.course.id }}</th>
+                    <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
+                    <th> {% if course.course.is_single %}
+                        普通课程
+                    {% else %}
+                        团队课程
+                    {% endif %}</th>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#mymodal" onclick="javascript:$('#form1').submit()" >关闭</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 
     <div class="box">
@@ -46,8 +140,24 @@
         self.location.href="/administrator/course/courseInfo/"+courseId;
     }
 
-    function addCourse(){
+    function add_course(){
         self.location.href="/administrator/course/addCourse/";
+    }
+
+    function add_course_info(){
+        $('#term_id').val($('#term_select').val());
+
+        $.ajax({
+             url : "/administrator/course/add_course_many/",
+             type : "POST",
+             data : $( '#form1').serialize(),
+             success : function(data) {
+                  console.log(data);
+             },
+             error : function(data) {
+                  console.log(data);
+             }
+        });
     }
 </script>
 {% endblock %}
