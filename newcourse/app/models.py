@@ -26,6 +26,7 @@ class Group(models.Model):
     user = models.ForeignKey('User')  # 团队负责人
     max_number = models.IntegerField()
     end = models.IntegerField(default=1)  # 1代表目前还可以申请加入
+    number = models.IntegerField(default=1)
 
 
 class Course(models.Model):

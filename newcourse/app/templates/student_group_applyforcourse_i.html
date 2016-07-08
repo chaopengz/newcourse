@@ -1,0 +1,31 @@
+{% extends "student_group_info.html" %}
+
+{% block content %}
+     <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
+
+              <h3 class="box-title">课程信息</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                <dt>课程名</dt><dd>{{ course.name }}</dd>
+                  <dt>课程简介</dt><dd>{{ course.introduction }}</dd>
+                  <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
+                  <dt>课程起止日期</dt><dd>{{ term.start_date }} - {{ term.end_date }}</dd>
+                  <dt>课程所属学期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
+                  <dt>课程类型</dt><dd>
+                    {% if course.is_single %}
+                        普通课程
+                    {% else %}
+                        团队课程
+                    {% endif %}
+                    <dt>课程申请</dt><dd><a href="/student/group/apply/">申请加入</a></dd>
+              </dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
+{% endblock %}
+

@@ -44,7 +44,10 @@ urlpatterns = [
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
     url(r'^student/mygroup/$', 'app.student_group.myGroup'),
     url(r'^student/group/join/$', 'app.student_group.join'),
-    url(r'^student/group/groupInfo/(\d+)$', 'app.student_group.info'),
+    url(r'^student/group/groupInfo/(\d+)/$', 'app.student_group.info'),
+    url(r'^student/group/applyforcourse/$', 'app.student_group.applyforcourse'),
+    url(r'^student/group/applyforcourse/(\d+)/$', 'app.student_group.applyforcourse_i'),
+    url(r'^student/group/apply/$', 'app.student_group.apply'),
 
     url(r'^teacher/$', 'app.teacher.teacher_info'),
     url(r'^teacher/info/$', 'app.teacher.teacher_info'),
