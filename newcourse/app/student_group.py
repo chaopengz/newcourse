@@ -19,7 +19,7 @@ def addGroup(request):
         groupId = g.id
         uG = UserGroup(group_id=groupId, user=user, is_allowed=1)
         uG.save()
-        return render_to_response('student_group.html')
+        return render_to_response('student_mygroup.html')
     else:
         return render_to_response('student_add_group.html')
 
@@ -31,7 +31,7 @@ def myGroup(request):
 
     uG = UserGroup.objects.filter(user=user)
 
-    return render_to_response('student_group.html', locals())
+    return render_to_response('student_mygroup.html', locals())
 
 
 def join(request):
@@ -45,8 +45,7 @@ def join(request):
 def info(request, i):  # i stands for the groupId
     request.session['group_id'] = i
     user = User.objects.filter(name=request.session['name']).first()
-    g = Group.objects.filter()
-    ug = UserGroup.objects.filter(user=user).filter()
+    ug = UserGroup.objects.filter(user=user, group_id=i).filter()
     uG_len = len(ug)  # 用与判断用户是否存在userGroup中
     if uG_len > 0:
         is_allowed = ug.first().is_allowed
