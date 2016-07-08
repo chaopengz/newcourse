@@ -5,6 +5,10 @@ from django.template import loader,context, RequestContext
 import MySQLdb,json
 from models import *
 import datetime, calendar
+import os
+import time
+import random
+import csv
 # Create your views here.
 
 def main(request):
@@ -29,11 +33,51 @@ def reset_password(request,tId):
      return render_to_response('administrator_teacher.html', locals())
 
 def add_teacher(request):
-    list_num = 2
+    list_num = 3
     page_name = '添加教师'
     links=[{'name': '教师管理', 'page': '/administrator/teacher/'} , {'name': '添加教师', 'page': '/administrator/teacher/add_teacher'}]
     user=User.objects.get(name=request.session['name'])
     return render_to_response('administrator_add_teacher.html', locals())
+
+
+
+def add_teacher_many(request):
+    if 'infolist' in request.FILES:
+        file = request.FILES.get('infolist', None)
+        filedata=file.read()
+        basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
+
+
+        path='%s/uploads/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media'))
+        # 如果文件夹不存在，创建文件夹
+        if not os.path.exists(path):
+            os.makedirs(path)
+        fullpath=path+basename
+        f = open(fullpath, 'wb')
+        f.write(filedata)
+        f.close()
+        with open(fullpath,'rb') as f:
+            reader = csv.reader(f)
+            rownum=0
+            for row in reader:
+                if rownum>0:
+                    if User.objects.filter(name=row[0].decode('gb2312'),type=3).count() == 0:
+                        new_student=User(
+                            name=row[0].decode('gb2312'),
+                            password='123',
+                            real_name=row[1].decode('gb2312'),
+                            type=3,
+                            pic=''
+                        )
+                        new_student.save()
+                rownum+=1
+        os.remove(fullpath)
+        request.session['message'] = "教师信息导入成功"
+        request.session['nexturl'] = "/administrator/teacher/"
+        return HttpResponseRedirect('/info/')
+    else:
+        return HttpResponseRedirect('/administrator/teacher/')
+
 
 def save_teacher(request):
     tname=request.POST['t_name']
