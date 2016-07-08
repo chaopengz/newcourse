@@ -43,4 +43,107 @@
             </div>
             <!-- /.box-body -->
           </div>
+        <h3>已加入课程团队</h3>
+      <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+                <tr>
+                  <th>团队序号</th>
+                    <th>团队名称</th>
+                  <th>团队负责人</th>
+                    <th>团队人数</th>
+                </tr>
+                  {% for coursegroup in coursegroups %}
+                    {% ifequal coursegroup.is_allowed 1 %}
+                    <tr href="/group/">
+                        <td>{{ coursegroup.group.id }}</td>
+                        <td>{{ coursegroup.group.name}}</td>
+                        <td>{{ coursegroup.group.user.name}}</td>
+                        <td>{{ coursegroup.group.max_number }}</td>
+                    </tr>
+                      {% endifequal %}
+
+                  {% endfor %}
+
+           </table>
+       </div>
+
+         <h3>加入课程团队申请</h3>
+          <div class="box-body table-responsive no-padding">
+           <table class="table table-hover">
+                <tr>
+                  <th>团队序号</th>
+                    <th>团队名称</th>
+                  <th>团队负责人</th>
+                    <th>批准加入课程</th>
+                </tr>
+                  {% for coursegroup in coursegroups %}
+                      {% ifequal coursegroup.is_allowed 0 %}
+                    <tr href="/group/">
+                        <td>{{ coursegroup.group.id }}</td>
+                        <td>{{ coursegroup.group.name}}</td>
+                        <td>{{ coursegroup.group.user.name}}</td>
+                        <td>
+                            <input class="btn btn-info" type="button"  value="是" id="{{ coursegroup.id }}">
+                            <input class="btn btn-info" type="button"  value="否" id="{{ coursegroup.id }}">
+                        </td>
+                    </tr>
+                      {% endifequal %}
+                  {% endfor %}
+
+           </table>
+       </div>
+
+    <script>
+    $(function () {
+        $("input[type='button'][value='是']").bind('click', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/group_accept/",
+                      type: "POST",
+                      data: {
+                          "course_group_id": $(this).attr('id'),
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+
+                          } else {
+                              alert("修改失败");
+                          }
+                          history.go(0);
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+        $(function () {
+        $("input[type='button'][value='否']").bind('click', function () {
+            $.ajax(
+                  {
+                      url: "/teacher/course/group_refuse/",
+                      type: "POST",
+                      data: {
+                          "course_group_id": $(this).attr('id'),
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("修改并保存成功");
+                          } else {
+                              alert("修改失败");
+                          }
+                          history.go(0) ;
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+        });
+        });
+</script>
+
+
     {% endblock %}
