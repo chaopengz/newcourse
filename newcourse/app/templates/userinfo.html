@@ -2,42 +2,11 @@
 
 {% block content %}
 
-<script src="/static/plugins/tapmodo-Jcrop-1902fbc/js/jquery.min.js"></script>
-<script src="/static/plugins/tapmodo-Jcrop-1902fbc/js/jquery.Jcrop.js"></script>
-<link rel="stylesheet" href="/static/plugins/tapmodo-Jcrop-1902fbc/css/jquery.Jcrop.css" type="text/css" />
-<style type="text/css">
+<script src="/static/plugins/cropper/cropper.min.js"></script>
+<script src="/static/plugins/cropper/sitelogo.js"></script>
+<link rel="stylesheet" href="/static/plugins/cropper/cropper.min.css" type="text/css" />
+<link rel="stylesheet" href="/static/plugins/cropper/sitelogo.css" type="text/css" />
 
-/* Apply these styles only when #preview-pane has
-   been placed within the Jcrop widget */
-.jcrop-holder #preview-pane {
-  display: block;
-  position: absolute;
-  z-index: 2000;
-  top: 10px;
-  right: 0px;
-  padding: 6px;
-  border: 1px rgba(0,0,0,.4) solid;
-  background-color: white;
-
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-
-  -webkit-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.2);
-}
-
-/* The Javascript code will set the aspect ratio of the crop
-   area based on the size of the thumbnail preview,
-   specified here */
-#preview-pane .preview-container {
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-}
-
-</style>
 <div class="col-md-6">
 <div class="box box-info">
             <div class="box-header with-border">
@@ -81,73 +50,76 @@
               </div>
           </div>
 </div>
-    <div class="col-md-4">
-<!--
-    <img src="/static/plugins/tapmodo-Jcrop-1902fbc/demo_files/sago.jpg" id="target" alt="[Jcrop Example]" style="width:200px"/>
+<div class="col-md-6">
+        <div class="ibox-content">
+		<div class="row">
+			<div id="crop-avatar" class="col-md-6">
+				<div class="avatar-view" title="更改头像">
+			    	<img src=
+                {% if user and user.pic != '' %}
+                     "{{ user.pic }}"
+                {% else %}
+                    "/static/dist/img/default.jpg"
+                {% endif %}
+                                 alt="Avatar">
+			    </div>
+			</div>
+		</div>
+	</div>
 
-  <div id="preview-pane" >
-    <div class="preview-container">
-      <img src="/static/plugins/tapmodo-Jcrop-1902fbc/demo_files/sago.jpg" class="jcrop-preview" alt="Preview"  />
-    </div>
+<div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form class="avatar-form" action="/save_info/" enctype="multipart/form-data" method="post">
+				<div class="modal-header">
+					<button class="close" data-dismiss="modal" type="button">&times;</button>
+					<h4 class="modal-title" id="avatar-modal-label">更改头像</h4>
+				</div>
+				<div class="modal-body">
+					<div class="avatar-body">
+						<div class="avatar-upload">
+							<input class="avatar-src" name="avatar_src" type="hidden">
+							<input class="avatar-data" name="avatar_data" type="hidden">
+							<label for="avatarInput">图片上传</label>
+							<input class="avatar-input" id="avatarInput" name="avatar_file" type="file"></div>
+						<div class="row">
+							<div class="col-md-9">
+								<div class="avatar-wrapper"></div>
+							</div>
+							<div class="col-md-3">
+								<div class="avatar-preview preview-lg"></div>
+								<div class="avatar-preview preview-md"></div>
+								<div class="avatar-preview preview-sm"></div>
+							</div>
+						</div>
+						<div class="row avatar-btns">
+							<div class="col-md-9">
+                                <!--
+								<div class="btn-group">
+									<button class="btn" data-method="rotate" data-option="-90" type="button" title="Rotate -90 degrees"><i class="fa fa-undo"></i> 向左旋转</button>
+								</div>
+								<div class="btn-group">
+									<button class="btn" data-method="rotate" data-option="90" type="button" title="Rotate 90 degrees"><i class="fa fa-repeat"></i> 向右旋转</button>
+								</div>
+								-->
+							</div>
+							<div class="col-md-3">
+								<button class="btn btn-success btn-block avatar-save" type="submit"><i class="fa fa-save"></i> 保存修改</button>
+							</div>
+						</div>
+					</div>
+				</div>
+  		</form>
+  	</div>
   </div>
--->
 </div>
 
+<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+
+</div>
+
+
 <script>
-
-jQuery(function($){
-
-    // Create variables (in this scope) to hold the API and image size
-    var jcrop_api,
-        boundx,
-        boundy,
-            showx,
-            showy,
-        // Grab some information about the preview pane
-        $preview = $('#preview-pane'),
-        $pcnt = $('#preview-pane .preview-container'),
-        $pimg = $('#preview-pane .preview-container img'),
-        xsize = $pcnt.width(),
-        ysize = $pcnt.height();
-        console.log('init',[xsize,ysize]);
-    $('#target').Jcrop({
-      onChange: updatePreview,
-      onSelect: updatePreview,
-      aspectRatio: xsize / ysize
-    },function(){
-      // Use the API to get the real image size
-      var bounds = this.getBounds();
-      boundx = bounds[0];
-      boundy = bounds[1];
-        showx=50;
-        showy=50;
-      // Store the API in the jcrop_api variable
-      jcrop_api = this;
-
-      // Move the preview into the jcrop container for css positioning
-      $preview.appendTo(jcrop_api.ui.holder);
-    });
-
-    function updatePreview(c)
-    {
-      if (parseInt(c.w) > 0)
-      {
-        var rx = xsize / c.w;
-        var ry = ysize / c.h;
-
-        $pimg.css({
-          width: Math.round(rx * showx) + 'px',
-          height: Math.round(ry * showy) + 'px',
-          marginLeft: '-' + Math.round(rx * c.x) + 'px',
-          marginTop: '-' + Math.round(ry * c.y) + 'px'
-        });
-      }
-    };
-
-  });
-
-
-
  function changePassword(){
      self.location.href="/change_password/";
  }
