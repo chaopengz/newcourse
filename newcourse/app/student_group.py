@@ -46,7 +46,12 @@ def info(request, i):  # i stands for the groupId
     request.session['group_id'] = i
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i).filter()
+
     uG_len = len(ug)  # 用与判断用户是否存在userGroup中
     if uG_len > 0:
         is_allowed = ug.first().is_allowed
     return render_to_response('student_group_i.html', locals())
+
+
+def handle_group(request):
+    return HttpResponse("处理团队申请")
