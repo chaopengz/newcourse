@@ -1,29 +1,34 @@
 {% extends "student.html" %}
 
 {% block content %}
- <div class="box box-solid">
-            <div class="box-header with-border">
-              <i class="fa fa-text-width"></i>
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-text-width"></i>
 
-              <h3 class="box-title">团队信息</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>团队名</dt><dd>{{group.name}}</dd>
-                  <dt>团队最大人数</dt><dd>{{ group.max_number }}</dd>
-                  <dt>团队负责人</dt><dd>{{ group_user.real_name }}</dd>
-                  <dt>团队现有人数</dt><dd>{{ group.number }}</dd>
-                  <dt>团队状态</dt><dd>
-                    {% if group.end %}
+            <h3 class="box-title">团队信息</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <dl class="dl-horizontal">
+                <dt>团队名</dt>
+                <dd>{{ group.name }}</dd>
+                <dt>团队最大人数</dt>
+                <dd>{{ group.max_number }}</dd>
+                <dt>团队负责人</dt>
+                <dd>{{ group_user.real_name }}</dd>
+                <dt>团队现有人数</dt>
+                <dd>{{ group.number }}</dd>
+                <dt>团队状态</dt>
+                <dd>
+                    {% if not group.end %}
                         已停止接受组队请求
                     {% else %}
                         可接受组队请求
                     {% endif %}
-              </dd>
-              </dl>
-            </div>
- </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">团队成员列表</h3>
@@ -43,24 +48,43 @@
                 </tr>
                 {% for obj in member_list %}
                     <tr>
-                    <th> {{ obj.name }}</th>
+                        <th> {{ obj.name }}</th>
 
-                    <th> {{ obj.real_name }}</th>
+                        <th> {{ obj.real_name }}</th>
 
-                    <th>团队成员</th>
+                        <th>团队成员</th>
                     </tr>
                 {% endfor %}
             </table>
         </div>
         <!-- /.box-body -->
     </div>
-    {% if uG_len == 0 %}
-        <a href="/student/group/join/">加入团队</a>
-    {% else %}
-        {% if is_allowed  == 0 %}
-            审核中。。。
+    {% if group.end %}
+        {% if uG_len == 0 %}
+            <button type="button" onclick="joinFunction()" class="btn btn-block btn-info">加入团队</button>
         {% else %}
-            你已加入该团队{{ uG_len }}hh{{ is_allowed }}
+            {% if is_allowed  == 0 %}
+                <button type="button" class="btn btn-block btn-warning">审核中。。。</button>
+            {% else %}
+                <button type="button" class="btn btn-block btn-success">你已成功加入该团队</button>
+            {% endif %}
         {% endif %}
+    {% else %}
+        <button type="button" class="btn btn-block btn-danger">团队已结束申请！不可加入。</button>
     {% endif %}
+    <script>
+        function joinFunction() {
+            $.ajax({
+                url: '/student/group/join/',
+                type: 'GET',
+                success: function (json) {
+                    alert(json)
+                    window.location.reload();
+
+                }
+            });
+        }
+
+
+    </script>
 {% endblock %}
