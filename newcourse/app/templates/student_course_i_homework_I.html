@@ -87,11 +87,13 @@
                         <td ><a href="/media/{{ task.server_path }}">{{ task.server_path}}</a></td>
                         <td>{{ task.grade }}</td>
                         <td>{{ task.comment }}</td>
+                        {% if allow_upload %}
                         <td>
                             <button value="remove"  id="{{ task.id }} "class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
                             <i class="fa fa-times"></i>
                             </button>
                         </td>
+                    {% endif %}
                     </tr>
                   {% endfor %}
 
