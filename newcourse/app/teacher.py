@@ -8,7 +8,8 @@ from view_auth_manage import *
 
 # Create your views here.
 def teacher_info(request):
-     judge_auth(request,'3')
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      links=[{'name': '教师页面', 'page': '/teacher/'} ]
      list_num = 1
      page_name = '作业列表'
@@ -21,7 +22,8 @@ def teacher_info(request):
 
 
 def teacher_course(request):
-     judge_auth(request,'3')
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      list_num = 2
      page_name = '作业列表'
      links = [{'name': '教师页面', 'page': '/teacher/'}]

@@ -17,7 +17,8 @@ sys.setdefaultencoding('utf-8')
 # Create your views here.
 
 def main(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 2
     page_name = '课程管理'
     links = [{'name': '课程管理', 'page': '/administrator/course/'}]
@@ -50,7 +51,8 @@ def compare_time(time1, time2):
 
 
 def courseInfo(request, courseId):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 2
     page_name = '课程详情'
     links = [{'name': '课程管理', 'page': '/administrator/course/'},
@@ -69,7 +71,8 @@ def courseInfo(request, courseId):
 
 
 def addCourseShow(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 2
     page_name = '添加课程'
     links = [{'name': '课程管理', 'page': '/administrator/course/'},
@@ -83,7 +86,8 @@ def addCourseShow(request):
     return render_to_response('administrator_add_course.html', locals())
 
 def add_course_many(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'infolist' in request.FILES:
         file = request.FILES.get('infolist', None)
         filedata=file.read()
@@ -146,7 +150,8 @@ def add_course_many(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def changeCourseShow(request, courseId):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 2
     page_name = '添加课程'
     links = [{'name': '课程管理', 'page': '/administrator/course/'},
@@ -168,7 +173,8 @@ def changeCourseShow(request, courseId):
 
 
 def save_course(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 2
     page_name = '课程详情'
     links = [{'name': '课程管理', 'page': '/administrator/course/'},
@@ -215,7 +221,8 @@ def save_course(request):
 
 
 def student(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'cid' in request.GET:
         list_num = 2
         page_name = '选课学生管理'
@@ -237,7 +244,8 @@ def student(request):
 
 
 def add_student(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'cid' in request.GET:
         cid = request.GET.get('cid')
         sid = request.GET.get('sid')
@@ -260,7 +268,8 @@ def add_student(request):
         return HttpResponseRedirect('/administrator/course/')
 
 def add_course_select_many(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'infolist' in request.FILES:
         file = request.FILES.get('infolist', None)
         filedata=file.read()
@@ -315,7 +324,8 @@ def add_course_select_many(request):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def remove_student(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'cid' in request.GET:
         cid = request.GET.get('cid')
         sid = request.GET.get('sid')
