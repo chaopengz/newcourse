@@ -11,8 +11,10 @@ from django.template import loader,context, RequestContext
 import MySQLdb,json
 from models import *
 import datetime, calendar
+from view_auth_manage import *
 
 def modifyTerm(request):
+    judge_auth(request,'1')
     if request.method == 'POST':
         name = request.POST['name']
         week = request.POST['week']
@@ -45,6 +47,7 @@ def modifyTerm(request):
 
 
 def main(request):
+    judge_auth(request,'1')
     list_num = 1
     page_name = '学期管理'
     links = [{'name': '学期管理', 'page': '/administrator/term/'}]
@@ -72,6 +75,7 @@ class TermShow:
 
 
 def termInfo(request, termId):
+    judge_auth(request,'1')
     list_num = 1
     page_name = '学期详情'
     links = [{'name': '学期管理', 'page': '/administrator/term/'},
@@ -85,6 +89,7 @@ def termInfo(request, termId):
     return render_to_response('administrator_termInfo.html', locals())
 
 def changeTermShow(request,termId):
+    judge_auth(request,'1')
     list_num = 1
     page_name = '修改学期'
     links=[{'name': '学期管理', 'page': '/administrator/term/'} , {'name': '修改学期', 'page': '/administrator/term/change_term/'+termId}]
@@ -98,10 +103,7 @@ def changeTermShow(request,termId):
     return render_to_response('administrator_change_term.html', locals())
 
 def save_term(request):
-    list_num = 1
-    page_name = '学期详情'
-    links=[{'name': '学期管理', 'page': '/administrator/term/'} , {'name': '学期详情', 'page': '/administrator/term/termInfo/'}]
-    user=User.objects.filter(name=request.session['name']).first()
+    judge_auth(request,'1')
 
     tname=request.POST['t_name']
     tweek=request.POST['t_week']
@@ -112,13 +114,16 @@ def save_term(request):
     edate=datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
 
     if request.POST.get('t_id'):
+        # 修改
         term=Term.objects.get(id=request.POST.get('t_id'))
         term.name=tname
         term.start_date=sdate
         term.end_date=edate
         term.week=tweek
         term.save()
+        return HttpResponseRedirect('/administrator/term/termInfo/'+str(term.id))
     else:
+        # 新建
         term=Term(
             name=tname,
             week=tweek,
@@ -126,5 +131,4 @@ def save_term(request):
             end_date=edate
          )
         term.save()
-
-    return HttpResponseRedirect('/administrator/term/termInfo/'+str(term.id))
+        return HttpResponseRedirect('/administrator/term/')

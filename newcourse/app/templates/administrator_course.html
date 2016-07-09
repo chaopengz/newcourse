@@ -70,22 +70,13 @@
               <table class="table table-striped" id="error_list_table">
                 <tr>
                     <th>课程名</th>
-                    <th>教师工号</th>
-                    <th>起止日期</th>
-                    <th>课程类型</th>
+                    <th>课程介绍</th>
+                    <th>教师名</th>
+                    <th>学生名</th>
+                    <th>起始日期</th>
+                    <th >结束日期</th>
+                    <th >是否是团体课</th>
                 </tr>
-                 <tr>
-                  {% for course in res %}
-                    <th> {{ course.course.name }}</th>
-                      <th> {{ course.course.id }}</th>
-                    <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
-                    <th> {% if course.course.is_single %}
-                        普通课程
-                    {% else %}
-                        团队课程
-                    {% endif %}</th>
-                </tr>
-                {% endfor %}
               </table>
             </div>
             <!-- /.box-body -->
@@ -109,12 +100,10 @@
               <table class="table table-striped">
                 <tr>
                     <th>课程名</th>
-                  <th>课程介绍</th>
-                    <th>教师名</th>
-                  <th>学生名</th>
-                  <th>起始日期</th>
-                  <th >结束日期</th>
-                    <th >是否是团体课</th>
+                  <th>起止日期</th>
+                    <th>课程类型</th>
+                    <th>开课状态</th>
+                  <th>操作</th>
                 </tr>
                   {% for course in res %}
                     <th> {{ course.course.name }}</th>

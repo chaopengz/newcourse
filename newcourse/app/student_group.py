@@ -5,9 +5,10 @@ from django.template import loader, context, RequestContext
 import MySQLdb
 from models import *
 from django import forms
-
+from view_auth_manage import *
 
 def addGroup(request):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     list_num = request.session['list_num']
     links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '所有团队', 'page': '/student/groups/'}]
@@ -30,6 +31,7 @@ def addGroup(request):
 
 
 def myGroup(request):
+    judge_auth(request,'2')
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 3
     user = User.objects.filter(name=request.session['name']).first()
@@ -40,6 +42,7 @@ def myGroup(request):
 
 
 def join(request):
+    judge_auth(request,'2')
     groupId = request.session['group_id']
     user = User.objects.filter(name=request.session['name']).first()
     uG = UserGroup(group_id=groupId, user=user)
@@ -49,6 +52,7 @@ def join(request):
 
 
 def info(request, i):  # i stands for the groupId
+    judge_auth(request,'2')
     request.session['group_id'] = i
     list_num = request.session['list_num']
     links = [{'name': '学生页面', 'page': '/student/', 'name': '所有团队', 'page': '/student/groups/'}]
@@ -77,6 +81,7 @@ def info(request, i):  # i stands for the groupId
         return render_to_response('student_group_info_owner.html',locals())
 
 def handle_application(request):
+    judge_auth(request,'2')
     ug = UserGroup.objects.filter(user_id=request.POST['user_id'], group_id=request.POST['group_id']).first()
     ug.is_allowed = request.POST['is_allowed']
     if ug.is_allowed == "1":
@@ -91,12 +96,14 @@ def handle_application(request):
 
 
 def authority_translate(request):
+    judge_auth(request,'2')
     group=Group.objects.get(id=request.POST['group_id'])
     group.user_id=request.POST['user_id']
     group.save()
     return HttpResponse("权限转让成功")
 
 def handle_group(request):
+    judge_auth(request,'2')
     if request.method == 'POST':
         gid = request.POST['group_id']
         handle_type = request.POST['type']
@@ -112,6 +119,7 @@ def handle_group(request):
             return HttpResponse("成功解散团队!")
 
 def applyforcourse(request):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     list_num = request.session['list_num']
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}]
@@ -124,6 +132,7 @@ def applyforcourse(request):
     return render_to_response('student_group_applyforcourse.html',locals())
 
 def applyforcourse_i(request,i):
+    judge_auth(request,'2')
     list_num = request.session['list_num']
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'},{'name':'课程列表','page':'/student/group/applyforcourse/'}]
     if list_num == 3:
@@ -137,6 +146,7 @@ def applyforcourse_i(request,i):
     return render_to_response('student_group_applyforcourse_i.html', locals())
 
 def apply(request):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     course = Course.objects.get(id = request.session['course_id'])
     teacher = User.objects.get(id = course.teacher_id)
