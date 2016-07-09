@@ -62,6 +62,7 @@ urlpatterns = [
     url(r'^teacher/course/$', 'app.teacher.teacher_course'),
     url(r'^teacher/course/(?P<courseId>\d+)/$', 'app.teacher_course.course_teacher_info'),
     url(r'^teacher/course/resource/$', 'app.teacher_course.course_resource'),
+    url(r'^teacher/course/groupdelete/$', 'app.teacher_course.group_delete'),
     url(r'^teacher/course/resource_class/$', 'app.teacher_course.course_resource_class'),
     url(r'^teacher/course/resource_class_add/$', 'app.teacher_course.course_resource_class_add'),
     url(r'^teacher/course/resource_publish/$', 'app.teacher_course.course_resource_publish'),
