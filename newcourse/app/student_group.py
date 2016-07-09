@@ -79,6 +79,16 @@ def handle_application(request):
     else:
         ug.save()
         return HttpResponse("2")
+
+
+def authority_translate(request):
+    print 'hehehe'
+    group=Group.objects.get(id=request.POST['group_id'])
+    group.user_id=request.POST['user_id']
+    print group.user_id
+    group.save()
+    return HttpResponse("权限转让成功")
+
 def handle_group(request):
     if request.method == 'POST':
         gid = request.POST['group_id']
