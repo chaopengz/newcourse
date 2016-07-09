@@ -9,7 +9,9 @@ import os
 import time
 import random
 import csv
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Create your views here.
 
@@ -100,35 +102,51 @@ def add_course_many(request):
             reader = csv.reader(f)
             rownum=0
             for row in reader:
-                if rownum>0:
+                rownum+=1
+                if rownum>1:
                     if Course.objects.filter(name=row[0].decode('gb2312')).count() == 0:
-                        if User.objects.filter(name=row[2].decode('gb2312'),type=3).count < 0:
+                        try:
+                            User.objects.get(name=row[2].decode('gb2312'),type=3)
+                        except User.DoesNotExist:
                             error_list.append(row)
+                            continue
                         else:
                             tid=User.objects.get(name=row[2].decode('gb2312'),type=3).id
 
-                            if row[5].decode('gb2312')=='是':
-                                is_s='0'
+                            if row[5].decode('gb2312')==u'是':
+                                is_s=False
                             else:
-                                is_s='1'
+                                is_s=True
+
+                            date_format='%Y年%m月%d日'
+                            date_format=date_format.decode('utf-8')
+
                             new_course=Course(
                                 name=row[0].decode('gb2312'),
                                 introduction=row[1].decode('gb2312'),
                                 teacher_id=tid,
-                                start_date=time.strptime(row[3].decode('gb2312'), "%Y年%m月%d日"),
-                                end_date=time.strptime(row[4].decode('gb2312'), "%Y年%m月%d日"),
+                                start_date=datetime.datetime.strptime(row[3].decode('gb2312'), date_format),
+                                end_date=datetime.datetime.strptime(row[4].decode('gb2312'), date_format),
                                 is_single=is_s,
                                 term_id=term_id
                             )
                             new_course.save()
-                rownum+=1
+
         os.remove(fullpath)
+        for row in error_list:
+            row[0]=row[0].decode('gb2312')
+            row[1]=row[1].decode('gb2312')
+            row[2]=row[2].decode('gb2312')
+            row[3]=row[3].decode('gb2312')
+            row[4]=row[4].decode('gb2312')
+            row[5]=row[5].decode('gb2312')
         response_data = {}
-        response_data['error_list'] = 'success'
+        response_data['error_info'] = 'success'
+        response_data['error_list'] = error_list
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         response_data = {}
-        response_data['error_list'] = 'success'
+        response_data['error_info'] = 'failed'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
