@@ -22,9 +22,9 @@ def compare_time(time1,time2):
     nowtime=datetime.date.today()
     print (time2-nowtime).days
     if (nowtime - time1).days > 0 and (time2-nowtime).days>0:
-        return True
+        return 0
     else:
-        return False
+        return 1
 
 def course_teacher_info(request, courseId):
      page_name = '课程详情'
@@ -57,6 +57,7 @@ def course_resource(request):
     user = User.objects.filter(name=request.session['name']).first()
     resource_classes = ResourceClass.objects.all()
     resources = Resource.objects.filter(course_id=course_id)
+    finish = compare_time(course.start_date, course.end_date)
     return render_to_response('teacher_course_resource.html', locals())
 
 class UserForm(forms.Form):
@@ -127,8 +128,8 @@ def course_task(request):
      user=User.objects.filter(name=request.session['name']).first()
      course_id=int(request.session['course_id'])
      tasks=TaskRequirement.objects.filter(course_id=course_id)
+     finish = compare_time(course.start_date, course.end_date)
      return render_to_response('teacher_course_task.html', locals())
-
 
 def course_task_publish(request):
      list_num = 1
@@ -138,6 +139,8 @@ def course_task_publish(request):
      links=[{'name': '课程管理', 'page': '/teacher/course'} ,{'name':course.name,'page': '/teacher/course'},
             {'name': '作业管理', 'page': '/teacher/course/task'} ,
             {'name': '作业提交', 'page': '/teacher/course/task_publish'}]
+     finish = compare_time(course.start_date,course.end_date)
+
      if request.method=='GET':
         user=User.objects.filter(name=request.session['name']).first()
         course_id=int(request.session['course_id'])
