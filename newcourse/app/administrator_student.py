@@ -13,7 +13,8 @@ from view_auth_manage import *
 # Create your views here.
 
 def main(request):
-     judge_auth(request,'1')
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '1'): return jump_no_auth(request)
      is_success='0'
      list_num=4
      page_name='学生管理'
@@ -23,7 +24,8 @@ def main(request):
      return render_to_response('administrator_student.html', locals())
 
 def reset_password(request,tId):
-     judge_auth(request,'1')
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '1'): return jump_no_auth(request)
      student=User.objects.filter(type=2).get(id=tId)
      student.password='123'
      student.save()
@@ -36,7 +38,8 @@ def reset_password(request,tId):
      return render_to_response('administrator_student.html', locals())
 
 def add_student(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 4
     page_name = '添加学生'
     links=[{'name': '学生管理', 'page': '/administrator/student/'} , {'name': '添加学生', 'page': '/administrator/student/add_student'}]
@@ -44,7 +47,8 @@ def add_student(request):
     return render_to_response('administrator_add_student.html', locals())
 
 def add_student_many(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'infolist' in request.FILES:
         file = request.FILES.get('infolist', None)
         filedata=file.read()
@@ -82,7 +86,8 @@ def add_student_many(request):
         return HttpResponseRedirect('/administrator/student/')
 
 def save_student(request):
-    judge_auth(request,'1')
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     tname=request.POST['t_name']
     trealname=request.POST['t_realname']
     if request.POST.get('t_id'):

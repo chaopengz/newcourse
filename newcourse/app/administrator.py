@@ -8,7 +8,8 @@ from view_auth_manage import *
 
 # Create your views here.
 def administrator(request):
-     judge_auth(request,'1')
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '1'): return jump_no_auth(request)
      page_name='教务首页'
      links=[ {'name': '教务管理员页面', 'page': '/administrator/'} ]
      if 'name' in request.session:

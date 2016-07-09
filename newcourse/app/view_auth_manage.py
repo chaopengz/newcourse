@@ -13,13 +13,13 @@ import sys
 
 # 根据用户类型返回不同的用户对应的首页。
 def get_mainpage(type):
-    if type == 1:
+    if type == '1':
         # 教务管理员
         return '/administrator/'
-    if type == 2:
+    if type == '2':
         # 学生
         return '/student/'
-    if type == 3:
+    if type == '3':
         # 教师
         return '/teacher/'
 
@@ -32,17 +32,27 @@ def jump_with_info(request,message,next_url):
     request.session['nexturl'] = next_url
     return HttpResponseRedirect('/info/')
 
+def jump_not_login(request):
+    return jump_with_info(request,"您的登录状态已过期，请重新登录。","/login/")
+
+def jump_no_auth(request):
+    return jump_with_info(request,"您无权访问这个页面。",get_mainpage(str(request.session['type'])))
+
 # 判断登录状态及访问权限，并且根据需要跳转到对应的页面
 def judge_auth(request,type):
     if 'name' in request.session:
         # 已登录
-        usertype=request.session['type']
+        usertype=str(request.session['type'])
         if usertype != type:
             # 角色不同，无法访问这个页面
-            jump_with_info(request,"您无权访问这个页面。",get_mainpage(usertype))
+            # jump_with_info(request,"您无权访问这个页面。",get_mainpage(usertype))
+            return False
+        else:
+            return True
     else:
         # 未登录
-        jump_with_info(request,"您的登录状态已过期，请重新登录。","/login/")
+        # jump_with_info(request,"您的登录状态已过期，请重新登录。","/login/")
+        return False
 
 # 判断是否登陆，没有就返回登录页
 def judge_login(request):
@@ -51,4 +61,5 @@ def judge_login(request):
         return True
     else:
         # 未登录
-        jump_with_info(request,"您的登录状态已过期，请重新登录。","/login/")
+        # jump_with_info(request,"您的登录状态已过期，请重新登录。","/login/")
+        return False
