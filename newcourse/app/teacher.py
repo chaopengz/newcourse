@@ -29,4 +29,7 @@ def teacher_course(request):
      links = [{'name': '教师页面', 'page': '/teacher/'}]
      user = User.objects.filter(name=request.session['name']).first()
      courses = Course.objects.filter(teacher_id=user.id)
+     for course in courses:
+           course.start_date = course.start_date.strftime("%Y年%m月%d日")
+           course.end_date = course.end_date.strftime("%Y年%m月%d日")
      return render_to_response('teacher_course_info.html', locals())

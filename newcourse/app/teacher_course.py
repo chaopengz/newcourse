@@ -45,6 +45,8 @@ def course_teacher_info(request, courseId):
      groups = [Group.objects.get(pk = u.group_id) for u in coursegroups]
      isrun=compare_time(course.start_date, course.end_date)
      res = CourseShow(course,isrun)
+     course.start_date = course.start_date.strftime("%Y年%m月%d日")
+     course.end_date = course.end_date.strftime("%Y年%m月%d日")
      return render_to_response('teacher_course.html', locals())
 
 
@@ -62,6 +64,8 @@ def course_resource(request):
     user = User.objects.filter(name=request.session['name']).first()
     resource_classes = ResourceClass.objects.all()
     resources = Resource.objects.filter(course_id=course_id)
+    for resource in resources:
+        resource.submit_time = resource.submit_time.strftime("%Y年%m月%d日%H时%M分")
     finish = compare_time(course.start_date, course.end_date)
     return render_to_response('teacher_course_resource.html', locals())
 
@@ -148,6 +152,9 @@ def course_task(request):
      course_id=int(request.session['course_id'])
      tasks=TaskRequirement.objects.filter(course_id=course_id)
      finish = compare_time(course.start_date, course.end_date)
+     for task in tasks:
+         task.start_date = task.start_date.strftime("%Y年%m月%d日")
+         task.end_date = task.end_date.strftime("%Y年%m月%d日")
      return render_to_response('teacher_course_task.html', locals())
 
 def course_task_publish(request):
@@ -204,7 +211,11 @@ def course_task_info(request, task_id):
      teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
      task = TaskRequirement.objects.get(pk=task_id)
+     task.start_date = task.start_date.strftime("%Y年%m月%d日")
+     task.end_date = task.end_date.strftime("%Y年%m月%d日")
      task_file =task.taskfile_set.all()
+     for tf in task_file:
+            tf.submit_time = tf.submit_time.strftime("%Y年%m月%d日%H时%M分")
      request.session['task_id'] = task_id
      return render_to_response('teacher_course_task_info.html', locals())
 

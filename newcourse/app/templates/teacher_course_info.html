@@ -22,7 +22,7 @@
                         {% ifequal course.is_single 1 %}
                             <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
-                        <td>{{ course.introduction }}</td>
+                        <td>{{ course.introduction|slice:'30' }}</td>
                     </tr>
                   {% endfor %}
 
