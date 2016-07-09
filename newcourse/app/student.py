@@ -8,8 +8,10 @@ from django import forms
 import json
 import os, tempfile, zipfile
 from teacher_course import zip_dir
+from view_auth_manage import *
 # Create your views here.
 def student(request):
+    judge_auth(request,'2')
     links = [{'name': '学生页面', 'page': '/student/'}]
     if 'name' in request.session:
         name = request.session['name']
@@ -20,6 +22,7 @@ def student(request):
 
 
 def student_info(request):
+    judge_auth(request,'2')
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 1
     user = User.objects.filter(name=request.session['name']).first()
@@ -27,6 +30,7 @@ def student_info(request):
 
 
 def student_course(request):
+    judge_auth(request,'2')
     page_name = '课程列表'
     list_num = 2
     links = [{'name': '学生页面', 'page': '/student/'}]
@@ -45,6 +49,7 @@ def student_course(request):
 
 
 def student_course_i(request, i):
+    judge_auth(request,'2')
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '课程列表', 'page': '/student/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
     course = Course.objects.get(id=i)
@@ -55,6 +60,7 @@ def student_course_i(request, i):
 
 
 def student_course_i_homework(request, i):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     list_num = 1
     page_name = '作业列表'
@@ -67,11 +73,13 @@ def student_course_i_homework(request, i):
     return render_to_response('student_course_i_homework.html', locals())
 
 def student_course_homework_task_delete(request):
+    judge_auth(request,'2')
     taskfile=TaskFile.objects.get(pk=request.POST['taskfileid'])
     taskfile.delete()
     return HttpResponse(json.dumps(True))
 
 def student_course_i_homework_I(request, i, I):
+    judge_auth(request,'2')
     list_num = 1
     page_name = '作业详情'
     course = Course.objects.get(id=i)
@@ -124,6 +132,7 @@ class UserForm(forms.Form):
 
 
 def student_course_i_homework_I_upload(request, i, I):
+    judge_auth(request,'2')
     list_num = 1
     page_name = '上传作业'
     course = Course.objects.get(id=i)
@@ -177,6 +186,7 @@ class UserForm_content(forms.Form):
                               widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
 
 def student_course_i_resource(request, i):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     list_num = 2
     page_name = '资源列表'
@@ -194,6 +204,7 @@ def student_course_i_resource(request, i):
 
 
 def file_download(request, i, I):
+    judge_auth(request,'2')
     resource = Resource.objects.get(id=int(I))
     filename = resource.server_path
     f = open(str(filename))
@@ -205,6 +216,7 @@ def file_download(request, i, I):
 
 
 def one_click_download(request):
+    judge_auth(request,'2')
     user = User.objects.filter(name=request.session['name']).first()
     course_id = request.session['course_id']
     dir = '/media/resource/' + course_id
@@ -215,6 +227,7 @@ def one_click_download(request):
 
 
 def student_group(request):
+    judge_auth(request,'2')
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 4
     user = User.objects.filter(name=request.session['name']).first()

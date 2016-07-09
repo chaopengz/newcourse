@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from models import *
-
+from view_auth_manage import *
 
 def t_Home(request):
+    judge_login(request)
     courseId = request.session['course_id']
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
@@ -13,7 +14,7 @@ def t_Home(request):
 
 
 def s_Home(request,i):
-
+    judge_login(request)
     courseId = request.session['course_id']
     course=Course.objects.get(id=i)
     user = User.objects.filter(name=request.session['name']).first()
@@ -38,6 +39,7 @@ def Post(request):
 
 
 def Messages(request):
+    judge_login(request)
     # courseId = 0
     # if 'course_id' in request.session:
     courseId = request.session['course_id']

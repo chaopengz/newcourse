@@ -4,10 +4,11 @@ from django.http import *
 from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
-
+from view_auth_manage import *
 
 # Create your views here.
 def teacher_info(request):
+     judge_auth(request,'3')
      links=[{'name': '教师页面', 'page': '/teacher/'} ]
      list_num = 1
      page_name = '作业列表'
@@ -20,6 +21,7 @@ def teacher_info(request):
 
 
 def teacher_course(request):
+     judge_auth(request,'3')
      list_num = 2
      page_name = '作业列表'
      links = [{'name': '教师页面', 'page': '/teacher/'}]

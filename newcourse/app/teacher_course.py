@@ -9,6 +9,7 @@ from django import forms
 import os, tempfile, zipfile
 from django.http import HttpResponse
 from wsgiref.util import FileWrapper
+from view_auth_manage import *
 # Create your views here.
 
 
@@ -27,6 +28,7 @@ def compare_time(time1,time2):
         return 1
 
 def course_teacher_info(request, courseId):
+     judge_auth(request,'3')
      page_name = '课程详情'
      request.session['course_id'] = courseId
 
@@ -46,6 +48,7 @@ def course_teacher_info(request, courseId):
 
 
 def course_resource(request):
+    judge_auth(request,'3')
     list_num = 2
     page_name = '资源列表'
     course_id = int(request.session['course_id'])
@@ -65,6 +68,7 @@ class UserForm(forms.Form):
     File = forms.FileField(label='文件位置')
 
 def course_resource_publish(request):
+    judge_auth(request,'3')
     list_num = 2
     user = User.objects.filter(name=request.session['name']).first()
     page_name = '资源列表'
@@ -101,6 +105,7 @@ def course_resource_publish(request):
 
 
 def course_resource_class(request):
+    judge_auth(request,'3')
     id = request.POST['resource_id']
     resource_class_id = request.POST['resource_class']
     resource = Resource.objects.get(pk=id)
@@ -111,6 +116,7 @@ def course_resource_class(request):
 
 
 def course_resource_class_add(request):
+    judge_auth(request,'3')
     name = request.POST['resource_class_name']
     resource_class = ResourceClass()
     resource_class.name = name
@@ -119,6 +125,7 @@ def course_resource_class_add(request):
 
 
 def course_task(request):
+     judge_auth(request,'3')
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -132,6 +139,7 @@ def course_task(request):
      return render_to_response('teacher_course_task.html', locals())
 
 def course_task_publish(request):
+     judge_auth(request,'3')
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -168,6 +176,7 @@ def course_task_publish(request):
 
 
 def course_task_info(request, task_id):
+     judge_auth(request,'3')
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -186,6 +195,7 @@ def course_task_info(request, task_id):
      return render_to_response('teacher_course_task_info.html', locals())
 
 def course_task_grade(request):
+    judge_auth(request,'3')
     id = request.POST['task_id']
     grade = request.POST['grade']
     task_file = TaskFile.objects.get(pk=id)
@@ -195,6 +205,7 @@ def course_task_grade(request):
 
 
 def course_task_comment(request):
+    judge_auth(request,'3')
     id = request.POST['task_id']
     commnet = request.POST['comment']
     task_file = TaskFile.objects.get(pk=id)
@@ -204,12 +215,14 @@ def course_task_comment(request):
 
 
 def course_task_content(request):
+    judge_auth(request,'3')
     id = request.POST['task_id']
     task_file = TaskFile.objects.get(pk=id)
     return HttpResponse(json.dumps(task_file.content))
 
 
 def group_accept(request):
+    judge_auth(request,'3')
     id = request.POST['course_group_id']
     course_group = GroupCourse.objects.get(pk=id)
     course_group.is_allowed = 1
@@ -218,6 +231,7 @@ def group_accept(request):
 
 
 def group_refuse(request):
+    judge_auth(request,'3')
     id = request.POST['course_group_id']
     course_group = GroupCourse.objects.get(pk=id)
     course_group.is_allowed = 2
@@ -243,6 +257,7 @@ def zip_dir(dirname,zipfilename):
 
 
 def one_click_download(request):
+    judge_auth(request,'3')
     user = User.objects.filter(name=request.session['name']).first()
     course_id = request.session['course_id']
     task_id = request.session['task_id']
@@ -254,14 +269,16 @@ def one_click_download(request):
 
 
 def file_download(request, filename):
-        f = open('media/' + filename)
-        data = f.read()
-        f.close()
-        response = HttpResponse(data)
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
-        return response
+    judge_auth(request,'3')
+    f = open('media/' + filename)
+    data = f.read()
+    f.close()
+    response = HttpResponse(data)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
 
 def resourcedelete(request):
+    judge_auth(request,'3')
     resource=Resource.objects.get(pk=request.POST['resourceid'])
     resource.delete()
     return HttpResponse(json.dumps(True))

@@ -4,10 +4,11 @@ from django.http import *
 from django.template import loader,context, RequestContext
 import MySQLdb
 from models import *
-
+from view_auth_manage import *
 
 # Create your views here.
 def administrator(request):
+     judge_auth(request,'1')
      page_name='教务首页'
      links=[ {'name': '教务管理员页面', 'page': '/administrator/'} ]
      if 'name' in request.session:
