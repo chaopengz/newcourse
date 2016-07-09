@@ -38,7 +38,9 @@ urlpatterns = [
     url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
     url(r'^student/course/(\d+)/homework/(\d+)/upload/$', 'app.student.student_course_i_homework_I_upload'),
-   # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
+    url(r'^student/course/homework/taskfiledelete/$', 'app.student.student_course_homework_task_delete'),
+    # url(r'^student/course/(\d+)/homework/(\d+)/content/$', 'app.student.student_course_i_homework_I_content'),
+
     url(r'^student/course/(\d+)/resource/$', 'app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$', 'app.student.file_download'),
     url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
