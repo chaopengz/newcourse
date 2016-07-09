@@ -112,13 +112,16 @@ def save_term(request):
     edate=datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
 
     if request.POST.get('t_id'):
+        # 修改
         term=Term.objects.get(id=request.POST.get('t_id'))
         term.name=tname
         term.start_date=sdate
         term.end_date=edate
         term.week=tweek
         term.save()
+        return HttpResponseRedirect('/administrator/term/termInfo/'+str(term.id))
     else:
+        # 新建
         term=Term(
             name=tname,
             week=tweek,
@@ -126,5 +129,4 @@ def save_term(request):
             end_date=edate
          )
         term.save()
-
-    return HttpResponseRedirect('/administrator/term/termInfo/'+str(term.id))
+        return HttpResponseRedirect('/administrator/term/')
