@@ -257,3 +257,8 @@ def file_download(request, filename):
         response = HttpResponse(data)
         response['Content-Disposition'] = 'attachment; filename=%s' % filename
         return response
+
+def resourcedelete(request):
+    resource=Resource.objects.get(pk=request.POST['resourceid'])
+    resource.delete()
+    return HttpResponse(json.dumps(True))
