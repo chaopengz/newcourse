@@ -72,6 +72,8 @@ urlpatterns = [
     url(r'^teacher/course/task_content/$', 'app.teacher_course.course_task_content'),
     url(r'^teacher/course/group_accept/$', 'app.teacher_course.group_accept'),
     url(r'^teacher/course/group_refuse/$', 'app.teacher_course.group_refuse'),
+    url(r'^teacher/course/resourcedelete/$', 'app.teacher_course.resourcedelete'),
+
     url(r'^media/(?P<filename>.*)$', 'app.teacher_course.file_download'),
     url(r'^one_click_download/$', 'app.teacher_course.one_click_download'),
 

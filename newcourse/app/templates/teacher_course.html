@@ -90,8 +90,8 @@
                         <td>{{ coursegroup.group.user.name}}</td>
                         <td>
                             <div class="btn-group">
-                        <button type="button" style="max-width:100px" value="是" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
-                        <button type="button" style="max-width:100px" value="否" class="btn btn-warning" id="{{ coursegroup.id }}">拒绝</button>
+                        <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
+                        <button type="button" style="max-width:100px" value="拒绝" class="btn btn-warning" id="{{ coursegroup.id }}">拒绝</button>
                          </div>
                         </td>
                     </tr>
@@ -103,7 +103,7 @@
 </div>
     <script>
     $(function () {
-        $("input[type='button'][value='是']").bind('click', function () {
+        $("button[value='批准']").bind('click', function () {
             $.ajax(
                   {
                       url: "/teacher/course/group_accept/",
@@ -128,7 +128,7 @@
         });
         });
         $(function () {
-        $("input[type='button'][value='否']").bind('click', function () {
+        $("button[value='拒绝']").bind('click', function () {
             $.ajax(
                   {
                       url: "/teacher/course/group_refuse/",

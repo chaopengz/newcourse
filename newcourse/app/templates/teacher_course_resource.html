@@ -35,6 +35,11 @@
                   </select>
                         </td>
                         <td>{{ resource.submit_time}}</td>
+                        <td>
+                                    <button value="remove"  id="{{ resource.id }} "class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
+                                    <i class="fa fa-times"></i>
+                                    </button>
+                        </td>
                     </tr>
                   {% endfor %}
            </table>
@@ -95,6 +100,32 @@
                       }
                   });
             }
+        });
+        });
+
+        $(function () {
+        $("button[value='remove']").bind('click', function () {
+                $.ajax(
+                        {
+                            url: "/teacher/course/resourcedelete/",
+                            type: "POST",
+                            data: {
+                                "resourceid": $(this).attr("id"),
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == true) {
+                                    alert("删除成功!");
+                                    window.location.reload();
+                                }
+                                else {
+                                    alert("删除失败!");
+                                }
+                            },
+                            error: function () {
+                                alert("删除失败");
+                            }
+                        });
         });
         });
 </script>
