@@ -217,7 +217,7 @@ def one_click_download(request):
 def student_group(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 4
-    # user = User.objects.filter(name=request.session['name']).first()
+    user = User.objects.filter(name=request.session['name']).first()
     g = Group.objects.filter()
 
     return render_to_response('student_allgroups.html', locals())
