@@ -8,6 +8,11 @@ from django import forms
 
 
 def addGroup(request):
+    user = User.objects.filter(name=request.session['name']).first()
+    list_num = request.session['list_num']
+    links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '所有团队', 'page': '/student/groups/'}]
+    if list_num ==3:
+        links = [{'name': '学生页面', 'page': '/student/'},{'name':'我的团队','page':'/student/mygroup/'}]
     if request.method == 'POST':
         # Add group info to table app_group
         user = User.objects.filter(name=request.session['name']).first()
@@ -21,14 +26,14 @@ def addGroup(request):
         uG.save()
         return HttpResponseRedirect('/student/mygroup/')
     else:
-        return render_to_response('student_add_group.html')
+        return render_to_response('student_add_group.html',locals())
 
 
 def myGroup(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 3
     user = User.objects.filter(name=request.session['name']).first()
-
+    request.session['list_num'] = 3
     uG = UserGroup.objects.filter(user=user)
 
     return render_to_response('student_mygroup.html', locals())
@@ -45,6 +50,10 @@ def join(request):
 
 def info(request, i):  # i stands for the groupId
     request.session['group_id'] = i
+    list_num = request.session['list_num']
+    links = [{'name': '学生页面', 'page': '/student/', 'name': '所有团队', 'page': '/student/groups/'}]
+    if list_num == 3:
+        links = [{'name': '学生页面', 'page': '/student/', 'name': '我的团队', 'page': '/student/mygroup/'}]
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
@@ -104,6 +113,10 @@ def handle_group(request):
 
 def applyforcourse(request):
     user = User.objects.filter(name=request.session['name']).first()
+    list_num = request.session['list_num']
+    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}]
+    if list_num == 3:
+        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
     courses = Course.objects.filter(is_single = 0)
     #for course in courses:
        # if GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
@@ -111,6 +124,10 @@ def applyforcourse(request):
     return render_to_response('student_group_applyforcourse.html',locals())
 
 def applyforcourse_i(request,i):
+    list_num = request.session['list_num']
+    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'},{'name':'课程列表','page':'/student/group/applyforcourse/'}]
+    if list_num == 3:
+        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
     user = User.objects.filter(name=request.session['name']).first()
     request.session['course_id'] = i
     course = Course.objects.get(id = i)

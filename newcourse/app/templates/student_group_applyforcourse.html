@@ -1,4 +1,4 @@
-{% extends "student_group_info.html" %}
+{% extends "student_group_info_owner.html" %}
 
 {% block content %}
     <div class="box-body table-responsive no-padding">
@@ -9,7 +9,6 @@
                   <th>上课时间</th>
                   <th>是否允许团体选课</th>
                     <th>课程简介</th>
-                    <th>申请加入</th>
                 </tr>
 
                   {% for course in courses %}
