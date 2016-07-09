@@ -9,6 +9,7 @@
                   <th>上课时间</th>
                   <th>是否允许团体选课</th>
                     <th>课程简介</th>
+                    <th>申请加入</th>
                 </tr>
 
                   {% for course in courses %}
@@ -23,6 +24,7 @@
                             <td><span class="label label-primary">允许</span></td>
                         {% endifequal %}
                         <td>{{ course.introduction }}</td>
+                        <td></td>
                     </tr>
                   {% endfor %}
 
