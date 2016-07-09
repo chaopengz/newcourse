@@ -3,10 +3,10 @@
 {% block content %}
     <div class="btn-group">
         <button type="button" style="max-width:100px" onclick="closegroup({{ group.id }})"
-                class="btn btn-block btn-warning">关闭组队
+                class="btn  btn-warning">关闭组队
         </button>
         <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
-                class="btn btn-block btn-info">解散团队
+                class="btn  btn-info">解散团队
         </button>
     </div>
     <div class="box box-solid">
@@ -48,11 +48,13 @@
                     <th>成员昵称</th>
                     <th>成员姓名</th>
                     <th>成员身份</th>
+                    <th>操作</th>
                 </tr>
                 <tr>
                     <th>{{ group_user.name }}</th>
                     <th>{{ group_user.real_name }}</th>
                     <th>团队负责人</th>
+                    <th>无</th>
                 </tr>
                 {% for obj in member_list %}
                     <tr>
@@ -61,6 +63,11 @@
                         <th> {{ obj.real_name }}</th>
 
                         <th>团队成员</th>
+                        <th>
+                            <button type="button" style="max-width:100px" onclick="authority_translate('{{ group.id }}','{{ obj.id }}')"
+                                class="btn  btn-info">转让权限
+                             </button>
+                        </th>
                     </tr>
                 {% endfor %}
             </table>
@@ -168,6 +175,19 @@
                     function (json) {
                         alert(json)
                         window.location.replace("/student/mygroup/");
+                    }
+            );
+        }
+        function  authority_translate(gid,uid) {
+            $.post(
+                    "/student/groups/authority_translate/",
+                    {
+                    "group_id":gid,
+                    "user_id":uid
+                    },
+                    function (message) {
+                        alert(message)
+                        location.reload(true)
                     }
             );
         }
