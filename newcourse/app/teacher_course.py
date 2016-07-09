@@ -128,6 +128,12 @@ def course_resource_class_add(request):
     resource_class.save()
     return HttpResponse(json.dumps(True))
 
+def group_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    # usergroup=UserGroup.objects.get(pk=request.POST['groupid'])
+    # taskfile.delete()
+    return HttpResponse(json.dumps(True))
 
 def course_task(request):
      if not judge_login(request): return jump_not_login(request)

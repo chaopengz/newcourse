@@ -95,7 +95,7 @@ def save_info(request):
         ext = ext.lower()
         basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
         filename=basename+'.'+ext
-        bfilename=basename+'.jpg'
+        bfilename=basename+'.'+ext
         ret_filename='/static/avatars/%s/%s' % (sub_folder_name,bfilename)
         filename=path+filename
         filename=filename.lower()

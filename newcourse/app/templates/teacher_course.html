@@ -17,7 +17,8 @@
       </ul>
       <!-- /.sidebar-menu -->
      {% endblock %}
-     {% block content %}
+
+{% block content %}
      <div class="box box-solid">
             <div class="box-header with-border">
               <i class="fa fa-text-width"></i>
@@ -62,6 +63,11 @@
                         <td>{{ coursegroup.group.name}}</td>
                         <td>{{ coursegroup.group.user.name}}</td>
                         <td>{{ coursegroup.group.max_number }}</td>
+                        <td>
+                            <button value="remove"  id="{{ coursegroup.id }} "class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
+                            <i class="fa fa-times"></i>
+                            </button>
+                        </td>
                     </tr>
                       {% endifequal %}
 
@@ -70,7 +76,7 @@
            </table>
        </div>
 </div>
-          <div class="box">
+    <div class="box">
          <div class="box-header">
             <h3 class="box-title">申请列表</h3>
         </div>
@@ -78,9 +84,9 @@
            <table class="table table-hover">
                 <tr>
                   <th>团队序号</th>
-                    <th>团队名称</th>
+                  <th>团队名称</th>
                   <th>团队负责人</th>
-                    <th>批准加入课程</th>
+                  <th>批准加入课程</th>
                 </tr>
                   {% for coursegroup in coursegroups %}
                       {% ifequal coursegroup.is_allowed 0 %}
@@ -90,9 +96,9 @@
                         <td>{{ coursegroup.group.user.name}}</td>
                         <td>
                             <div class="btn-group">
-                        <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
-                        <button type="button" style="max-width:100px" value="拒绝" class="btn btn-warning" id="{{ coursegroup.id }}">拒绝</button>
-                         </div>
+                                <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
+                                <button type="button" style="max-width:100px" value="拒绝" class="btn btn-warning" id="{{ coursegroup.id }}">拒绝</button>
+                            </div>
                         </td>
                     </tr>
                       {% endifequal %}
@@ -102,6 +108,32 @@
        </div>
 </div>
     <script>
+    $(function () {
+        $("button[value='remove']").bind('click', function () {
+                $.ajax(
+                        {
+                            url: "/teacher/course/groupdelete/",
+                            type: "POST",
+                            data: {
+                                "groupid": $(this).attr("id"),
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == true) {
+                                    alert("删除成功!");
+                                    window.location.reload();
+                                }
+                                else {
+                                    alert("删除失败!");
+                                }
+                            },
+                            error: function () {
+                                alert("删除失败");
+                            }
+                        });
+        });
+        });
+
     $(function () {
         $("button[value='批准']").bind('click', function () {
             $.ajax(
@@ -152,6 +184,4 @@
         });
         });
 </script>
-
-
-    {% endblock %}
+     {% endblock %}
