@@ -58,7 +58,7 @@
                   {% for teacher in teachers %}
                       <th> {{ forloop.counter }}</th>
                       <th> {{ teacher.name }}</th>
-                    <th> {{ teacher.real_name }}</th>
+                    <th> {{ teacher.real_name|slice:'15' }}</th>
                     <th><button type="button" class="btn btn-block btn-primary" style="max-width:100px" onclick="resetPassword({{ teacher.id }})">重置密码</button></th>
                 </tr>
                 {% endfor %}

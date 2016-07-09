@@ -30,7 +30,7 @@
                     <th >操作</th>
                 </tr>
                   {% for term in res %}
-                    <th> {{ term.term.name }}</th>
+                    <th> {{ term.term.name|slice:'15'}}</th>
 
                     <th> {{ term.term.start_date }} - {{ term.term.end_date }}</th>
                       {% if term.isrun %}

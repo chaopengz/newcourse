@@ -106,7 +106,7 @@
                   <th>操作</th>
                 </tr>
                   {% for course in res %}
-                    <th> {{ course.course.name }}</th>
+                    <th> {{ course.course.name|slice:'15' }}</th>
 
                     <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
                     <th> {% if course.course.is_single %}

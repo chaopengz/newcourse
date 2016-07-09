@@ -29,7 +29,7 @@
             <div class="box-body">
               <dl class="dl-horizontal">
                 <dt>课程名</dt><dd>{{ course.name }}</dd>
-                  <dt>课程简介</dt><dd>{{ course.introduction }}</dd>
+                  <dt>课程简介</dt><dd>{{ course.introduction|slice:'25' }}</dd>
                   <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
                   <dt>课程起止日期</dt><dd>{{ term.start_date }} - {{ term.end_date }}</dd>
                   <dt>课程所属学期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
