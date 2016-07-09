@@ -99,6 +99,7 @@
             <div class="box-body no-padding">
               <table class="table table-striped">
                 <tr>
+                    <th>#</th>
                     <th>课程名</th>
                   <th>起止日期</th>
                     <th>课程类型</th>
@@ -106,6 +107,7 @@
                   <th>操作</th>
                 </tr>
                   {% for course in res %}
+                      <th> {{ forloop.counter }}</th>
                     <th> {{ course.course.name }}</th>
 
                     <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
