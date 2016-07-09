@@ -46,7 +46,6 @@ def modifyTerm(request):
         return render_to_response('administrator_add_term.html', locals())
 
 
-
 def main(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '1'): return jump_no_auth(request)

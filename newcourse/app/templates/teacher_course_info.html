@@ -16,10 +16,10 @@
                         <td>{{ course.id }}</td>
                         <td><a href="/teacher/course/{{course.id  }}">{{ course.name }}</a></td>
                         <td>{{ course.start_date }}--{{ course.end_date }}</td>
-                        {% ifequal course.is_single 1 %}
+                        {% ifequal course.is_single 0 %}
                             <td><span class="label label-success">允许</span></td>
                         {% endifequal %}
-                        {% ifequal course.is_single 0 %}
+                        {% ifequal course.is_single 1 %}
                             <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
                         <td>{{ course.introduction }}</td>

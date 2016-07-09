@@ -1,10 +1,17 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
-
-    <div>
-    <input class="btn  btn-primary" type="button"  value="发布新作业" onclick="javascrtpt:window.location.href='/teacher/course/task_publish'">
-    </div>
+    {% ifequal finish  0 %}
+        <div>
+            <input class="btn  btn-primary" type="button"  value="发布新作业" onclick="javascrtpt:window.location.href='/teacher/course/task_publish'">
+        </div>
+    {% endifequal %}
+    {% ifequal  finish 1 %}
+              <div class="callout callout-warning" style="margin-bottom: 0!important;">
+        <h4><i class="fa fa-info"></i> 提示信息:</h4>
+        该课程已结束，无法发布作业
+      </div>
+    {% endifequal %}
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>

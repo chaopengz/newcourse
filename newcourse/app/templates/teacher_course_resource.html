@@ -1,14 +1,21 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
-    <div>
-    <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
-    <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
 
-    <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
-    </div>
+    {% ifequal finish  0 %}
+        <div>
+            <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
+            <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
 
-
+            <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
+        </div>
+    {% endifequal %}
+    {% ifequal  finish 1 %}
+              <div class="callout callout-warning" style="margin-bottom: 0!important;">
+                <h4><i class="fa fa-info"></i> 提示信息:</h4>
+                该课程已结束，无法发布资源
+                </div>
+    {% endifequal %}
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
@@ -36,7 +43,7 @@
                         </td>
                         <td>{{ resource.submit_time}}</td>
                         <td>
-                                    <button value="remove"  id="{{ resource.id }} "class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
+                                    <button value="remove"  id="{{ resource.id }}" class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
                                     <i class="fa fa-times"></i>
                                     </button>
                         </td>
@@ -91,6 +98,7 @@
                       success: function (data) {
                           if (data == true) {
                               alert("修改并保存成功");
+                              window.location.reload();
                           } else {
                               alert("修改失败");
                           }

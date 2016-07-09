@@ -11,7 +11,7 @@ def administrator(request):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '1'): return jump_no_auth(request)
      page_name='教务首页'
-     links=[ {'name': '教务管理员页面', 'page': '/administrator/'} ]
+     links=[  ]
      if 'name' in request.session:
           name = request.session['name']
           user=User.objects.filter(name=name).first()
