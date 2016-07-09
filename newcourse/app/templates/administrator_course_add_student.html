@@ -1,7 +1,7 @@
 {% extends "administrator.html" %}
 
 {% block content %}
-
+<script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
 <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">添加学生</h3>
@@ -20,6 +20,7 @@
                   </div>
                   <div class="col-sm-4">
                       <button type="button"  class="btn btn-info pull-left" onclick="add_student()">添加</button>
+                      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" >批量导入</button>
                   </div>
               </div>
 
@@ -27,6 +28,66 @@
 
 
           </div>
+
+
+    <!-- .批量导入弹窗 -->
+<div class="modal" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%" method="post" action="/administrator/course/add_course_select_many/">
+                        <input type="hidden" name="course_id"  id="course_id" value="{{ cid }}">
+                        <div class="form-group">
+                            <a class="btn btn-default" target="_blank"  href="/media/csv/course_select_info.csv">下载学生选课信息批量导入模板</a>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="infolist" name="infolist">
+                         </div>
+                </form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" onclick="add_student_info()" >导入</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- 批量导入结果弹窗 -->
+    <div class="modal" id="mymodal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+                <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">出错的行</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped" id="error_list_table">
+                <tr>
+                    <th>学生学号</th>
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal" onclick="javascript:location.reload(true)">关闭</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
     <div class="box">
             <div class="box-header">
@@ -61,6 +122,23 @@
         sid=$('#sid').val()
         cid=$('#cid').val()
         self.location.href="/administrator/course/add_student/?cid="+cid+"&sid="+sid;
+    }
+
+
+    function add_student_info(){
+        var ajax_option={
+            success:function(data) {
+                console.log(data);
+                var elist = data.error_list;
+                $("#mymodal").modal({show:false});
+                $("#error_list_table").html('<tr> <th>学生学号</th>  </tr>');
+                for(row in elist){
+                    $("#error_list_table").append("<tr><th>"+elist[row][0]+"</th></tr>");
+                }
+                $("#mymodal2").modal({show:true});
+            }
+        };
+        $('#form1').ajaxSubmit(ajax_option);
     }
 </script>
 {% endblock %}

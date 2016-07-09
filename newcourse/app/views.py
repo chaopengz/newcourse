@@ -119,7 +119,7 @@ def save_info(request):
         user.real_name = request.POST['realname']
         user.save()
     request.session['message'] = "保存个人信息成功"
-    request.session['nexturl'] = "/userinfo/"
+    request.session['nexturl'] = "/"
     return HttpResponseRedirect('/info/')
 
 
