@@ -82,10 +82,8 @@ def handle_application(request):
 
 
 def authority_translate(request):
-    print 'hehehe'
     group=Group.objects.get(id=request.POST['group_id'])
     group.user_id=request.POST['user_id']
-    print group.user_id
     group.save()
     return HttpResponse("权限转让成功")
 
