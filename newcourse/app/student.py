@@ -83,6 +83,23 @@ def student_course_i_homework_I(request, i, I):
 
     user = User.objects.filter(name=request.session['name']).first()
     tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
+    allow_upload = 1
+    group_id = 0
+    if course.is_single ==0:
+        groups1 = GroupCourse.objects.filter(course_id=i)
+        groups2 = UserGroup.objects.filter(user_id = user.id,is_allowed=1)
+        for group1 in groups1:
+            for group2 in groups2:
+                if group1.group_id ==group2.group_id:
+                    group_id=  group1.group_id
+                    group = Group.objects.get(id = group_id)
+                    tasks = TaskFile.objects.filter(group_id=group_id,task_requirement_id=I)
+                    if len(tasks)!=0:
+                        allow_upload =0
+                        if group.user_id==user.id:
+                            allow_upload =1
+
+
     taskrequirement = TaskRequirement.objects.get(id=I)
     myurl = "/student/course/" + str(course.id)+"/homework/" + str(I)+"/"
 
@@ -91,7 +108,7 @@ def student_course_i_homework_I(request, i, I):
             task_file.name = taskrequirement.name
             task_file.is_file = False
             task_file.content = request.POST['content']
-            task_file.group_id = 0
+            task_file.group_id = group_id
             task_file.task_requirement_id = taskrequirement.id
             task_file.user_id = user.id
             task_file.save()
@@ -121,7 +138,14 @@ def student_course_i_homework_I_upload(request, i, I):
     term = Term.objects.filter(id=course.term_id).first()
     task = TaskRequirement.objects.get(pk=I)
     task_file = task.taskfile_set.all()
-
+    group_id = 0
+    if course.is_single == 0:
+        groups1 = GroupCourse.objects.filter(course_id=i)
+        groups2 = UserGroup.objects.filter(user_id=user.id, is_allowed=1)
+        for group1 in groups1:
+            for group2 in groups2:
+                if group1.group_id == group2.group_id:
+                    group_id = group1.group_id
     if request.method == "POST":
         uf = UserForm(request.POST, request.FILES)
         if uf.is_valid():
@@ -133,7 +157,7 @@ def student_course_i_homework_I_upload(request, i, I):
             task_file.name = description
             task_file.server_path = filepath
             task_file.is_file = True
-            task_file.group_id = 0
+            task_file.group_id = group_id
             task_file.task_requirement = task
             task_file.user = user
             task_file.save()

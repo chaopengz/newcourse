@@ -14,8 +14,10 @@
                   <dt>作业要求</dt><dd>{{ taskrequirement.base_requirements }}</dd>
                   <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
                   <dt>作业可提交日期</dt><dd>{{ taskrequirement.start_date }} - {{ taskrequirement.end_date }}</dd>
+                  {% if allow_upload %}
                   <dt>提交作业</dt><dd><a href="upload" >上传作业 </a></dd>
                   <dt>填写答案</dt>
+
                   <dd>
 {#                      <a href="content">网页填写</a>#}
 
@@ -26,6 +28,7 @@
                           在线填写
                      </button>
                   </dd>
+                  {% endif %}
               </dl>
             </div>
             <!-- /.box-body -->
@@ -84,11 +87,13 @@
                         <td ><a href="/media/{{ task.server_path }}">{{ task.server_path}}</a></td>
                         <td>{{ task.grade }}</td>
                         <td>{{ task.comment }}</td>
+                        {% if allow_upload %}
                         <td>
                             <button value="remove"  id="{{ task.id }} "class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
                             <i class="fa fa-times"></i>
                             </button>
                         </td>
+                    {% endif %}
                     </tr>
                   {% endfor %}
 
