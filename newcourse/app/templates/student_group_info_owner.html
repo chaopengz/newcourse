@@ -1,29 +1,42 @@
 {% extends "student.html" %}
 
 {% block content %}
- <div class="box box-solid">
-            <div class="box-header with-border">
-              <i class="fa fa-text-width"></i>
+    <div class="btn-group">
+        <button type="button" style="max-width:100px" onclick="closegroup({{ group.id }})"
+                class="btn btn-block btn-warning">关闭组队
+        </button>
+        <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
+                class="btn btn-block btn-info">解散团队
+        </button>
+    </div>
+    <div class="box box-solid">
+        <div class="box-header with-border">
+            <i class="fa fa-text-width"></i>
 
-              <h3 class="box-title">团队信息</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>团队名</dt><dd>{{group.name}}</dd>
-                  <dt>团队最大人数</dt><dd>{{ group.max_number }}</dd>
-                  <dt>团队负责人</dt><dd>{{ group_user.real_name }}</dd>
-                  <dt>团队现有人数</dt><dd>{{ group.number }}</dd>
-                  <dt>团队状态</dt><dd>
-                    {% if group.end %}
+            <h3 class="box-title">团队信息</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <dl class="dl-horizontal">
+                <dt>团队名</dt>
+                <dd>{{ group.name }}</dd>
+                <dt>团队最大人数</dt>
+                <dd>{{ group.max_number }}</dd>
+                <dt>团队负责人</dt>
+                <dd>{{ group_user.real_name }}</dd>
+                <dt>团队现有人数</dt>
+                <dd>{{ group.number }}</dd>
+                <dt>团队状态</dt>
+                <dd>
+                    {% if not group.end %}
                         已停止接受组队请求
                     {% else %}
                         可接受组队请求
                     {% endif %}
-              </dd>
-              </dl>
-            </div>
- </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">团队成员列表</h3>
@@ -43,11 +56,11 @@
                 </tr>
                 {% for obj in member_list %}
                     <tr>
-                    <th> {{ obj.name }}</th>
+                        <th> {{ obj.name }}</th>
 
-                    <th> {{ obj.real_name }}</th>
+                        <th> {{ obj.real_name }}</th>
 
-                    <th>团队成员</th>
+                        <th>团队成员</th>
                     </tr>
                 {% endfor %}
             </table>
@@ -66,63 +79,96 @@
                     <th>申请人姓名</th>
                     <th>操作</th>
                 </tr>
-            {% if no_member_list_len > 0 %}
-                {% for obj in no_member_list %}
-                    <tr>
-                    <th> {{ obj.name }}</th>
+                {% if no_member_list_len > 0 %}
+                    {% for obj in no_member_list %}
+                        <tr>
+                            <th> {{ obj.name }}</th>
 
-                    <th> {{ obj.real_name }}</th>
+                            <th> {{ obj.real_name }}</th>
 
-                    <th><div class="btn-group">
-                        <button type="button" style="max-width:100px" class="btn btn-success" onclick="accept('{{ group.id}}','{{obj.id }}')">批准</button>
-                        <button type="button" style="max-width:100px" class="btn btn-warning" onclick="reject('{{ group.id}}','{{obj.id }}')">拒绝</button>
-                         </div>
-                    </th>
-                    </tr>
-                {% endfor %}
+                            <th>
+                                <div class="btn-group">
+                                    <button type="button" style="max-width:100px" class="btn btn-success"
+                                            onclick="accept('{{ group.id }}','{{ obj.id }}')">批准
+                                    </button>
+                                    <button type="button" style="max-width:100px" class="btn btn-warning"
+                                            onclick="reject('{{ group.id }}','{{ obj.id }}')">拒绝
+                                    </button>
+                                </div>
+                            </th>
+                        </tr>
+                    {% endfor %}
                 {% else %}
-                <tr>
-                <th>无</th> <th>无</th> <th>无</th>
-                </tr>
-            {% endif %}
+                    <tr>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                    </tr>
+                {% endif %}
             </table>
         </div>
         <!-- /.box-body -->
     </div>
 
     <script>
-        function accept(gid,uid) {
-
+        function accept(gid, uid) {
             $.post(
                     "/student/groups/handle_application/",
                     {
-                        "is_allowed":"1",
-                        "group_id":gid,
-                        "user_id":uid,
+                        "is_allowed": "1",
+                        "group_id": gid,
+                        "user_id": uid,
                     },
-                function(data){
-                    if(data=="1"){
-                        location.reload(true);
-                         alert("您已批准该申请");
+                    function (data) {
+                        if (data == "1") {
+                            location.reload(true);
+                            alert("您已批准该申请");
+                        }
                     }
-                }
             );
         }
 
-        function reject(gid,uid) {
+        function reject(gid, uid) {
             $.post(
                     "/student/groups/handle_application/",
                     {
-                        "is_allowed":"2",
-                        "group_id":gid,
-                        "user_id":uid,
+                        "is_allowed": "2",
+                        "group_id": gid,
+                        "user_id": uid,
                     },
-                function(data){
-                    if(data=="2"){
-                        location.reload(true);
-                         alert("您已拒绝该申请");
+                    function (data) {
+                        if (data == "2") {
+                            location.reload(true);
+                            alert("您已拒绝该申请");
+                        }
                     }
-                }
+            );
+        }
+
+        function closegroup(gid) {
+            $.post(
+                    "/student/groups/handle_group/",
+                    {
+                        "group_id": gid,
+                        "type": "1"
+                    },
+                    function (json) {
+                        alert(json)
+                        location.reload(true)
+                    }
+            );
+        }
+        function releasegroup(gid) {
+            $.post(
+                    "/student/groups/handle_group/",
+                    {
+                        "group_id": gid,
+                        "type": "2"
+                    },
+                    function (json) {
+                        alert(json)
+                        window.location.replace("/student/mygroup/");
+                    }
             );
         }
     </script>

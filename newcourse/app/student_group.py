@@ -19,10 +19,9 @@ def addGroup(request):
         groupId = g.id
         uG = UserGroup(group_id=groupId, user=user, is_allowed=1)
         uG.save()
-        return render_to_response('student_mygroup.html')
+        return HttpResponseRedirect('/student/mygroup/')
     else:
-        user = User.objects.filter(name=request.session['name']).first()
-        return render_to_response('student_add_group.html',locals())
+        return render_to_response('student_add_group.html')
 
 
 def myGroup(request):
@@ -40,7 +39,8 @@ def join(request):
     user = User.objects.filter(name=request.session['name']).first()
     uG = UserGroup(group_id=groupId, user=user)
     uG.save()
-    return HttpResponse("申请成功，待团队负责人审核")
+    print 'success'
+    return HttpResponse("申请加入成功，待团队负责人审核")
 
 
 def info(request, i):  # i stands for the groupId
@@ -68,15 +68,31 @@ def info(request, i):  # i stands for the groupId
         return render_to_response('student_group_info_owner.html',locals())
 
 def handle_application(request):
-    ug=UserGroup.objects.filter(user_id=request.POST['user_id'],group_id=request.POST['group_id']).first()
-    ug.is_allowed=request.POST['is_allowed']
-    ug.save()
-    if ug.is_allowed=="1":
+    ug = UserGroup.objects.filter(user_id=request.POST['user_id'], group_id=request.POST['group_id']).first()
+    ug.is_allowed = request.POST['is_allowed']
+    if ug.is_allowed == "1":
+        group = Group.objects.filter(id=request.POST['group_id']).first()
+        group.number += 1
+        group.save()
+        ug.save()
         return HttpResponse("1")
     else:
+        ug.save()
         return HttpResponse("2")
 def handle_group(request):
-    return HttpResponse("处理团队申请")
+    if request.method == 'POST':
+        gid = request.POST['group_id']
+        handle_type = request.POST['type']
+        if handle_type == "1":
+            group = Group.objects.filter(id=gid).first()
+            group.end = 0
+            group.save()
+            return HttpResponse("成功关闭组队申请！")
+        else:
+            UserGroup.objects.filter(group_id=gid).delete()
+            GroupCourse.objects.filter(group_id=gid).delete()
+            Group.objects.get(id=gid).delete()
+            return HttpResponse("成功解散团队!")
 
 def applyforcourse(request):
     user = User.objects.filter(name=request.session['name']).first()

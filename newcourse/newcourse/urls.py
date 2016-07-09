@@ -47,6 +47,8 @@ urlpatterns = [
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
     url(r'^student/mygroup/$', 'app.student_group.myGroup'),
     url(r'^student/group/join/$', 'app.student_group.join'),
+    url(r'^student/group/groupInfo/(\d+)$', 'app.student_group.info'),
+    url(r'^student/groups/handle_group/$', 'app.student_group.handle_group'),
     url(r'^student/group/groupInfo/(\d+)/$', 'app.student_group.info'),
     url(r'^student/group/applyforcourse/$', 'app.student_group.applyforcourse'),
     url(r'^student/group/applyforcourse/(\d+)/$', 'app.student_group.applyforcourse_i'),
@@ -82,10 +84,13 @@ urlpatterns = [
     url(r'^administrator/course/courseInfo/(?P<courseId>\d+)/$', 'app.administrator_course.courseInfo'),
     url(r'^administrator/course/changeCourse/(?P<courseId>\d+)/$', 'app.administrator_course.changeCourseShow'),
     url(r'^administrator/course/addCourse/$', 'app.administrator_course.addCourseShow'),
+    url(r'^administrator/course/add_course_many/$', 'app.administrator_course.add_course_many'),
     url(r'^administrator/course/saveCourse/$', 'app.administrator_course.save_course'),
     url(r'^administrator/course/student/$', 'app.administrator_course.student'),
     url(r'^administrator/course/add_student/$', 'app.administrator_course.add_student'),
     url(r'^administrator/course/remove_student/$', 'app.administrator_course.remove_student'),
+
+
     url(r'^administrator/teacher/$', 'app.administrator_teacher.main'),
     url(r'^administrator/teacher/reset_password/(?P<tId>\d+)/$', 'app.administrator_teacher.reset_password'),
     url(r'^administrator/teacher/add_teacher/$', 'app.administrator_teacher.add_teacher'),
