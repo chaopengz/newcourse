@@ -155,6 +155,7 @@ def apply(request):
         if course.is_single == 0:
             if valid == 1:
                 groupcourse = GroupCourse()
+                #test
                 groupcourse.is_allowed = 0
                 groupcourse.course_id = course.id
                 groupcourse.group_id = group.id
