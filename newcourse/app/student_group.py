@@ -163,7 +163,7 @@ def apply(request):
     term = Term.objects.get(id = course.term_id)
     group = Group.objects.get(id = request.session["group_id"])
     usercourses = UserCourse.objects.filter(course_id = course.id)
-    usergroups = UserGroup.objects.filter(group_id=group.id)
+    usergroups = UserGroup.objects.filter(group_id=group.id,is_allowed=1)
     valid = 1
     for usercourse in usercourses:
         for usergroup in usergroups:

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.contrib.auth import authenticate, logout, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -11,6 +12,10 @@ def t_Home(request):
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
     user = User.objects.filter(name=request.session['name']).first()
+    course_id = int(request.session['course_id'])
+    course = Course.objects.get(id=course_id)
+    links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': course.name, 'page': '/teacher/course'},
+             {'name': '资源管理', 'page': '/teacher/course/resource'}]
     return render(request, "teacher_course_message.html", locals())
 
 
@@ -21,7 +26,10 @@ def s_Home(request,i):
     course=Course.objects.get(id=i)
     user = User.objects.filter(name=request.session['name']).first()
     c = Chat.objects.filter(courseid=courseId)
-
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
     return render(request, "student_course_message.html", locals())
 
 

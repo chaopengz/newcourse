@@ -111,7 +111,7 @@ def student_course_i_homework_I(request, i, I):
     str1 = str1 + str(course.id)
     links = [{'name': '学生页面', 'page': '/student/'},
              {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
-
+    uf = UserForm(request.POST, request.FILES)
     user = User.objects.filter(name=request.session['name']).first()
     tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
     allow_upload = 1
@@ -135,6 +135,32 @@ def student_course_i_homework_I(request, i, I):
     myurl = "/student/course/" + str(course.id)+"/homework/" + str(I)+"/"
     if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
         allow_upload = 0
+    if request.method == "POST":
+        if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+            request.session['message'] = "本次作业已过期"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')
+
+        uf = UserForm(request.POST, request.FILES)
+        if uf.is_valid():
+            # 获取表单信息
+            description = uf.cleaned_data['Description']
+            filepath = uf.cleaned_data['File']
+            # 写入数据库】
+            task_file = TaskFile()
+            task_file.name = description
+            task_file.server_path = filepath
+            task_file.is_file = True
+            task_file.group_id = group_id
+            task_file.task_requirement_id = taskrequirement.id
+            task_file.user = user
+            task_file.save()
+
+            course_id = int(request.session['course_id'])
+            resources = Resource.objects.filter(course_id=course_id)
+            return HttpResponseRedirect('/student/course/' + i + '/homework/' + I + '/')
+    else:
+        uf = UserForm()
     if request.method == "POST":
             if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
                  request.session['message'] = "本次作业已过期"
@@ -233,10 +259,7 @@ def student_course_i_resource(request, i):
     for resource in resources:
         resourcesclasses.append([resource, ResourceClass.objects.get(id=resource.resource_class_id)])
 
-    str1 = '/student/course/'
-    str1 = str1 + str(course.id)
-    links = [{'name': '学生页面', 'page': '/student/'},
-             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+
     return render_to_response('student_course_i_resource.html', locals())
 
 
