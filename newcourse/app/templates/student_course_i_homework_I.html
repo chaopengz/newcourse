@@ -15,10 +15,20 @@
                   <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
                   <dt>作业可提交日期</dt><dd>{{ taskrequirement.start_date }} - {{ taskrequirement.end_date }}</dd>
                   {% if allow_upload %}
-                  <dt>提交作业</dt><dd><a href="upload" >上传作业 </a></dd>
+                  <dt>提交作业</dt>
+                      <dd>
+                             <form method = "post" class="form-horizontal" enctype="multipart/form-data" >
+                                    <label>作业描述</label>
+                                    {{ uf.Description }}
+                                 <div class="col-sm-10" >
+                                     {{ uf.File }}
+                                 </div>
+                                 <button type="submit" class="btn btn-primary">上传</button>
+                           </form>
+                     </dd>
                   <dt>填写答案</dt>
-
                   <dd>
+{#                      <a href="content">网页填写</a>#}
                      <button type="button" class="btn btn-success" title="在线填写" data-html="true"
                           data-container="body" data-toggle="popover" data-placement="bottom"
                           data-content='<div><textarea id="answer" style="width: 250px; height: 300px"></textarea></div>
