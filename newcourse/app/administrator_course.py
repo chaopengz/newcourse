@@ -9,7 +9,9 @@ import os
 import time
 import random
 import csv
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # Create your views here.
 
@@ -81,8 +83,6 @@ def add_course_many(request):
         file = request.FILES.get('infolist', None)
         filedata=file.read()
         basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
-
-
         path='%s/uploads/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media'))
         # 如果文件夹不存在，创建文件夹
         if not os.path.exists(path):
@@ -91,46 +91,54 @@ def add_course_many(request):
         f = open(fullpath, 'wb')
         f.write(filedata)
         f.close()
-
         error_list=[]
-
         term_id=request.POST.get('term_id')
-
         with open(fullpath,'rb') as f:
             reader = csv.reader(f)
             rownum=0
             for row in reader:
-                if rownum>0:
+                rownum+=1
+                if rownum>1:
                     if Course.objects.filter(name=row[0].decode('gb2312')).count() == 0:
-                        if User.objects.filter(name=row[2].decode('gb2312'),type=3).count < 0:
+                        try:
+                            User.objects.get(name=row[2].decode('gb2312'),type=3)
+                        except User.DoesNotExist:
                             error_list.append(row)
+                            continue
                         else:
                             tid=User.objects.get(name=row[2].decode('gb2312'),type=3).id
-
-                            if row[5].decode('gb2312')=='是':
-                                is_s='0'
+                            if row[5].decode('gb2312')==u'是':
+                                is_s=False
                             else:
-                                is_s='1'
+                                is_s=True
+                            date_format='%Y年%m月%d日'
+                            date_format=date_format.decode('utf-8')
                             new_course=Course(
                                 name=row[0].decode('gb2312'),
                                 introduction=row[1].decode('gb2312'),
                                 teacher_id=tid,
-                                start_date=time.strptime(row[3].decode('gb2312'), "%Y年%m月%d日"),
-                                end_date=time.strptime(row[4].decode('gb2312'), "%Y年%m月%d日"),
+                                start_date=datetime.datetime.strptime(row[3].decode('gb2312'), date_format),
+                                end_date=datetime.datetime.strptime(row[4].decode('gb2312'), date_format),
                                 is_single=is_s,
                                 term_id=term_id
                             )
                             new_course.save()
-                rownum+=1
         os.remove(fullpath)
+        for row in error_list:
+            row[0]=row[0].decode('gb2312')
+            row[1]=row[1].decode('gb2312')
+            row[2]=row[2].decode('gb2312')
+            row[3]=row[3].decode('gb2312')
+            row[4]=row[4].decode('gb2312')
+            row[5]=row[5].decode('gb2312')
         response_data = {}
-        response_data['error_list'] = 'success'
+        response_data['error_info'] = 'success'
+        response_data['error_list'] = error_list
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     else:
         response_data = {}
-        response_data['error_list'] = 'success'
+        response_data['error_info'] = 'failed'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
-
 
 def changeCourseShow(request, courseId):
     list_num = 2
@@ -205,13 +213,16 @@ def student(request):
         page_name = '选课学生管理'
         links = [{'name': '课程管理', 'page': '/administrator/course/'}, {'name': '选课学生管理', 'page': '#'}]
         user = User.objects.filter(name=request.session['name']).first()
+
         cid = request.GET.get('cid')
-        allstudents = User.objects.filter(type=2).order_by('name')
         course = Course.objects.get(id=cid)
+
+        allstudents = User.objects.filter(type=2).order_by('name')
         students = []
         studentids = UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
         for s in studentids:
             students.append(s.user)
+
         return render_to_response('administrator_course_add_student.html', locals())
     else:
         return HttpResponseRedirect('/administrator/course/')
@@ -239,6 +250,59 @@ def add_student(request):
     else:
         return HttpResponseRedirect('/administrator/course/')
 
+def add_course_select_many(request):
+    if 'infolist' in request.FILES:
+        file = request.FILES.get('infolist', None)
+        filedata=file.read()
+        basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
+        path='%s/uploads/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media'))
+        # 如果文件夹不存在，创建文件夹
+        if not os.path.exists(path):
+            os.makedirs(path)
+        fullpath=path+basename
+        f = open(fullpath, 'wb')
+        f.write(filedata)
+        f.close()
+        error_list=[]
+        cid=request.POST.get('course_id')
+        course=Course.objects.get(id=cid)
+        with open(fullpath,'rb') as f:
+            reader = csv.reader(f)
+            rownum=0
+            for row in reader:
+                rownum+=1
+                if rownum>1:
+                    try:
+                        # 是否有此学生
+                        User.objects.get(name=row[0].decode('gb2312'),type=2)
+                    except:
+                        error_list.append(row)
+                        continue
+
+                    student=User.objects.get(name=row[0].decode('gb2312'),type=2)
+
+                    try:
+                        # 是否已经有这条选课记录
+                        UserCourse.objects.get(user=student,course=course)
+                    except:
+                         # 选课
+                        new_course_select=UserCourse(
+                            user=student,
+                            course=course
+                        )
+                        new_course_select.save()
+                        continue
+        os.remove(fullpath)
+        for row in error_list:
+            row[0]=row[0].decode('gb2312')
+        response_data = {}
+        response_data['error_info'] = 'success'
+        response_data['error_list'] = error_list
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        response_data = {}
+        response_data['error_info'] = 'failed'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def remove_student(request):
     if 'cid' in request.GET:
@@ -251,9 +315,9 @@ def remove_student(request):
             return HttpResponseRedirect('/administrator/course/student/?cid=' + cid)
         if student != None:
             try:
-                uc = UserCourse.objects.get(user=student, course=course)
+                uc = UserCourse.objects.filter(user=student, course=course).first()
                 uc.delete()
-            except UserCourse.DoesNotExist:
+            except:
                 return HttpResponseRedirect('/administrator/course/student/?cid=' + cid)
         return HttpResponseRedirect('/administrator/course/student/?cid=' + cid)
     else:

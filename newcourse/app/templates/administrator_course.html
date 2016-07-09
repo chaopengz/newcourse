@@ -1,7 +1,7 @@
 {% extends "administrator.html" %}
 
 {% block content %}
-
+<script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
 <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">添加学生</h3>
@@ -67,31 +67,23 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <table class="table table-striped">
+              <table class="table table-striped" id="error_list_table">
                 <tr>
                     <th>课程名</th>
-                    <th>教师工号</th>
-                    <th>起止日期</th>
-                    <th>课程类型</th>
+                    <th>课程介绍</th>
+                    <th>教师名</th>
+                    <th>学生名</th>
+                    <th>起始日期</th>
+                    <th >结束日期</th>
+                    <th >是否是团体课</th>
                 </tr>
-                  {% for course in res %}
-                    <th> {{ course.course.name }}</th>
-                      <th> {{ course.course.id }}</th>
-                    <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
-                    <th> {% if course.course.is_single %}
-                        普通课程
-                    {% else %}
-                        团队课程
-                    {% endif %}</th>
-                </tr>
-                {% endfor %}
               </table>
             </div>
             <!-- /.box-body -->
           </div>
 			</div>
 			<div class="modal-footer">
-                <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#mymodal" onclick="javascript:$('#form1').submit()" >关闭</button>
+                <button type="button" class="btn btn-default"  data-dismiss="modal" onclick="javascript:location.reload(true)">关闭</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -107,11 +99,11 @@
             <div class="box-body no-padding">
               <table class="table table-striped">
                 <tr>
-                  <th>课程名</th>
+                    <th>课程名</th>
                   <th>起止日期</th>
-                  <th>课程类型</th>
-                  <th >状态</th>
-                    <th >操作</th>
+                    <th>课程类型</th>
+                    <th>开课状态</th>
+                  <th>操作</th>
                 </tr>
                   {% for course in res %}
                     <th> {{ course.course.name }}</th>
@@ -146,18 +138,26 @@
 
     function add_course_info(){
         $('#term_id').val($('#term_select').val());
-
-        $.ajax({
-             url : "/administrator/course/add_course_many/",
-             type : "POST",
-             data : $( '#form1').serialize(),
-             success : function(data) {
-                  console.log(data);
-             },
-             error : function(data) {
-                  console.log(data);
-             }
-        });
+        var ajax_option={
+            success:function(data) {
+                console.log(data);
+                var elist = data.error_list;
+                $("#mymodal").modal({show:false});
+                $("#error_list_table").html('<tr> <th>课程名</th>  <th>课程介绍</th><th>教师名</th><th>起始日期</th> <th>结束日期</th> <th >是否是团体课</th>  </tr>');
+                for(row in elist){
+                    $("#error_list_table").append("<tr>");
+                    $("#error_list_table").append("<th>"+elist[row][0]+"</th>");
+                    $("#error_list_table").append("<th>"+elist[row][1]+"</th>");
+                    $("#error_list_table").append("<th>"+elist[row][2]+"</th>");
+                    $("#error_list_table").append("<th>"+elist[row][3]+"</th>");
+                    $("#error_list_table").append("<th>"+elist[row][4]+"</th>");
+                    $("#error_list_table").append("<th>"+elist[row][5]+"</th>");
+                    $("#error_list_table").append("</tr>");
+                }
+                $("#mymodal2").modal({show:true});
+            }
+        };
+        $('#form1').ajaxSubmit(ajax_option);
     }
 </script>
 {% endblock %}
