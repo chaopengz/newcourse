@@ -137,12 +137,32 @@ def student_course_i_homework_I(request, i, I):
     if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
         allow_upload = 0
     if request.method == "POST":
+        uf = UserForm(request.POST, request.FILES)
+
+        if not uf.is_valid():
+            request.session['message'] = "作业描述或文件为空"
+            request.session['nexturl'] = str1+'/homework/'+ str(I)
+            return HttpResponseRedirect('/info/')
+
+
+        '''description = uf.cleaned_data['Description']
+        filepath = uf.cleaned_data['File']
+        if not description:
+            request.session['message'] = "作业描述为空"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')
+
+        if not filepath:
+            request.session['message'] = "未选择文件"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')'''
+
         if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
             request.session['message'] = "本次作业已过期"
             request.session['nexturl'] = str1
             return HttpResponseRedirect('/info/')
 
-        uf = UserForm(request.POST, request.FILES)
+
         if uf.is_valid():
             # 获取表单信息
             description = uf.cleaned_data['Description']
