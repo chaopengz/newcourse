@@ -28,7 +28,7 @@ def student_info(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 1
     user = User.objects.filter(name=request.session['name']).first()
-    return render_to_response('student_info.html', locals())
+    return render_to_response('student.html', locals())
 
 
 def student_course(request):
