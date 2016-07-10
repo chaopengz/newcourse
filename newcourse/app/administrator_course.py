@@ -41,10 +41,9 @@ class CourseShow:
 
 
 # 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
-def compare_time(time1, time2):
-    nowtime = datetime.date.today()
-    print (time2 - nowtime).days
-    if (nowtime - time1).days > 0 and (time2 - nowtime).days > 0:
+def compare_time(time1, time2,cmptime=datetime.date.today()):
+    print (time2 - cmptime).days
+    if (cmptime - time1).days >= 0 and (time2 - cmptime).days >= 0:
         return True
     else:
         return False
@@ -190,7 +189,17 @@ def save_course(request):
     sdate = datetime.datetime.strptime(sdatestr, "%m/%d/%Y").date()
     edate = datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
 
+    # 判断课程的起止日期是否在学期起止日期内
+    term=Term.objects.get(id=tterm)
+    t_sdate=term.start_date
+    t_edate=term.end_date
+
+    if (not compare_time(t_sdate,t_edate,sdate)) or (not compare_time(t_sdate,t_edate,edate)):
+        # 日期判别失败，跳出
+        return jump_with_info(request,"课程信息录入失败：课程起止日期不能超过学期的起止日期！请重新填写","/administrator/course/addCourse/")
+
     if request.POST.get('t_id'):
+        # 修改原有课程
         course = Course.objects.get(id=request.POST.get('t_id'))
         course.name = tname
         course.introduction = tintroduction
@@ -201,6 +210,7 @@ def save_course(request):
         course.end_date = edate
         course.save()
     else:
+        # 添加新课程
         course = Course(
             name=tname,
             introduction=tintroduction,

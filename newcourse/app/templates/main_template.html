@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
 
 
+    <link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap.css">
   <!-- daterange picker -->
   <link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker.css">
   <!-- bootstrap datepicker -->
@@ -45,6 +46,7 @@
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
   <![endif]-->
 
 
@@ -77,6 +79,9 @@
 <script src="/static/dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/static/dist/js/demo.js"></script>
+
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- Page script -->
 
 <!-- Page loading -->
@@ -297,6 +302,41 @@
     }
 
     setActive({{ list_num }})
+
+    function set_table(tableId){
+        $('#'+tableId).DataTable({
+        "language":{
+    "decimal":        "",
+    "emptyTable":     "无结果",
+    "info":           "当前显示从第 _START_ 到第 _END_ 条结果，共 _TOTAL_ 条",
+    "infoEmpty":      "",
+    "infoFiltered":   "没有搜索结果",
+    "infoPostFix":    "",
+    "thousands":      ",",
+    "lengthMenu":     "每页显示 _MENU_ 条结果",
+    "loadingRecords": "加载中...",
+    "processing":     "运行中...",
+    "search":         "搜索 :",
+    "zeroRecords":    "没有搜索结果",
+    "paginate": {
+        "first":      "第一页",
+        "last":       "最后一页",
+        "next":       "下一页",
+        "previous":   "上一页"
+    },
+    "aria": {
+        "sortAscending":  ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    }
+},
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+    }
 </script>
 </body>
 </html>
