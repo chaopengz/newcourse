@@ -116,9 +116,14 @@ def handle_group(request):
         handle_type = request.POST['type']
         if handle_type == "1":
             group = Group.objects.filter(id=gid).first()
-            group.end = 0
-            group.save()
-            return HttpResponse("成功关闭组队申请！")
+            if(group.end==1):
+                group.end = 0
+                group.save()
+                return HttpResponse("成功关闭组队申请！")
+            else:
+                group.end = 1
+                group.save()
+                return HttpResponse("成功开启组队申请！")
         else:
             UserGroup.objects.filter(group_id=gid).delete()
             GroupCourse.objects.filter(group_id=gid).delete()
