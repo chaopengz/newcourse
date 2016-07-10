@@ -272,7 +272,7 @@ def course_task_grade_many(request):
                             continue
                     else:
                         user_temp = User.objects.filter(name=row[0].decode('gb2312')).first()
-                        if len(TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp))==0:
+                        if len(TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp))==0 or int(row[1]) >100 or int(row[1])<0:
                             error_list.append(row)
                             continue
                         else:
