@@ -198,4 +198,3 @@ def apply(request):
     request.session['nexturl'] = "/student/group/applyforcourse/"
     return HttpResponseRedirect('/info/')
 
-    return render_to_response('student_group_applyforcourse_i.html', locals())
