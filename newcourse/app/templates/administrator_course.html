@@ -4,7 +4,7 @@
 <script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
 <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">添加课程</h3>
+              <h3 class="box-title">添加学生</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -26,7 +26,7 @@
 				<h4 class="modal-title">批量导入</h4>
 			</div>
 			<div class="modal-body">
-				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%;padding-right:15%" method="post" action="/administrator/course/add_course_many/">
+				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%" method="post" action="/administrator/course/add_course_many/">
                         <input type="hidden" name="term_id"  id="term_id" value="">
                         <div class="form-group">
                           <select class="form-control" id="term_select">
@@ -99,6 +99,7 @@
             <div class="box-body no-padding">
               <table class="table table-striped">
                 <tr>
+                    <th>#</th>
                     <th>课程名</th>
                   <th>起止日期</th>
                     <th>课程类型</th>
@@ -106,7 +107,8 @@
                   <th>操作</th>
                 </tr>
                   {% for course in res %}
-                    <th> {{ course.course.name|slice:'15' }}</th>
+                      <th> {{ forloop.counter }}</th>
+                    <th> {{ course.course.name }}</th>
 
                     <th> {{ course.course.start_date }} - {{ course.course.end_date }}</th>
                     <th> {% if course.course.is_single %}
