@@ -109,7 +109,7 @@
                 <tr>
                     <th>作业名称</th>
                     <th>提交时间</th>
-                    <th>文件名</th>
+                    <th>作业内容</th>
                     <th>分数</th>
                     <th>评论</th>
                 </tr>
@@ -118,7 +118,15 @@
                         <td>{{ task.name }}</td>
                         <td>{{ task.submit_time }}</td>
 {#                        <td ><a href="/media/{{ task.server_path }}">{{ task.server_path}}</a></td>#}
+                        {% if task.is_file %}
                         <td ><a href="/media/{{ task.server_path }}">{{ task.server_path}}</a></td>
+                        {% else %}
+                        <td>
+                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ task.content  }}">
+                                {{ task.content|slice:'25'  }}...
+                        </a>
+                        </td>
+                        {% endif %}
                         <td>{{ task.grade }}</td>
                         <td>{{ task.comment }}</td>
                         {% if allow_upload %}
