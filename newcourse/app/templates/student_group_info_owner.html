@@ -187,6 +187,8 @@
             );
         }
         function releasegroup(gid) {
+            if(confirm('确定要解散该队伍么？')){
+
             $.post(
                     "/student/groups/handle_group/",
                     {
@@ -198,9 +200,11 @@
                         window.location.replace("/student/mygroup/");
                     }
             );
+            }
         }
         function  authority_translate(gid,uid) {
-            $.post(
+            if(confirm('确定要把权限转让给该同学么？')){
+                $.post(
                     "/student/groups/authority_translate/",
                     {
                     "group_id":gid,
@@ -211,6 +215,8 @@
                         location.reload(true)
                     }
             );
+            }
+
         }
     </script>
 {% endblock %}
