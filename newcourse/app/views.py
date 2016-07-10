@@ -9,6 +9,7 @@ import os
 import random
 import json
 from PIL import Image
+from view_auth_manage import *
 # Create your views here.
 def index(request):
     return render_to_response('index.html')
@@ -56,6 +57,7 @@ def logout(request):
     return HttpResponseRedirect('/info/')
 
 def userinfo(request):
+    if not judge_login(request): return jump_not_login(request)
     page_name = '管理个人信息'
     links = [{'name': '管理个人信息', 'page': '#'}]
     user = User.objects.filter(name=request.session['name']).first()
@@ -73,6 +75,7 @@ def deal_image(name,data):
     region.save(name,"gif")
 
 def save_info(request):
+    if not judge_login(request): return jump_not_login(request)
     if 'avatar_data' in request.POST:
         user = User.objects.get(name=request.session['name'])
 
@@ -92,7 +95,7 @@ def save_info(request):
         ext = ext.lower()
         basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
         filename=basename+'.'+ext
-        bfilename=basename+'.jpg'
+        bfilename=basename+'.'+ext
         ret_filename='/static/avatars/%s/%s' % (sub_folder_name,bfilename)
         filename=path+filename
         filename=filename.lower()
@@ -124,6 +127,7 @@ def save_info(request):
 
 
 def change_password(request):
+    if not judge_login(request): return jump_not_login(request)
     if 'name' in request.session:
         user = User.objects.get(name=request.session['name'])
         if 't_oldpw' in request.POST:

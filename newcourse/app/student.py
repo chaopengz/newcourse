@@ -6,10 +6,13 @@ import MySQLdb
 from models import *
 from django import forms
 import json
-import os, tempfile, zipfile
+import os, tempfile, zipfile,administrator_course
 from teacher_course import zip_dir
+from view_auth_manage import *
 # Create your views here.
 def student(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}]
     if 'name' in request.session:
         name = request.session['name']
@@ -20,6 +23,8 @@ def student(request):
 
 
 def student_info(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 1
     user = User.objects.filter(name=request.session['name']).first()
@@ -27,6 +32,8 @@ def student_info(request):
 
 
 def student_course(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     page_name = '课程列表'
     list_num = 2
     links = [{'name': '学生页面', 'page': '/student/'}]
@@ -39,14 +46,18 @@ def student_course(request):
     course_teachers = []
     for course in courses:
         course_teachers.append([course, User.objects.get(id=course.teacher_id)])
+    sorted(course_teachers,)
     # courses = Course.objects.filter(id=usercourses.course_id)
     # courses=['C++', 'Java']
     return render_to_response('student_course.html', locals())
 
 
 def student_course_i(request, i):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '课程列表', 'page': '/student/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
+    list_num = 1
     course = Course.objects.get(id=i)
     term = Term.objects.filter(id=course.term_id).first()
     request.session['course_id'] = i
@@ -55,11 +66,28 @@ def student_course_i(request, i):
 
 
 def student_course_i_homework(request, i):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
-    list_num = 1
+    list_num = 2
     page_name = '作业列表'
     course = Course.objects.get(id=i)
     tasks = TaskRequirement.objects.filter(course_id=course.id)
+
+    if course.is_single:
+        task_dones =[]
+        for task in tasks:
+            task_dones.append([task,len(TaskFile.objects.filter(user_id=user.id,task_requirement_id=task.id))])
+    else:
+        groups1 = GroupCourse.objects.filter(course_id=i)
+        groups2 = UserGroup.objects.filter(user_id=user.id, is_allowed=1)
+        for group1 in groups1:
+            for group2 in groups2:
+                if group1.group_id == group2.group_id:
+                    group_id = group1.group_id
+        task_dones = []
+        for task in tasks:
+            task_dones.append([task, len(TaskFile.objects.filter(group_id=group_id, task_requirement_id=task.id))])
     str1 = '/student/course/'
     str1 = str1 + str(course.id)
     links = [{'name': '学生页面', 'page': '/student/'},
@@ -67,11 +95,15 @@ def student_course_i_homework(request, i):
     return render_to_response('student_course_i_homework.html', locals())
 
 def student_course_homework_task_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     taskfile=TaskFile.objects.get(pk=request.POST['taskfileid'])
     taskfile.delete()
     return HttpResponse(json.dumps(True))
 
 def student_course_i_homework_I(request, i, I):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     list_num = 1
     page_name = '作业详情'
     course = Course.objects.get(id=i)
@@ -80,7 +112,7 @@ def student_course_i_homework_I(request, i, I):
     str1 = str1 + str(course.id)
     links = [{'name': '学生页面', 'page': '/student/'},
              {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
-
+    uf = UserForm(request.POST, request.FILES)
     user = User.objects.filter(name=request.session['name']).first()
     tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
     allow_upload = 1
@@ -102,8 +134,39 @@ def student_course_i_homework_I(request, i, I):
 
     taskrequirement = TaskRequirement.objects.get(id=I)
     myurl = "/student/course/" + str(course.id)+"/homework/" + str(I)+"/"
-
+    if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+        allow_upload = 0
     if request.method == "POST":
+        if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+            request.session['message'] = "本次作业已过期"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')
+
+        uf = UserForm(request.POST, request.FILES)
+        if uf.is_valid():
+            # 获取表单信息
+            description = uf.cleaned_data['Description']
+            filepath = uf.cleaned_data['File']
+            # 写入数据库】
+            task_file = TaskFile()
+            task_file.name = description
+            task_file.server_path = filepath
+            task_file.is_file = True
+            task_file.group_id = group_id
+            task_file.task_requirement_id = taskrequirement.id
+            task_file.user = user
+            task_file.save()
+
+            course_id = int(request.session['course_id'])
+            resources = Resource.objects.filter(course_id=course_id)
+            return HttpResponseRedirect('/student/course/' + i + '/homework/' + I + '/')
+    else:
+        uf = UserForm()
+    if request.method == "POST":
+            if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+                 request.session['message'] = "本次作业已过期"
+                 request.session['nexturl'] = myurl
+                 return HttpResponseRedirect('/info/')
             task_file = TaskFile()
             task_file.name = taskrequirement.name
             task_file.is_file = False
@@ -111,6 +174,7 @@ def student_course_i_homework_I(request, i, I):
             task_file.group_id = group_id
             task_file.task_requirement_id = taskrequirement.id
             task_file.user_id = user.id
+            task_file.server_path = ''
             task_file.save()
             return HttpResponse(json.dumps(True))
     else:
@@ -124,6 +188,8 @@ class UserForm(forms.Form):
 
 
 def student_course_i_homework_I_upload(request, i, I):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     list_num = 1
     page_name = '上传作业'
     course = Course.objects.get(id=i)
@@ -137,6 +203,7 @@ def student_course_i_homework_I_upload(request, i, I):
     teacher = User.objects.filter(id=course.teacher_id).first()
     term = Term.objects.filter(id=course.term_id).first()
     task = TaskRequirement.objects.get(pk=I)
+    str1 = str1 + str('/homework/') + str(task.id)
     task_file = task.taskfile_set.all()
     group_id = 0
     if course.is_single == 0:
@@ -147,6 +214,11 @@ def student_course_i_homework_I_upload(request, i, I):
                 if group1.group_id == group2.group_id:
                     group_id = group1.group_id
     if request.method == "POST":
+        if  not administrator_course.compare_time(task.start_date,task.end_date):
+            request.session['message'] = "本次作业已过期"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')
+
         uf = UserForm(request.POST, request.FILES)
         if uf.is_valid():
             # 获取表单信息
@@ -177,8 +249,10 @@ class UserForm_content(forms.Form):
                               widget=forms.TextInput(attrs={'class': 'form-control', 'style': 'max-width:500px'}))
 
 def student_course_i_resource(request, i):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
-    list_num = 2
+    list_num = 3
     page_name = '资源列表'
     course = Course.objects.get(id=i)
     resources = Resource.objects.filter(course_id=course.id)
@@ -186,14 +260,13 @@ def student_course_i_resource(request, i):
     for resource in resources:
         resourcesclasses.append([resource, ResourceClass.objects.get(id=resource.resource_class_id)])
 
-    str1 = '/student/course/'
-    str1 = str1 + str(course.id)
-    links = [{'name': '学生页面', 'page': '/student/'},
-             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+
     return render_to_response('student_course_i_resource.html', locals())
 
 
 def file_download(request, i, I):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     resource = Resource.objects.get(id=int(I))
     filename = resource.server_path
     f = open(str(filename))
@@ -205,6 +278,8 @@ def file_download(request, i, I):
 
 
 def one_click_download(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
     course_id = request.session['course_id']
     dir = '/media/resource/' + course_id
@@ -215,6 +290,8 @@ def one_click_download(request):
 
 
 def student_group(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 4
     user = User.objects.filter(name=request.session['name']).first()

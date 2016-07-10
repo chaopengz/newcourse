@@ -9,9 +9,12 @@ import os
 import time
 import random
 import csv
+from view_auth_manage import *
 # Create your views here.
 
 def main(request):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '1'): return jump_no_auth(request)
      is_success='0'
      list_num=3
      page_name='教师管理'
@@ -21,6 +24,8 @@ def main(request):
      return render_to_response('administrator_teacher.html', locals())
 
 def reset_password(request,tId):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '1'): return jump_no_auth(request)
      teacher=User.objects.filter(type=3).get(id=tId)
      teacher.password='123'
      teacher.save()
@@ -33,6 +38,8 @@ def reset_password(request,tId):
      return render_to_response('administrator_teacher.html', locals())
 
 def add_teacher(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 3
     page_name = '添加教师'
     links=[{'name': '教师管理', 'page': '/administrator/teacher/'} , {'name': '添加教师', 'page': '/administrator/teacher/add_teacher'}]
@@ -42,6 +49,8 @@ def add_teacher(request):
 
 
 def add_teacher_many(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'infolist' in request.FILES:
         file = request.FILES.get('infolist', None)
         filedata=file.read()
@@ -80,6 +89,8 @@ def add_teacher_many(request):
 
 
 def save_teacher(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     tname=request.POST['t_name']
     trealname=request.POST['t_realname']
     if request.POST.get('t_id'):

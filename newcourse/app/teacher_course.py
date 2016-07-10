@@ -9,6 +9,7 @@ from django import forms
 import os, tempfile, zipfile
 from django.http import HttpResponse
 from wsgiref.util import FileWrapper
+from view_auth_manage import *
 # Create your views here.
 
 
@@ -22,11 +23,13 @@ def compare_time(time1,time2):
     nowtime=datetime.date.today()
     print (time2-nowtime).days
     if (nowtime - time1).days > 0 and (time2-nowtime).days>0:
-        return True
+        return 0
     else:
-        return False
+        return 1
 
 def course_teacher_info(request, courseId):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      page_name = '课程详情'
      request.session['course_id'] = courseId
 
@@ -42,10 +45,14 @@ def course_teacher_info(request, courseId):
      groups = [Group.objects.get(pk = u.group_id) for u in coursegroups]
      isrun=compare_time(course.start_date, course.end_date)
      res = CourseShow(course,isrun)
+     course.start_date = course.start_date.strftime("%Y年%m月%d日")
+     course.end_date = course.end_date.strftime("%Y年%m月%d日")
      return render_to_response('teacher_course.html', locals())
 
 
 def course_resource(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     list_num = 2
     page_name = '资源列表'
     course_id = int(request.session['course_id'])
@@ -57,6 +64,9 @@ def course_resource(request):
     user = User.objects.filter(name=request.session['name']).first()
     resource_classes = ResourceClass.objects.all()
     resources = Resource.objects.filter(course_id=course_id)
+    for resource in resources:
+        resource.submit_time = resource.submit_time.strftime("%Y年%m月%d日%H时%M分")
+    finish = compare_time(course.start_date, course.end_date)
     return render_to_response('teacher_course_resource.html', locals())
 
 class UserForm(forms.Form):
@@ -64,6 +74,8 @@ class UserForm(forms.Form):
     File = forms.FileField(label='文件位置')
 
 def course_resource_publish(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     list_num = 2
     user = User.objects.filter(name=request.session['name']).first()
     page_name = '资源列表'
@@ -100,6 +112,8 @@ def course_resource_publish(request):
 
 
 def course_resource_class(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['resource_id']
     resource_class_id = request.POST['resource_class']
     resource = Resource.objects.get(pk=id)
@@ -110,14 +124,24 @@ def course_resource_class(request):
 
 
 def course_resource_class_add(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     name = request.POST['resource_class_name']
     resource_class = ResourceClass()
     resource_class.name = name
     resource_class.save()
     return HttpResponse(json.dumps(True))
 
+def group_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    # usergroup=UserGroup.objects.get(pk=request.POST['groupid'])
+    # taskfile.delete()
+    return HttpResponse(json.dumps(True))
 
 def course_task(request):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -127,10 +151,15 @@ def course_task(request):
      user=User.objects.filter(name=request.session['name']).first()
      course_id=int(request.session['course_id'])
      tasks=TaskRequirement.objects.filter(course_id=course_id)
+     finish = compare_time(course.start_date, course.end_date)
+     for task in tasks:
+         task.start_date = task.start_date.strftime("%Y年%m月%d日")
+         task.end_date = task.end_date.strftime("%Y年%m月%d日")
      return render_to_response('teacher_course_task.html', locals())
 
-
 def course_task_publish(request):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -138,6 +167,8 @@ def course_task_publish(request):
      links=[{'name': '课程管理', 'page': '/teacher/course'} ,{'name':course.name,'page': '/teacher/course'},
             {'name': '作业管理', 'page': '/teacher/course/task'} ,
             {'name': '作业提交', 'page': '/teacher/course/task_publish'}]
+     finish = compare_time(course.start_date,course.end_date)
+
      if request.method=='GET':
         user=User.objects.filter(name=request.session['name']).first()
         course_id=int(request.session['course_id'])
@@ -165,6 +196,8 @@ def course_task_publish(request):
 
 
 def course_task_info(request, task_id):
+     if not judge_login(request): return jump_not_login(request)
+     if not judge_auth(request, '3'): return jump_no_auth(request)
      list_num = 1
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
@@ -178,11 +211,17 @@ def course_task_info(request, task_id):
      teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
      task = TaskRequirement.objects.get(pk=task_id)
+     task.start_date = task.start_date.strftime("%Y年%m月%d日")
+     task.end_date = task.end_date.strftime("%Y年%m月%d日")
      task_file =task.taskfile_set.all()
+     for tf in task_file:
+            tf.submit_time = tf.submit_time.strftime("%Y年%m月%d日%H时%M分")
      request.session['task_id'] = task_id
      return render_to_response('teacher_course_task_info.html', locals())
 
 def course_task_grade(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['task_id']
     grade = request.POST['grade']
     task_file = TaskFile.objects.get(pk=id)
@@ -192,6 +231,8 @@ def course_task_grade(request):
 
 
 def course_task_comment(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['task_id']
     commnet = request.POST['comment']
     task_file = TaskFile.objects.get(pk=id)
@@ -201,12 +242,16 @@ def course_task_comment(request):
 
 
 def course_task_content(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['task_id']
     task_file = TaskFile.objects.get(pk=id)
     return HttpResponse(json.dumps(task_file.content))
 
 
 def group_accept(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['course_group_id']
     course_group = GroupCourse.objects.get(pk=id)
     course_group.is_allowed = 1
@@ -215,6 +260,8 @@ def group_accept(request):
 
 
 def group_refuse(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
     id = request.POST['course_group_id']
     course_group = GroupCourse.objects.get(pk=id)
     course_group.is_allowed = 2
@@ -240,6 +287,7 @@ def zip_dir(dirname,zipfilename):
 
 
 def one_click_download(request):
+    judge_auth(request,'3')
     user = User.objects.filter(name=request.session['name']).first()
     course_id = request.session['course_id']
     task_id = request.session['task_id']
@@ -251,14 +299,16 @@ def one_click_download(request):
 
 
 def file_download(request, filename):
-        f = open('media/' + filename)
-        data = f.read()
-        f.close()
-        response = HttpResponse(data)
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
-        return response
+    judge_auth(request,'3')
+    f = open('media/' + filename)
+    data = f.read()
+    f.close()
+    response = HttpResponse(data)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
 
 def resourcedelete(request):
+    judge_auth(request,'3')
     resource=Resource.objects.get(pk=request.POST['resourceid'])
     resource.delete()
     return HttpResponse(json.dumps(True))

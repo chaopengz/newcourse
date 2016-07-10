@@ -11,8 +11,11 @@ from django.template import loader,context, RequestContext
 import MySQLdb,json
 from models import *
 import datetime, calendar
+from view_auth_manage import *
 
 def modifyTerm(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     if request.method == 'POST':
         name = request.POST['name']
         week = request.POST['week']
@@ -43,8 +46,9 @@ def modifyTerm(request):
         return render_to_response('administrator_add_term.html', locals())
 
 
-
 def main(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 1
     page_name = '学期管理'
     links = [{'name': '学期管理', 'page': '/administrator/term/'}]
@@ -72,6 +76,8 @@ class TermShow:
 
 
 def termInfo(request, termId):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 1
     page_name = '学期详情'
     links = [{'name': '学期管理', 'page': '/administrator/term/'},
@@ -85,6 +91,8 @@ def termInfo(request, termId):
     return render_to_response('administrator_termInfo.html', locals())
 
 def changeTermShow(request,termId):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
     list_num = 1
     page_name = '修改学期'
     links=[{'name': '学期管理', 'page': '/administrator/term/'} , {'name': '修改学期', 'page': '/administrator/term/change_term/'+termId}]
@@ -98,10 +106,8 @@ def changeTermShow(request,termId):
     return render_to_response('administrator_change_term.html', locals())
 
 def save_term(request):
-    list_num = 1
-    page_name = '学期详情'
-    links=[{'name': '学期管理', 'page': '/administrator/term/'} , {'name': '学期详情', 'page': '/administrator/term/termInfo/'}]
-    user=User.objects.filter(name=request.session['name']).first()
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
 
     tname=request.POST['t_name']
     tweek=request.POST['t_week']
