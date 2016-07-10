@@ -8,29 +8,37 @@
                   <th>课程名</th>
                   <th>上课时间</th>
                   <th>是否允许团体选课</th>
-                    <th>课程简介</th>
+                  <th>课程简介</th>
                      <th>进入课程</th>
+                  <th>状态</th>
                 </tr>
 
-                  {% for course in courses %}
-                    <tr href="/course/">
-                        <td>{{ forloop.counter  }}</td>
-                        <td>{{ course.name }}</td>
-                        <td>{{ course.start_date }}--{{ course.end_date }}</td>
-                        {% ifequal course.is_single 0 %}
+
+               {% for course in res %}
+                   <tr href="/course/">
+                        <td>{{ course.course.id }}</td>
+                        <td><a href="/teacher/course/{{course.course.id  }}">{{ course.course.name }}</a></td>
+                        <td>{{ course.course.start_date }}--{{ course.course.end_date }}</td>
+                        {% ifequal course.course.is_single 0 %}
                             <td><span class="label label-success">允许</span></td>
                         {% endifequal %}
-                        {% ifequal course.is_single 1 %}
-                            <td><span class="label label-warning">不允许</span></td>
+                        {% ifequal course.course.is_single 1 %}
+                            <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
-                        <td>
-                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course.introduction  }}">
-                                {{ course.introduction|slice:'25'  }}
+                       <td>
+                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course.course.introduction  }}">
+                                {{ course.course.introduction|slice:'25'  }}
                             </a>
                         </td>
                         <td><a  href="/teacher/course/{{course.id  }}" class = "btn btn-block btn-primary" >查看详情</a></td>
-                    </tr>
-                    </tr>
+
+                       {% ifequal course.isrun True %}
+                                <td><span class="label label-success">进行中</span></td>
+                            {% endifequal %}
+                            {% ifequal course.isrun False %}
+                                <td><span class="label label-primary">已结课</span></td>
+                            {% endifequal %}
+                        </tr>
                   {% endfor %}
 
            </table>
