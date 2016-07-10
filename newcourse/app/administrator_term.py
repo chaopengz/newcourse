@@ -136,3 +136,22 @@ def save_term(request):
          )
         term.save()
         return HttpResponseRedirect('/administrator/term/')
+
+def delete_term(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 't_id' in request.POST:
+        tid=request.POST['t_id']
+        try:
+            term=Term.objects.filter(id=tid).first()
+            term.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

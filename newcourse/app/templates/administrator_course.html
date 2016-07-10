@@ -141,7 +141,7 @@
     }
 
     function delete_course(courseId){
-        if(confirm("真的要删除这个用户吗？")){
+        if(confirm("真的要删除这门课程吗？删除后无法撤销。")){
                     $.ajax({
             type: "POST",
             url: "/administrator/course/delete_course/",

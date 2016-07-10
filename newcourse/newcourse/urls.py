@@ -96,7 +96,6 @@ urlpatterns = [
     url(r'^administrator/course/delete_course/$', 'app.administrator_course.delete_course'),
     url(r'^administrator/course/student/$', 'app.administrator_course.student'),
     url(r'^administrator/course/add_student/$', 'app.administrator_course.add_student'),
-    url(r'^administrator/course/delete_student/$', 'app.administrator_course.delete_student'),
     url(r'^administrator/course/add_course_select_many/$', 'app.administrator_course.add_course_select_many'),
     url(r'^administrator/course/remove_student/$', 'app.administrator_course.remove_student'),
 
@@ -111,6 +110,7 @@ urlpatterns = [
     url(r'^administrator/student/$', 'app.administrator_student.main'),
     url(r'^administrator/student/reset_password/(?P<tId>\d+)/$', 'app.administrator_student.reset_password'),
     url(r'^administrator/student/add_student/$', 'app.administrator_student.add_student'),
+    url(r'^administrator/student/delete_student/$', 'app.administrator_student.delete_student'),
     url(r'^administrator/student/add_student_many/$', 'app.administrator_student.add_student_many'),
     url(r'^administrator/student/save_student/$', 'app.administrator_student.save_student'),
     url(r'^chatpost/', 'app.course_chat.Post'),
