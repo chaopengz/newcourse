@@ -34,7 +34,7 @@ def student_info(request):
     links = [{'name': '学生页面', 'page': '/student/'}]
     list_num = 1
     user = User.objects.filter(name=request.session['name']).first()
-    return render_to_response('student_info.html', locals())
+    return render_to_response('student.html', locals())
 
 # 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
 def compare_time(time1, time2):
@@ -74,10 +74,13 @@ def student_course(request):
 def student_course_i(request, i):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
-    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '课程列表', 'page': '/student/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
     list_num = 1
     course = Course.objects.get(id=i)
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
     course.start_date = course.start_date.strftime("%Y年%m月%d日")
     course.end_date = course.end_date.strftime("%Y年%m月%d日")
     term = Term.objects.filter(id=course.term_id).first()
@@ -139,8 +142,9 @@ def student_course_i_homework_I(request, i, I):
     teacher = User.objects.get(id=course.teacher_id)
     str1 = '/student/course/'
     str1 = str1 + str(course.id)
+    str2 = str1 + '/homework/'
     links = [{'name': '学生页面', 'page': '/student/'},
-             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1},{'name': '作业列表', 'page': str2}]
     uf = UserForm(request.POST, request.FILES)
     user = User.objects.filter(name=request.session['name']).first()
     tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
@@ -384,8 +388,10 @@ def student_course_i_resource(request, i):
     for resource in resources:
         resource.submit_time = resource.submit_time.strftime("%Y年%m月%d日%H时%M分")
         resourcesclasses.append([resource, ResourceClass.objects.get(id=resource.resource_class_id)])
-
-
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
     return render_to_response('student_course_i_resource.html', locals())
 
 
