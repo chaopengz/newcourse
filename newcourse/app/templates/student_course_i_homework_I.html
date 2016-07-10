@@ -17,14 +17,8 @@
                   {% if allow_upload %}
                   <dt>提交作业</dt>
                       <dd>
-                             <form method = "post" class="form-horizontal" enctype="multipart/form-data" >
-                                    <label>作业描述</label>
-                                    {{ uf.Description }}
-                                 <div class="col-sm-10" >
-                                     {{ uf.File }}
-                                 </div>
-                                 <button type="submit" class="btn btn-primary">上传</button>
-                           </form>
+                      <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal"  >上传作业</button>
+
                      </dd>
                   <dt>填写答案</dt>
                   <dd>
@@ -38,8 +32,46 @@
                   </dd>
                   {% endif %}
               </dl>
-            </div>
-            <!-- /.box-body -->
+
+    <div class="modal" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">上传作业</h4>
+			</div>
+			<div class="modal-body">
+                <form method = "post" class="form-horizontal" enctype="multipart/form-data" >
+
+                <div class="box-body">
+                    <div class="form-group">
+                    <label  class="col-sm-2 control-label">作业描述</label>
+                    <div class="col-sm-10">
+                        {{ uf.Description }}
+                    </div>
+                </div>
+              </div>
+
+                <div class="box-body">
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label">选择文件</label>
+                    <div class="col-sm-10">
+                        {{ uf.File }}
+                    </div>
+                </div>
+              </div>
+                <div class="box-footer">
+                   <button type="submit" class="btn btn-primary">上传</button>
+                    <button type="button" class="btn btn-default"  data-dismiss="modal" onclick="javascript:location.reload(true)">关闭</button>
+              </div>
+        </form>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
     <script>
         $(function ()
       {
