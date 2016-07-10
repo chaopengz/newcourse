@@ -101,7 +101,6 @@ def handle_application(request):
         ug.save()
         return HttpResponse("2")
 
-
 def authority_translate(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
