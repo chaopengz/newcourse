@@ -148,6 +148,9 @@ def student_course_i_homework_I(request, i, I):
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
             # 写入数据库】
+            task_file = TaskFile.objects.filter(task_requirement_id=taskrequirement.id, user=user)
+            if task_file:
+                task_file[0].delete()
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
@@ -167,6 +170,9 @@ def student_course_i_homework_I(request, i, I):
                  request.session['message'] = "本次作业已过期"
                  request.session['nexturl'] = myurl
                  return HttpResponseRedirect('/info/')
+            task_file = TaskFile.objects.filter(task_requirement_id=taskrequirement.id, user=user)
+            if task_file:
+                task_file[0].delete()
             task_file = TaskFile()
             task_file.name = taskrequirement.name
             task_file.is_file = False
@@ -225,6 +231,8 @@ def student_course_i_homework_I_upload(request, i, I):
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
             # 写入数据库】
+            task_file = TaskFile.objects.get(task_requirement = task,user = user)
+            task_file.delete()
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
@@ -296,5 +304,6 @@ def student_group(request):
     list_num = 4
     user = User.objects.filter(name=request.session['name']).first()
     g = Group.objects.filter()
+    request.session['list_num'] = 4
 
     return render_to_response('student_allgroups.html', locals())
