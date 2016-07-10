@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'^teacher/course/task_publish/$', 'app.teacher_course.course_task_publish'),
     url(r'^teacher/course/task_info/(?P<task_id>\d+)/$', 'app.teacher_course.course_task_info'),
     url(r'^teacher/course/task_grade/$', 'app.teacher_course.course_task_grade'),
+    url(r'^teacher/course/task_grade_many/$', 'app.teacher_course.course_task_grade_many'),
     url(r'^teacher/course/task_comment/$', 'app.teacher_course.course_task_comment'),
     url(r'^teacher/course/task_content/$', 'app.teacher_course.course_task_content'),
     url(r'^teacher/course/group_accept/$', 'app.teacher_course.group_accept'),

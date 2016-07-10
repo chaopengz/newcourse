@@ -22,11 +22,21 @@
                         {% ifequal course.is_single 1 %}
                             <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
-                        <td>{{ course.introduction|slice:'30' }}</td>
+                        <td>
+                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course.introduction  }}">
+                                {{ course.introduction|slice:'25'  }}
+                            </a>
+                        </td>
                     </tr>
                   {% endfor %}
 
            </table>
        </div>
+
+       <script>$(function ()
+      { $("[data-toggle='popover']").popover();
+      });
+   </script>
+
             <!-- /.box-body -->
     {% endblock %}
