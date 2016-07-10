@@ -2,7 +2,8 @@
  {% extends "teacher.html" %}
    {% block content %}
        <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+           <table class="table table-striped" id="table1">
+           <thead>
                 <tr>
                   <th>#</th>
                   <th>课程名</th>
@@ -11,7 +12,8 @@
                     <th>课程简介</th>
                      <th>进入课程</th>
                 </tr>
-
+                </thead>
+                 <tbody>
                   {% for course in courses %}
                     <tr href="/course/">
                         <td>{{ forloop.counter  }}</td>
@@ -30,15 +32,19 @@
                         </td>
                         <td><a  href="/teacher/course/{{course.id  }}" class = "btn btn-block btn-primary" >查看详情</a></td>
                     </tr>
-                    </tr>
-                  {% endfor %}
 
+                  {% endfor %}
+                </tbody>
            </table>
        </div>
 
        <script>$(function ()
       { $("[data-toggle='popover']").popover();
       });
+
+       $(function () {
+    set_table("table1");
+  });
    </script>
 
             <!-- /.box-body -->

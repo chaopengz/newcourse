@@ -27,7 +27,7 @@
                     <th>文件名</th>
                     <th>所在分类</th>
                     <th>上传时间</th>
-                    <th>操作</th>
+                     <th>操作</th>
                 </tr>
                   {% for resource in resources %}
                     <tr href="/teacher/resource/">
@@ -137,7 +137,7 @@
                               alert("删除成功");
                               window.location.reload();
                           } else {
-                              alert("删除失败,不存在该分类");
+                              alert("修改失败");
                           }
                       },
                       error: function () {
