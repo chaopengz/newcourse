@@ -83,7 +83,7 @@
             else {
                 $.ajax(
                         {
-                            url: $('#url').val(),
+                            url: $('#url').val()+"submit/",
                             type: "POST",
                             data: {
                                 "content": $("#answer").val(),
