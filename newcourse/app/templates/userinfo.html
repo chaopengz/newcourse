@@ -1,4 +1,4 @@
-{% extends "main_template.html" %}
+{% extends "userinfo_template.html" %}
 
 {% block content %}
 
@@ -7,65 +7,63 @@
 <link rel="stylesheet" href="/static/plugins/cropper/cropper.min.css" type="text/css" />
 <link rel="stylesheet" href="/static/plugins/cropper/sitelogo.css" type="text/css" />
 
-<div class="col-md-6">
+<div class="center-block" style="display: block; margin-left: 10%;margin-right: 10%">
 <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">个人信息</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form class="form-horizontal" method="post" id="form1" action="/save_info/">
-            <input type="hidden" name="t_id" id="cid" value="{{ course.id }}">
+
               <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">登录名</label>
-                  <div class="col-sm-10">
-                    <label class=" control-label">{{ user.name }}</label>
-                  </div>
+                  <div class="col-md-8">
+                          <form class="form-horizontal" method="post" id="form1" action="/save_info/">
+                            <input type="hidden" name="t_id" id="cid" value="{{ course.id }}">
+                            <div class="form-group">
+                               <label class="col-sm-4 control-label">登录名</label>
+                               <div class="col-sm-8">
+                                    <label class=" control-label">{{ user.name }}</label>
+                                 </div>
+                             </div>
+                            <div class="form-group">
+                              <label class="col-sm-4 control-label">密码</label>
+                              <div class="col-sm-8">
+                                  <button type="button" class="btn btn-primary" onclick="changePassword()">修改密码</button>
+                              </div>
+                            </div>
+                             <div class="form-group">
+                              <label class="col-sm-4 control-label">真实姓名</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" name='realname' id="realname" value="{{ user.real_name }}">
+                              </div>
+                            </div>
+                          </form>
+              </div>
+                  <div class="col-md-4">
+                        <div class="ibox-content">
+                        <div class="row">
+                            <div id="crop-avatar" class="col-md-10">
+                                <div class="avatar-view" title="更改头像">
+                                    <img src=
+                                {% if user and user.pic != '' %}
+                                     "{{ user.pic }}"
+                                {% else %}
+                                    "/static/dist/img/default.jpg"
+                                {% endif %}
+                                                 alt="Avatar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               </div>
-                              <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">密码</label>
-                  <div class="col-sm-10">
-                      <button type="button" class="btn btn-primary" onclick="changePassword()">修改密码</button>
-                  </div>
-                </div>
-              </div>
-                              <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">真实姓名</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name='realname' id="realname" value="{{ user.real_name }}">
-                  </div>
-                </div>
-              </div>
-
-              <!-- /.box-body -->
-
-              <!-- /.box-footer -->
-            </form>
              <div class="box-footer">
                 <button type="button" class="btn btn-primary" onclick="saveInfo()">保存修改</button>
+                 <a href="/" class="btn btn-default" >返回</a>
               </div>
           </div>
 </div>
-<div class="col-md-6">
-        <div class="ibox-content">
-		<div class="row">
-			<div id="crop-avatar" class="col-md-6">
-				<div class="avatar-view" title="更改头像">
-			    	<img src=
-                {% if user and user.pic != '' %}
-                     "{{ user.pic }}"
-                {% else %}
-                    "/static/dist/img/default.jpg"
-                {% endif %}
-                                 alt="Avatar">
-			    </div>
-			</div>
-		</div>
-	</div>
+
 
 <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
 	<div class="modal-dialog modal-lg">

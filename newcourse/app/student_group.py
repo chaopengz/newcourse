@@ -65,6 +65,17 @@ def info(request, i):  # i stands for the groupId
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
+    group_courses = GroupCourse.objects.filter(group_id=i) #the courses which the group took
+
+    courses=[]
+    for group_course in group_courses:
+        courses.append(Course.objects.get(id=group_course.course_id))
+    course_teachers=[]
+    for course in courses:
+        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
+    sorted(course_teachers,)
+    course_teachers_len=len(course_teachers)
+
     group_user = User.objects.filter(id=group.user_id).first()#负责人
     group_member=UserGroup.objects.filter(group_id=i)
     member_list=[]
@@ -199,3 +210,20 @@ def apply(request):
     request.session['nexturl'] = "/student/group/applyforcourse/"
     return HttpResponseRedirect('/info/')
 
+"""
+<li class="header">菜单</li>
+        <!-- Optionally, you can add icons to the links -->
+          <li id="list1">
+            <a href="/student/course/{{ course.id}}/"><i class="fa fa-link"></i> <span>课程信息</span></a>
+          </li>
+          <li id="list2">
+            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
+          </li>
+          <li id="list3">
+            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+          </li>
+          <li id="list4">
+            <a href="/student/course/{{ course.id }}/message/"><i class="fa fa-link"></i> <span>课程交流</span></a>
+          </li>
+      </ul>
+      """

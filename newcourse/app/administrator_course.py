@@ -41,10 +41,9 @@ class CourseShow:
 
 
 # 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
-def compare_time(time1, time2):
-    nowtime = datetime.date.today()
-    print (time2 - nowtime).days
-    if (nowtime - time1).days > 0 and (time2 - nowtime).days > 0:
+def compare_time(time1, time2,cmptime=datetime.date.today()):
+    print (time2 - cmptime).days
+    if (cmptime - time1).days >= 0 and (time2 - cmptime).days >= 0:
         return True
     else:
         return False
@@ -175,11 +174,6 @@ def changeCourseShow(request, courseId):
 def save_course(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '1'): return jump_no_auth(request)
-    list_num = 2
-    page_name = '课程详情'
-    links = [{'name': '课程管理', 'page': '/administrator/course/'},
-             {'name': '课程详情', 'page': '/administrator/course/courseInfo/'}]
-    user = User.objects.filter(name=request.session['name']).first()
 
     tname = request.POST['t_name']
     tintroduction = request.POST['t_introduction']
@@ -195,7 +189,21 @@ def save_course(request):
     sdate = datetime.datetime.strptime(sdatestr, "%m/%d/%Y").date()
     edate = datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
 
+    # 判断课程的起止日期是否在学期起止日期内
+    term=Term.objects.get(id=tterm)
+    t_sdate=term.start_date
+    t_edate=term.end_date
+
+    if (not compare_time(t_sdate,t_edate,sdate)) or (not compare_time(t_sdate,t_edate,edate)):
+        # 日期判别失败，跳出
+        error_message="课程信息录入失败：课程起止日期不能超过学期的起止日期！请重新填写"
+        if 't_id' in request.POST:
+            return jump_with_info(request,error_message,"/administrator/course/changeCourse/"+request.POST.get('t_id')+"/")
+        else:
+            return jump_with_info(request,error_message,"/administrator/course/addCourse/")
+
     if request.POST.get('t_id'):
+        # 修改原有课程
         course = Course.objects.get(id=request.POST.get('t_id'))
         course.name = tname
         course.introduction = tintroduction
@@ -206,6 +214,7 @@ def save_course(request):
         course.end_date = edate
         course.save()
     else:
+        # 添加新课程
         course = Course(
             name=tname,
             introduction=tintroduction,
@@ -219,26 +228,53 @@ def save_course(request):
 
     return HttpResponseRedirect('/administrator/course/courseInfo/' + str(course.id))
 
+def delete_course(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 'c_id' in request.POST:
+        cid=request.POST['c_id']
+        try:
+            course=Course.objects.filter(id=cid).first()
+            course.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def student(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'cid' in request.GET:
         list_num = 2
-        page_name = '选课学生管理'
-        links = [{'name': '课程管理', 'page': '/administrator/course/'}, {'name': '选课学生管理', 'page': '#'}]
         user = User.objects.filter(name=request.session['name']).first()
 
         cid = request.GET.get('cid')
         course = Course.objects.get(id=cid)
-
-        allstudents = User.objects.filter(type=2).order_by('name')
-        students = []
-        studentids = UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
-        for s in studentids:
-            students.append(s.user)
-
-        return render_to_response('administrator_course_add_student.html', locals())
+        if course.is_single==1:
+            # 普通课程，返回选课学生管理页面
+            page_name = '选课学生管理'
+            links = [{'name': '课程管理', 'page': '/administrator/course/'},{'name': '课程详情', 'page': '/administrator/course/courseInfo/'+cid+'/'}, {'name': '选课学生管理', 'page': '#'}]
+            allstudents = User.objects.filter(type=2).order_by('name')
+            students = []
+            studentids = UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
+            for s in studentids:
+                students.append(s.user)
+            return render_to_response('administrator_course_add_student.html', locals())
+        else:
+            # 团队课程，返回查看团队列表页面
+            page_name = '选课团队管理'
+            links = [{'name': '课程管理', 'page': '/administrator/course/'}, {'name': '课程详情', 'page': '/administrator/course/courseInfo/'+cid+'/'}, {'name': '选课团队管理', 'page': '#'}]
+            groups=[]
+            groupids=GroupCourse.objects.filter(course=Course.objects.get(id=cid),is_allowed=1).order_by('group')
+            for id in groupids:
+                groups.append(id.group)
+            return render_to_response('administrator_course_group.html', locals())
     else:
         return HttpResponseRedirect('/administrator/course/')
 

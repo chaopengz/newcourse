@@ -58,15 +58,16 @@ def logout(request):
 
 def userinfo(request):
     if not judge_login(request): return jump_not_login(request)
-    page_name = '管理个人信息'
-    links = [{'name': '管理个人信息', 'page': '#'}]
+    page_name = '个人信息'
+    list_num=1
+    links = [{'name': '个人信息', 'page': '#'}]
     user = User.objects.filter(name=request.session['name']).first()
     return render_to_response('userinfo.html', locals())
 
 # 图片裁切
 def deal_image(name,data):
     im = Image.open(name)
-    im = im.rotate(data['rotate']*-1)
+    # im = im.rotate(data['rotate']*-1)
     # box = im.copy() #直接复制图像
     box = (int(data['x']), int(data['y']), int(data['width']+data['x']), int(data['height'] +data['y']))
     region = im.crop(box)
@@ -145,6 +146,7 @@ def change_password(request):
         else:
             # get方法，返回修改页
             page_name = '课程详情'
+            list_num=2
             links = [{'name': '修改密码', 'page': '/change_password/'}]
             user = User.objects.filter(name=request.session['name']).first()
             return render_to_response('change_password.html', locals())

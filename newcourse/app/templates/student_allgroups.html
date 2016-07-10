@@ -15,6 +15,8 @@
                 <tr>
                     <th>团队名</th>
                     <th>上限人数</th>
+                    <th>现有人数</th>
+                    <th>状态</th>
                     <th>团队负责人</th>
                     <th>操作</th>
                 </tr>
@@ -22,8 +24,15 @@
                     <th> {{ obj.name }}</th>
 
                     <th> {{ obj.max_number }}</th>
+                    <th>{{ obj.number }}</th>
+                    <th>
+                        {% if obj.end %}
+                            可以加入
+                        {% else %}
+                            无法加入
+                        {% endif %}
+                    </th>
                     <th> {{ obj.user.real_name }}</th>
-
                     <th>
                         <button type="button" class="btn btn-primary"
                                 onclick="checkCourse({{ obj.id }})">查看团队详情
