@@ -16,6 +16,8 @@ def t_Home(request):
     course = Course.objects.get(id=course_id)
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': course.name, 'page': '/teacher/course'},
              {'name': '资源管理', 'page': '/teacher/course/resource'}]
+    list_num = 4
+    page_name="课程交流"
     return render(request, "teacher_course_message.html", locals())
 
 
@@ -25,6 +27,8 @@ def s_Home(request,i):
     courseId = request.session['course_id']
     course=Course.objects.get(id=i)
     user = User.objects.filter(name=request.session['name']).first()
+    list_num = 4
+    page_name="课程交流"
     c = Chat.objects.filter(courseid=courseId)
     str1 = '/student/course/'
     str1 = str1 + str(course.id)

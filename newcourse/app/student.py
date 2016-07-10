@@ -57,6 +57,7 @@ def student_course_i(request, i):
     if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}, {'name': '课程列表', 'page': '/student/course/'}]
     user = User.objects.filter(name=request.session['name']).first()
+    list_num = 1
     course = Course.objects.get(id=i)
     term = Term.objects.filter(id=course.term_id).first()
     request.session['course_id'] = i
@@ -68,7 +69,7 @@ def student_course_i_homework(request, i):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
-    list_num = 1
+    list_num = 2
     page_name = '作业列表'
     course = Course.objects.get(id=i)
     tasks = TaskRequirement.objects.filter(course_id=course.id)
@@ -251,7 +252,7 @@ def student_course_i_resource(request, i):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
-    list_num = 2
+    list_num = 3
     page_name = '资源列表'
     course = Course.objects.get(id=i)
     resources = Resource.objects.filter(course_id=course.id)
