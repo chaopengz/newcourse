@@ -1,6 +1,7 @@
 {% extends "student.html" %}
 
 {% block content %}
+
     <div class="box box-solid">
         <div class="box-header with-border">
             <i class="fa fa-text-width"></i>
@@ -29,6 +30,59 @@
             </dl>
         </div>
     </div>
+
+
+            <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">团队所选课程</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+           <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>课程名</th>
+                    <th>上课时间</th>
+                    <th>任课教师</th>
+                    <th>是否允许团队选课</th>
+                    <th>课程简介</th>
+                    <th>进入课程</th>
+                </tr>
+                {% if course_teachers_len > 0  %}
+                        {% for course_teacher in course_teachers %}
+                            <tr>
+                            <th>{{ forloop.counter  }}</th>
+                                <th>{{ course_teacher.0.name }}</th>
+                                <th>{{ course_teacher.0.start_date }}--{{ course_teacher.0.end_date }}</th>
+                                <th>{{ course_teacher.1.name }}</th>
+                                {% ifequal course_teacher.0.is_single 0 %}
+                                    <td><span class="label label-success">允许</span></td>
+                                {% endifequal %}
+                                {% ifequal course_teacher.0.is_single 1 %}
+                                    <td><span class="label label-warning">不允许</span></td>
+                                {% endifequal %}
+                            <th>
+                                <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course_teacher.0.introduction  }}">
+                                        {{ course_teacher.0.introduction|slice:'25'  }}...
+                                </a>
+                            </th>
+                                <th><a href="/student/course/{{course_teacher.0.id  }}" class = "btn btn-block btn-primary">查看详情</a></th>
+                            </tr>
+                        {% endfor %}
+                {% else %}
+                         <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                         <th>无</th>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">团队成员列表</h3>
@@ -59,6 +113,8 @@
         </div>
         <!-- /.box-body -->
     </div>
+
+
     {% if group.end %}
         {% if uG_len == 0 %}
             <button type="button" onclick="joinFunction()" class="btn btn-block btn-info">加入团队</button>
@@ -72,6 +128,7 @@
     {% else %}
         <button type="button" class="btn btn-block btn-danger">团队已结束申请！不可加入。</button>
     {% endif %}
+
     <script>
         function joinFunction() {
             $.ajax({
