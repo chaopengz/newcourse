@@ -238,20 +238,29 @@ def student(request):
     if not judge_auth(request, '1'): return jump_no_auth(request)
     if 'cid' in request.GET:
         list_num = 2
-        page_name = '选课学生管理'
-        links = [{'name': '课程管理', 'page': '/administrator/course/'}, {'name': '选课学生管理', 'page': '#'}]
         user = User.objects.filter(name=request.session['name']).first()
 
         cid = request.GET.get('cid')
         course = Course.objects.get(id=cid)
-
-        allstudents = User.objects.filter(type=2).order_by('name')
-        students = []
-        studentids = UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
-        for s in studentids:
-            students.append(s.user)
-
-        return render_to_response('administrator_course_add_student.html', locals())
+        if course.is_single==1:
+            # 普通课程，返回选课学生管理页面
+            page_name = '选课学生管理'
+            links = [{'name': '课程管理', 'page': '/administrator/course/'},{'name': '课程详情', 'page': '/administrator/course/courseInfo/'+cid+'/'}, {'name': '选课学生管理', 'page': '#'}]
+            allstudents = User.objects.filter(type=2).order_by('name')
+            students = []
+            studentids = UserCourse.objects.filter(course=Course.objects.get(id=cid)).order_by('user')
+            for s in studentids:
+                students.append(s.user)
+            return render_to_response('administrator_course_add_student.html', locals())
+        else:
+            # 团队课程，返回查看团队列表页面
+            page_name = '选课团队管理'
+            links = [{'name': '课程管理', 'page': '/administrator/course/'}, {'name': '课程详情', 'page': '/administrator/course/courseInfo/'+cid+'/'}, {'name': '选课团队管理', 'page': '#'}]
+            groups=[]
+            groupids=GroupCourse.objects.filter(course=Course.objects.get(id=cid),is_allowed=1).order_by('group')
+            for id in groupids:
+                groups.append(id.group)
+            return render_to_response('administrator_course_group.html', locals())
     else:
         return HttpResponseRedirect('/administrator/course/')
 
