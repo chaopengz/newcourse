@@ -93,7 +93,7 @@
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
-                  <th>提交作业序号</th>
+                  <th>#</th>
                     <th>作业名称</th>
                   <th>提交时间</th>
                     <th>打分</th>
@@ -102,7 +102,7 @@
                 </tr>
                   {% for task in task_file %}
                     <tr href="/task/">
-                        <td>{{ task.id }}</td>
+                        <td>{{ forloop.counter  }}</td>
                         <td>{{ task.name }}</td>
                         <td>{{ task.submit_time }}</td>
                         <td><input type="number" id="{{ task.id }}" class="small" value="{{ task.grade }}"></td>
