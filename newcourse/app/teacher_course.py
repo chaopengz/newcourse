@@ -132,6 +132,17 @@ def course_resource_class_add(request):
     resource_class.save()
     return HttpResponse(json.dumps(True))
 
+
+def course_resource_class_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    name = request.POST['resource_class_name']
+    resource_class = ResourceClass.objects.filter(name=name)
+    if len(resource_class) == 0:
+        return HttpResponse(json.dumps(False))
+    resource_class.delete()
+    return HttpResponse(json.dumps(True))
+
 def group_delete(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '3'): return jump_no_auth(request)
