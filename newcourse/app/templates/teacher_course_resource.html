@@ -7,7 +7,10 @@
             <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
             <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
 
+             <div class="btn-group">
             <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
+            <input id="delete_class" class="btn btn-danger" type="button"  value="删除分类" >
+             </div>
         </div>
     {% endifequal %}
     {% ifequal  finish 1 %}
@@ -20,14 +23,17 @@
            <table class="table table-hover">
                 <tr>
                   <th>#</th>
-                  <th>资源名称</th>
+                  <th>资源描述</th>
+                    <th>文件名</th>
                     <th>所在分类</th>
                     <th>上传时间</th>
+                     <th>操作</th>
                 </tr>
                   {% for resource in resources %}
                     <tr href="/teacher/resource/">
-                        <td>{{ resource.id }}</td>
-                        <td><a href="/teacher/resource/{{resource.id  }}">{{ resource.name }}</a></td>
+                        <td>{{ forloop.counter  }}</td>
+                        <td>{{ resource.name }}</td>
+                        <td> {{ resource.server_path }}</td>
                         <td>
                             <select class="form-control" style="max-width: 100px" id="{{resource.id}}">
                       {% for t in resource_classes %}
@@ -43,9 +49,10 @@
                         </td>
                         <td>{{ resource.submit_time}}</td>
                         <td>
-                                    <button value="remove"  id="{{ resource.id }}" class="btn btn-warning" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" >
-                                    <i class="fa fa-times"></i>
-                                    </button>
+                            <div class="btn-group">
+                      <input class="btn btn-info" type="button"  value="下载" onclick="javascript:window.location.href='/media/{{ resource.server_path }}'">
+                      <input type="button"  value="删除"  id="{{ resource.id }}" class="btn btn-danger" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" > </input>
+                         </div>
                         </td>
                     </tr>
                   {% endfor %}
@@ -111,8 +118,38 @@
         });
         });
 
+ $(function () {
+        $("#delete_class").bind('click', function () {
+            if ( $("#new_class").val().length<=0){
+                alert("请输入新分类");
+            }
+            else{
+            $.ajax(
+                  {
+                      url: "/teacher/course/resource_class_delete/",
+                      type: "POST",
+                      data: {
+                          "resource_class_name": $("#new_class").val()
+                      },
+                      dataType:"json",
+                      success: function (data) {
+                          if (data == true) {
+                              alert("删除成功");
+                              window.location.reload();
+                          } else {
+                              alert("修改失败");
+                          }
+                      },
+                      error: function () {
+                          alert("连接失败");
+                      }
+                  });
+            }
+        });
+        });
+
         $(function () {
-        $("button[value='remove']").bind('click', function () {
+        $("input[type='button'][value='删除']").bind('click', function () {
                 $.ajax(
                         {
                             url: "/teacher/course/resourcedelete/",
