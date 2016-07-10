@@ -196,7 +196,11 @@ def save_course(request):
 
     if (not compare_time(t_sdate,t_edate,sdate)) or (not compare_time(t_sdate,t_edate,edate)):
         # 日期判别失败，跳出
-        return jump_with_info(request,"课程信息录入失败：课程起止日期不能超过学期的起止日期！请重新填写","/administrator/course/addCourse/")
+        error_message="课程信息录入失败：课程起止日期不能超过学期的起止日期！请重新填写"
+        if 't_id' in request.POST:
+            return jump_with_info(request,error_message,"/administrator/course/changeCourse/"+request.POST.get('t_id')+"/")
+        else:
+            return jump_with_info(request,error_message,"/administrator/course/addCourse/")
 
     if request.POST.get('t_id'):
         # 修改原有课程
