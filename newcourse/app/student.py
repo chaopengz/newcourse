@@ -10,6 +10,11 @@ import os, tempfile, zipfile,administrator_course
 from teacher_course import zip_dir
 from view_auth_manage import *
 # Create your views here.
+class CourseShow:
+    def __init__(self, course, isrun):
+        self.course = course
+        self.isrun = isrun
+
 def student(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
@@ -30,6 +35,14 @@ def student_info(request):
     user = User.objects.filter(name=request.session['name']).first()
     return render_to_response('student_info.html', locals())
 
+# 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
+def compare_time(time1, time2):
+    nowtime = datetime.date.today()
+    print (time2 - nowtime).days
+    if (nowtime - time1).days > 0 and (time2 - nowtime).days > 0:
+        return True
+    else:
+        return False
 
 def student_course(request):
     if not judge_login(request): return jump_not_login(request)
@@ -38,15 +51,19 @@ def student_course(request):
     list_num = 2
     links = [{'name': '学生页面', 'page': '/student/'}]
     user = User.objects.filter(name=request.session['name']).first()
-    # usercourses = UserCourse.objects.filter(user_id=user.id)
+
     usercourses = UserCourse.objects.filter(user_id=user.id)
     courses = []
     for usercourse in usercourses:
-        courses.append(Course.objects.get(id=usercourse.course_id))
+        course=Course.objects.get(id=usercourse.course_id)
+        isrun=compare_time(course.start_date,course.end_date)
+        courses.append(CourseShow(course, isrun))
+
     course_teachers = []
     for course in courses:
-        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
-    sorted(course_teachers,)
+        course_teachers.append([course, User.objects.get(id=course.course.teacher_id)])
+
+    # sorted(course_teachers,'course.end_date',True)
     # courses = Course.objects.filter(id=usercourses.course_id)
     # courses=['C++', 'Java']
     return render_to_response('student_course.html', locals())
@@ -63,6 +80,7 @@ def student_course_i(request, i):
     request.session['course_id'] = i
     teacher = User.objects.get(id=course.teacher_id)
     return render_to_response('student_course_i.html', locals())
+
 
 
 def student_course_i_homework(request, i):
