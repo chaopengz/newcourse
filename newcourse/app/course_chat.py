@@ -45,8 +45,8 @@ def Post(request):
         user = User.objects.filter(name=request.session['name']).first()
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
-        createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        c = Chat(created=createTime, user=user, message=msg, courseid=courseId)
+        # createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        c = Chat(user=user, message=msg, courseid=courseId)
         if msg != '':
             # print user, msg, courseId
             c.save()
@@ -60,5 +60,25 @@ def Messages(request):
     # courseId = 0
     # if 'course_id' in request.session:
     courseId = request.session['course_id']
-    c = Chat.objects.filter(courseid=courseId)
-    return render(request, 'messages.html', {'chat': c})
+    chat = Chat.objects.filter(courseid=courseId)
+    loginUser = User.objects.filter(name=request.session['name']).first()
+
+    return render(request, 'messages.html', locals())
+
+
+def test(request):
+    i = 1
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
+    courseId = request.session['course_id']
+    course = Course.objects.get(id=i)
+    loginUser = User.objects.filter(name=request.session['name']).first()
+    list_num = 4
+    page_name = "课程交流"
+    chat = Chat.objects.filter(courseid=courseId)
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+    # return render(request, "student_course_message.html", locals())
+    return render(request, 'chat_test.html', locals())

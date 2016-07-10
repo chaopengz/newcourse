@@ -32,8 +32,8 @@ urlpatterns = [
     url(r'^student/info/$', 'app.student.student_info'),
     url(r'^student/course/$', 'app.student.student_course'),
     url(r'^student/groups/$', 'app.student.student_group'),
-    url(r'^student/groups/handle_application/$','app.student_group.handle_application'),
-    url(r'^student/groups/authority_translate/$','app.student_group.authority_translate'),
+    url(r'^student/groups/handle_application/$', 'app.student_group.handle_application'),
+    url(r'^student/groups/authority_translate/$', 'app.student_group.authority_translate'),
     url(r'^student/course/(\d+)/$', 'app.student.student_course_i'),
     url(r'^student/course/(\d+)/homework/$', 'app.student.student_course_i_homework'),
     url(r'^student/course/(\d+)/homework/(\d+)/$', 'app.student.student_course_i_homework_I'),
@@ -44,7 +44,6 @@ urlpatterns = [
     url(r'^student/course/(\d+)/resource/$', 'app.student.student_course_i_resource'),
     url(r'^student/course/(\d+)/resource/(\d+)/download$', 'app.student.file_download'),
     url(r'^student/course/one_click_download/$', 'app.student.one_click_download'),
-
 
     # Follow urls are added by chaopengz
     url(r'^student/group/addGroup/$', 'app.student_group.addGroup'),
@@ -97,7 +96,6 @@ urlpatterns = [
     url(r'^administrator/course/add_course_select_many/$', 'app.administrator_course.add_course_select_many'),
     url(r'^administrator/course/remove_student/$', 'app.administrator_course.remove_student'),
 
-
     url(r'^administrator/teacher/$', 'app.administrator_teacher.main'),
     url(r'^administrator/teacher/reset_password/(?P<tId>\d+)/$', 'app.administrator_teacher.reset_password'),
     url(r'^administrator/teacher/add_teacher/$', 'app.administrator_teacher.add_teacher'),
@@ -113,6 +111,8 @@ urlpatterns = [
     url(r'^teacher/course/message/', 'app.course_chat.t_Home'),
     url(r'^student/course/(\d+)/message/', 'app.course_chat.s_Home'),
     url(r'^messages/$', 'app.course_chat.Messages', name='messages'),
+
+    url(r'test/', 'app.course_chat.test'),
 
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_URL}),
 

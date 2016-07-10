@@ -1,10 +1,45 @@
+{#{% for obj in chat %}#}
+{#   <div class="item">#}
+{#        <img src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg" alt="user image" class="online">#}
+{#        <p class="message">#}
+{#                  <a href="#" class="name">#}
+{#                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ obj.created }}</small>{{ obj.user.real_name }}#}
+{#                      </a>#}
+{#         {{ obj.message }}</p>#}
+{#   </div>#}
+{#{% endfor %}#}
 {% for obj in chat %}
-   <div class="item">
-        <img src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg" alt="user image" class="online">
-        <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ obj.created }}</small>{{ obj.user.real_name }}
-                      </a>
-         {{ obj.message }}</p>
-   </div>
+    {% if  not obj.user.id == loginUser.id %}
+        <div class="direct-chat-msg">
+            <div class="direct-chat-info clearfix">
+                <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
+                <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
+            </div>
+            <!-- /.direct-chat-info -->
+            <img class="direct-chat-img"
+                 src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                 alt="Message User Image">
+            <!-- /.direct-chat-img -->
+            <div class="direct-chat-text">
+                {{ obj.message }}        </div>
+            <!-- /.direct-chat-text -->
+        </div>
+    {% else %}
+        <div class="direct-chat-msg right">
+            <div class="direct-chat-info clearfix">
+                <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
+                <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
+            </div>
+            <!-- /.direct-chat-info -->
+            <img class="direct-chat-img"
+                 src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                 alt="Message User Image">
+            <!-- /.direct-chat-img -->
+            <div class="direct-chat-text">
+                {{ obj.message }}
+            </div>
+            <!-- /.direct-chat-text -->
+        </div>
+    {% endif %}
+
 {% endfor %}
