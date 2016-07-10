@@ -180,9 +180,17 @@ def apply(request):
                 groupcourse.course_id = course.id
                 groupcourse.group_id = group.id
                 groupcourse.save()
-                return HttpResponse('申请成功')
-            return HttpResponse('你的团队中已经有人加入了这门课程')
-        return HttpResponse("这门课不可以团队选课")
-    return  HttpResponse("你不是这个团队的负责人")
+                request.session['message'] = "申请成功\n"
+                request.session['nexturl'] = "/student/group/applyforcourse/"
+                return HttpResponseRedirect('/info/')
+            request.session['message'] = "你的团队中已经有人加入了这门课程\n"
+            request.session['nexturl'] = "/student/group/applyforcourse/"
+            return HttpResponseRedirect('/info/')
+        request.session['message'] = "这门课不可以团队选课\n"
+        request.session['nexturl'] = "/student/group/applyforcourse/"
+        return HttpResponseRedirect('/info/')
+    request.session['message'] = "你不是这个团队的负责人\n"
+    request.session['nexturl'] = "/student/group/applyforcourse/"
+    return HttpResponseRedirect('/info/')
 
     return render_to_response('student_group_applyforcourse_i.html', locals())
