@@ -59,7 +59,12 @@
                       <th> {{ forloop.counter }}</th>
                       <th> {{ teacher.name }}</th>
                     <th> {{ teacher.real_name|slice:'15' }}</th>
-                    <th><button type="button" class="btn btn-block btn-primary" style="max-width:100px" onclick="resetPassword({{ teacher.id }})">重置密码</button></th>
+                    <th>
+                                                <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="resetPassword({{ teacher.id }})">重置密码</button>
+                            <button type="button" class="btn btn-danger" onclick="delete_teacher({{ teacher.id }})">删除</button>
+                        </div>
+                        </th>
                 </tr>
                 {% endfor %}
               </table>
@@ -81,6 +86,26 @@
     }
     function add_teacher(){
         self.location.href="/administrator/teacher/add_teacher/";
+    }
+    function delete_teacher(teacherId){
+        if(confirm("真的要删除这个教师的账号吗？删除后无法撤销。")){
+                    $.ajax({
+            type: "POST",
+            url: "/administrator/teacher/delete_teacher/",
+            data:{
+                't_id':teacherId
+            },
+            dataType: "json",
+            success: function(response){
+                if(response.error_info=="success"){
+                    location.reload(true);
+                }else{
+                    alert("删除失败");
+                }
+            }
+        });
+        }
+
     }
 init()
 </script>

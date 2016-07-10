@@ -40,7 +40,12 @@
                     {% else %}
                         <th style="color: #ff6600">已结束</th>
                     {% endif %}
-                    <th><button type="button" class="btn btn-block btn-primary" onclick="checkTerm({{ term.term.id }})">查看</button></th>
+                    <th>
+                    <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="checkTerm({{ term.term.id  }})">查看</button>
+                            <button type="button" class="btn btn-danger" onclick="delete_term({{ term.term.id  }})">删除</button>
+                        </div>
+                        </th>
                 </tr>
                 {% endfor %}
               </table>
@@ -55,6 +60,27 @@
 
     function addTerm(){
         self.location.href="/administrator/term/addTerm/";
+    }
+
+function delete_term(termId){
+        if(confirm("真的要删除这个学期信息吗？删除后无法撤销。")){
+                    $.ajax({
+            type: "POST",
+            url: "/administrator/term/delete_term/",
+            data:{
+                't_id':termId
+            },
+            dataType: "json",
+            success: function(response){
+                if(response.error_info=="success"){
+                    location.reload(true);
+                }else{
+                    alert("删除失败");
+                }
+            }
+        });
+        }
+
     }
 </script>
 {% endblock %}
