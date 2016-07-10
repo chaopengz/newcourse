@@ -65,6 +65,17 @@ def info(request, i):  # i stands for the groupId
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
+    group_courses = GroupCourse.objects.filter(group_id=i) #the courses which the group took
+
+    courses=[]
+    for group_course in group_courses:
+        courses.append(Course.objects.get(id=group_course.course_id))
+    course_teachers=[]
+    for course in courses:
+        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
+    sorted(course_teachers,)
+    course_teachers_len=len(course_teachers)
+
     group_user = User.objects.filter(id=group.user_id).first()#负责人
     group_member=UserGroup.objects.filter(group_id=i)
     member_list=[]
@@ -92,13 +103,14 @@ def handle_application(request):
     if ug.is_allowed == "1":
         group = Group.objects.filter(id=request.POST['group_id']).first()
         group.number += 1
+        if group.number == group.max_number:
+            group.end = 0
         group.save()
         ug.save()
         return HttpResponse("1")
     else:
         ug.save()
         return HttpResponse("2")
-
 
 def authority_translate(request):
     if not judge_login(request): return jump_not_login(request)
@@ -116,9 +128,14 @@ def handle_group(request):
         handle_type = request.POST['type']
         if handle_type == "1":
             group = Group.objects.filter(id=gid).first()
-            group.end = 0
-            group.save()
-            return HttpResponse("成功关闭组队申请！")
+            if(group.end==1):
+                group.end = 0
+                group.save()
+                return HttpResponse("成功关闭组队申请！")
+            else:
+                group.end = 1
+                group.save()
+                return HttpResponse("成功开启组队申请！")
         else:
             UserGroup.objects.filter(group_id=gid).delete()
             GroupCourse.objects.filter(group_id=gid).delete()
@@ -193,4 +210,3 @@ def apply(request):
     request.session['nexturl'] = "/student/group/applyforcourse/"
     return HttpResponseRedirect('/info/')
 
-    return render_to_response('student_group_applyforcourse_i.html', locals())
