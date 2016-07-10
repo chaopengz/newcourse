@@ -7,9 +7,15 @@ from models import *
 from django import forms
 import json
 import os, tempfile, zipfile,administrator_course
+import datetime, calendar
 from teacher_course import zip_dir
 from view_auth_manage import *
 # Create your views here.
+class CourseShow:
+    def __init__(self, course, isrun):
+        self.course = course
+        self.isrun = isrun
+
 def student(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
@@ -30,6 +36,14 @@ def student_info(request):
     user = User.objects.filter(name=request.session['name']).first()
     return render_to_response('student.html', locals())
 
+# 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
+def compare_time(time1, time2):
+    nowtime = datetime.date.today()
+    print (time2 - nowtime).days
+    if (nowtime - time1).days > 0 and (time2 - nowtime).days > 0:
+        return True
+    else:
+        return False
 
 def student_course(request):
     if not judge_login(request): return jump_not_login(request)
@@ -38,14 +52,19 @@ def student_course(request):
     list_num = 2
     links = [{'name': '学生页面', 'page': '/student/'}]
     user = User.objects.filter(name=request.session['name']).first()
-    # usercourses = UserCourse.objects.filter(user_id=user.id)
+
     usercourses = UserCourse.objects.filter(user_id=user.id)
     courses = []
     for usercourse in usercourses:
-        courses.append(Course.objects.get(id=usercourse.course_id))
+        course=Course.objects.get(id=usercourse.course_id)
+        isrun=compare_time(course.start_date,course.end_date)
+        courses.append(CourseShow(course, isrun))
+
     course_teachers = []
     for course in courses:
-        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
+        course.course.start_date = course.course.start_date.strftime("%Y年%m月%d日")
+        course.course.end_date = course.course.end_date.strftime("%Y年%m月%d日")
+        course_teachers.append([course, User.objects.get(id=course.course.teacher_id)])
     sorted(course_teachers,)
     # courses = Course.objects.filter(id=usercourses.course_id)
     # courses=['C++', 'Java']
@@ -59,10 +78,15 @@ def student_course_i(request, i):
     user = User.objects.filter(name=request.session['name']).first()
     list_num = 1
     course = Course.objects.get(id=i)
+    course.start_date = course.start_date.strftime("%Y年%m月%d日")
+    course.end_date = course.end_date.strftime("%Y年%m月%d日")
     term = Term.objects.filter(id=course.term_id).first()
+    term.start_date = term.start_date.strftime("%Y年%m月%d日")
+    term.end_date = term.end_date.strftime("%Y年%m月%d日")
     request.session['course_id'] = i
     teacher = User.objects.get(id=course.teacher_id)
     return render_to_response('student_course_i.html', locals())
+
 
 
 def student_course_i_homework(request, i):
@@ -77,8 +101,11 @@ def student_course_i_homework(request, i):
     if course.is_single:
         task_dones =[]
         for task in tasks:
+            task.start_date = task.start_date.strftime("%Y年%m月%d日")
+            task.end_date = task.end_date.strftime("%Y年%m月%d日")
             task_dones.append([task,len(TaskFile.objects.filter(user_id=user.id,task_requirement_id=task.id))])
     else:
+
         groups1 = GroupCourse.objects.filter(course_id=i)
         groups2 = UserGroup.objects.filter(user_id=user.id, is_allowed=1)
         for group1 in groups1:
@@ -87,6 +114,8 @@ def student_course_i_homework(request, i):
                     group_id = group1.group_id
         task_dones = []
         for task in tasks:
+            task.start_date = task.start_date.strftime("%Y年%m月%d日")
+            task.end_date = task.end_date.strftime("%Y年%m月%d日")
             task_dones.append([task, len(TaskFile.objects.filter(group_id=group_id, task_requirement_id=task.id))])
     str1 = '/student/course/'
     str1 = str1 + str(course.id)
@@ -104,7 +133,7 @@ def student_course_homework_task_delete(request):
 def student_course_i_homework_I(request, i, I):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
-    list_num = 1
+    list_num = 2
     page_name = '作业详情'
     course = Course.objects.get(id=i)
     teacher = User.objects.get(id=course.teacher_id)
@@ -130,8 +159,6 @@ def student_course_i_homework_I(request, i, I):
                         allow_upload =0
                         if group.user_id==user.id:
                             allow_upload =1
-
-
     taskrequirement = TaskRequirement.objects.get(id=I)
     myurl = "/student/course/" + str(course.id)+"/homework/" + str(I)+"/"
     if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
@@ -204,7 +231,76 @@ def student_course_i_homework_I(request, i, I):
             task_file.save()
             return HttpResponse(json.dumps(True))
     else:
+        taskrequirement.start_date = taskrequirement.start_date.strftime("%Y年%m月%d日")
+        taskrequirement.end_date = taskrequirement.end_date.strftime("%Y年%m月%d日")
+        for task in tasks:
+            task.submit_time = task.submit_time.strftime("%Y年%m月%d日%H时%M分")
         return render_to_response('student_course_i_homework_I.html', locals())
+
+
+def student_course_i_homework_I_submit(request, i, I):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '2'): return jump_no_auth(request)
+    list_num = 1
+    page_name = '作业详情'
+    course = Course.objects.get(id=i)
+    teacher = User.objects.get(id=course.teacher_id)
+    str1 = '/student/course/'
+    str1 = str1 + str(course.id)
+    links = [{'name': '学生页面', 'page': '/student/'},
+             {'name': '课程列表', 'page': '/student/course/'}, {'name': course.name, 'page': str1}]
+    uf = UserForm(request.POST, request.FILES)
+    user = User.objects.filter(name=request.session['name']).first()
+    tasks = TaskFile.objects.filter(user_id=user.id, task_requirement_id=I)
+    for task in tasks:
+        task.submit_time = task.submit_time.strftime("%Y年%m月%d日")
+    allow_upload = 1
+    group_id = 0
+    if course.is_single == 0:
+        groups1 = GroupCourse.objects.filter(course_id=i)
+        groups2 = UserGroup.objects.filter(user_id=user.id, is_allowed=1)
+        for group1 in groups1:
+            for group2 in groups2:
+                if group1.group_id == group2.group_id:
+                    group_id = group1.group_id
+                    group = Group.objects.get(id=group_id)
+                    tasks = TaskFile.objects.filter(group_id=group_id, task_requirement_id=I)
+                    if len(tasks) != 0:
+                        allow_upload = 0
+                        if group.user_id == user.id:
+                            allow_upload = 1
+    taskrequirement = TaskRequirement.objects.get(id=I)
+    myurl = "/student/course/" + str(course.id) + "/homework/" + str(I) + "/"
+    if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+        allow_upload = 0
+    if request.method == "POST":
+        if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
+            request.session['message'] = "本次作业已过期"
+            request.session['nexturl'] = myurl
+            return HttpResponseRedirect('/info/')
+        task_file = TaskFile.objects.filter(task_requirement_id=taskrequirement.id, user=user)
+        if task_file:
+            task_file[0].delete()
+        task_file = TaskFile()
+        task_file.name = taskrequirement.name
+        task_file.is_file = False
+        task_file.content = request.POST['content']
+        task_file.group_id = group_id
+        task_file.task_requirement_id = taskrequirement.id
+        task_file.user_id = user.id
+        task_file.server_path = ''
+        task_file.save()
+        return HttpResponse(json.dumps(True))
+    else:
+        taskrequirement.start_date = taskrequirement.start_date.strftime("%Y年%m月%d日")
+        taskrequirement.end_date = taskrequirement.end_date.strftime("%Y年%m月%d日")
+        return render_to_response('student_course_i_homework_I.html', locals())
+
+
+
+
+
+
 
 
 
@@ -286,6 +382,7 @@ def student_course_i_resource(request, i):
     resources = Resource.objects.filter(course_id=course.id)
     resourcesclasses = []
     for resource in resources:
+        resource.submit_time = resource.submit_time.strftime("%Y年%m月%d日%H时%M分")
         resourcesclasses.append([resource, ResourceClass.objects.get(id=resource.resource_class_id)])
 
 
