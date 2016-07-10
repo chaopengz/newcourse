@@ -31,6 +31,8 @@ def s_Home(request, i):
     list_num = 4
     page_name = "课程交流"
     c = Chat.objects.filter(courseid=courseId)
+    for obj in c:
+        obj.created = obj.created.strftime("%Y年%m月%d日%H时%M分")
     str1 = '/student/course/'
     str1 = str1 + str(course.id)
     links = [{'name': '学生页面', 'page': '/student/'},
@@ -61,4 +63,6 @@ def Messages(request):
     # if 'course_id' in request.session:
     courseId = request.session['course_id']
     c = Chat.objects.filter(courseid=courseId)
+    for obj in c:
+        obj.created = obj.created.strftime("%Y年%m月%d日%H时%M分")
     return render(request, 'messages.html', {'chat': c})

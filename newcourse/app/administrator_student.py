@@ -46,6 +46,25 @@ def add_student(request):
     user=User.objects.get(name=request.session['name'])
     return render_to_response('administrator_add_student.html', locals())
 
+def delete_student(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 's_id' in request.POST:
+        sid=request.POST['s_id']
+        try:
+            student=User.objects.filter(id=sid).first()
+            student.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 def add_student_many(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '1'): return jump_no_auth(request)

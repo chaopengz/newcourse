@@ -1,0 +1,43 @@
+{% extends "administrator.html" %}
+
+{% block content %}
+    <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">{{ course.name }} - 已有团队列表</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped" id="table1">
+              <thead>
+                              <tr>
+                    <th>#</th>
+                    <th>团队名</th>
+                    <th >成员数</th>
+                    <th >队长</th>
+                </tr>
+              </thead>
+                <tbody>
+                                  {% for group in groups %}
+                      <th> {{ forloop.counter }}</th>
+                      <th> {{ group.name }}</th>
+                      <th> {{ group.number }}</th>
+                      <th> {{ group.user.real_name }}</th>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+<a href="/administrator/course/courseInfo/{{ cid }}/" class="btn btn-default" >返回</a>
+
+    <script>
+    $(function () {
+    set_table("table1");
+  });
+    </script>
+{% endblock %}
+
+
+

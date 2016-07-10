@@ -4,11 +4,12 @@
        <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
-                  <th>课程序号</th>
+                  <th>#</th>
                   <th>课程名</th>
                   <th>上课时间</th>
                   <th>是否允许团体选课</th>
                   <th>课程简介</th>
+                     <th>进入课程</th>
                   <th>状态</th>
                 </tr>
 
@@ -24,7 +25,12 @@
                         {% ifequal course.course.is_single 1 %}
                             <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
-                        <td>{{ course.course.introduction|slice:'30'}}</td>
+                       <td>
+                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course.course.introduction  }}">
+                                {{ course.course.introduction|slice:'25'  }}
+                            </a>
+                        </td>
+                        <td><a  href="/teacher/course/{{course.id  }}" class = "btn btn-block btn-primary" >查看详情</a></td>
 
                        {% ifequal course.isrun True %}
                                 <td><span class="label label-success">进行中</span></td>
@@ -37,5 +43,11 @@
 
            </table>
        </div>
+
+       <script>$(function ()
+      { $("[data-toggle='popover']").popover();
+      });
+   </script>
+
             <!-- /.box-body -->
     {% endblock %}

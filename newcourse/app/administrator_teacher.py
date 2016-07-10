@@ -46,7 +46,24 @@ def add_teacher(request):
     user=User.objects.get(name=request.session['name'])
     return render_to_response('administrator_add_teacher.html', locals())
 
-
+def delete_teacher(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 't_id' in request.POST:
+        tid=request.POST['t_id']
+        try:
+            teacher=User.objects.filter(id=tid).first()
+            teacher.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def add_teacher_many(request):
     if not judge_login(request): return jump_not_login(request)

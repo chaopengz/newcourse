@@ -1,10 +1,7 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
+<script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
     <div id="dialog-form" hidden>
     <textarea id="ta" style="width: 350px;height: 300px"> </textarea>
     </div>
@@ -23,19 +20,80 @@
                   <dt>作业可提交日期</dt><dd>{{ task.start_date }} - {{ task.end_date }}</dd>
                   <dt>可执行操作</dt>
                   <dd>
-                    <div>
+
+                        <div class="btn-group">
                       <input class="btn btn-info" type="button"  value="一键下载" onclick="javascript:window.location.href='/one_click_download/'">
-                    </div>
+                      <input type="button" value="批量导入成绩" class="btn btn-info"  data-toggle="modal" data-target="#mymodal"> </input>
+                         </div>
                   </dd>
               </dl>
             </div>
             <!-- /.box-body -->
     </div>
+
+<!-- .modal -->
+<div class="modal" id="mymodal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入成绩</h4>
+			</div>
+			<div class="modal-body">
+				<form enctype="multipart/form-data"  class="form-horizontal" id="form1" style="padding-left: 15%;padding-right:15%" method="post" action="/teacher/course/task_grade_many/">
+                        <div class="form-group">
+                            <a class="btn btn-default" target="_blank"  href="/media/csv/grade_info.csv">下载作业成绩信息批量导入模板</a>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" id="infolist" name="infolist">
+                         </div>
+                </form>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" onclick="add_grade_info()" >导入</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+    <div class="modal" id="mymodal2">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">批量导入</h4>
+			</div>
+			<div class="modal-body">
+                <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">出错的行</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped" id="error_list_table">
+
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal" onclick="javascript:location.reload(true)">关闭</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
     <div class="box">
     <div class="box-body table-responsive no-padding">
            <table class="table table-hover">
                 <tr>
-                  <th>提交作业序号</th>
+                  <th>#</th>
                     <th>作业名称</th>
                   <th>提交时间</th>
                     <th>打分</th>
@@ -44,7 +102,7 @@
                 </tr>
                   {% for task in task_file %}
                     <tr href="/task/">
-                        <td>{{ task.id }}</td>
+                        <td>{{ forloop.counter  }}</td>
                         <td>{{ task.name }}</td>
                         <td>{{ task.submit_time }}</td>
                         <td><input type="number" id="{{ task.id }}" class="small" value="{{ task.grade }}"></td>
@@ -56,7 +114,8 @@
                         {% endifequal %}
                         {% ifequal task.is_file 0 %}
                             <td>
-                             <input class="btn" type="button" id="{{ task.id }}" value="查看">
+                            <input class="btn" type="button" value="查看" onclick="contentclick();" data-placement="bottom" data-toggle="popover" data-content="{{ task.content  }}">
+                            </input>
                             </td>
                         {% endifequal %}
                     </tr>
@@ -66,6 +125,13 @@
        </div>
     </div>
 <script>
+function contentclick()
+{
+    $(function ()
+      { $("[data-toggle='popover']").popover();
+      });
+}
+
     $(function () {
         $("input[type='number']").bind('change', function () {
             $.ajax(
@@ -114,34 +180,33 @@
                   });
         });
         });
-$(function () {
-        $("input[type='button'][value='查看']").bind('click', function () {
-            $.ajax(
-                  {
-                      url: "/teacher/course/task_content/",
-                      type: "POST",
-                      data: {
-                          "task_id": $(this).attr('id'),
-                      },
-                      dataType:"json",
-                      success: function (data) {
-                          dialog = $( "#dialog-form" ).dialog({
-                              autoOpen: false,
-                              height: 300,
-                              width: 350,
-                              modal: true,
-                              close: function() {
-                              }
-		                });
-                           $("#ta").val(data);
-                          dialog.dialog( "open" );
-                      },
-                      error: function () {
-                          alert("连接失败");
-                      }
-                  });
-        });
-        });
+
+    function add_grade_info(){
+        var ajax_option={
+            success:function(data) {
+                console.log(data);
+                var elist = data.error_list;
+                $("#mymodal").modal({show:false});
+                $("#error_list_table").html('<tr> <th>学号</th>  <th>成绩</th><th>评论</th> </tr>');
+
+                for(row in elist){
+                    var a =("<tr>"+"<th>"+elist[row][0]+"</th>"
+                    +"<th>"+elist[row][1]+"</th>"
+                    +"<th>"+elist[row][2]+"</th>"
+                    +"</tr>");
+                    $(a).appendTo("#error_list_table");
+{#                    $("#error_list_table").append(a);#}
+{#                    $("#error_list_table").append("<th>"+elist[row][0]+"</th>");#}
+{#                    $("#error_list_table").append("<th>"+elist[row][1]+"</th>");#}
+{#                    $("#error_list_table").append("<th>"+elist[row][2]+"</th>");#}
+{#                    $("#error_list_table").append("</tr>");#}
+                }
+
+                $("#mymodal2").modal({show:true});
+            }
+        };
+        $('#form1').ajaxSubmit(ajax_option);
+    }
 </script>
 
 {% endblock %}
