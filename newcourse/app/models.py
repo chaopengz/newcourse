@@ -110,7 +110,7 @@ class GroupCourse(models.Model):
 
 
 class Chat(models.Model):
-    created = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey('User')
     message = models.CharField(max_length=200)
     courseid = models.IntegerField(default=0)
