@@ -48,14 +48,17 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <table class="table table-striped">
-                <tr>
+              <table class="table table-striped" id="table1">
+              <thead>
+                              <tr>
                     <th >#</th>
                     <th>用户名</th>
                     <th>真实姓名</th>
                     <th >操作</th>
                 </tr>
-                  {% for student in students %}
+              </thead>
+                <tbody>
+                                  {% for student in students %}
                       <th> {{ forloop.counter }}</th>
                       <th> {{ student.name }}</th>
                     <th> {{ student.real_name|slice:'15' }}</th>
@@ -67,12 +70,17 @@
                         </th>
                 </tr>
                 {% endfor %}
+                </tbody>
+
               </table>
             </div>
             <!-- /.box-body -->
           </div>
 
 <script>
+$(function () {
+    set_table("table1");
+  });
     function resetPassword(tId){
         if(confirm('要将该学生密码重置为 123 吗？')){
             self.location.href="/administrator/student/reset_password/"+tId;

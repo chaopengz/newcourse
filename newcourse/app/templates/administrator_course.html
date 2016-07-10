@@ -1,7 +1,7 @@
 {% extends "administrator.html" %}
 
 {% block content %}
-<script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
+    <script src="/static/plugins/jQuery-form/jquery.form.min.js"></script>
 <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">添加学生</h3>
@@ -97,7 +97,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <table class="table table-striped">
+              <table class="table table-striped" id="table1">
+              <thead>
                 <tr>
                     <th>#</th>
                     <th>课程名</th>
@@ -106,6 +107,8 @@
                     <th>开课状态</th>
                   <th>操作</th>
                 </tr>
+                </thead>
+                <tbody>
                   {% for course in res %}
                       <th> {{ forloop.counter }}</th>
                     <th> {{ course.course.name }}</th>
@@ -130,12 +133,20 @@
                     </th>
                 </tr>
                 {% endfor %}
+              </tbody>
+                <tfoot>
+                </tfoot>
               </table>
             </div>
             <!-- /.box-body -->
           </div>
 
 <script>
+$(function () {
+    set_table("table1");
+  });
+
+
     function checkCourse(courseId){
         self.location.href="/administrator/course/courseInfo/"+courseId;
     }
