@@ -296,5 +296,6 @@ def student_group(request):
     list_num = 4
     user = User.objects.filter(name=request.session['name']).first()
     g = Group.objects.filter()
+    request.session['list_num'] = 4
 
     return render_to_response('student_allgroups.html', locals())

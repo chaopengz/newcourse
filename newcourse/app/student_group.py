@@ -92,13 +92,14 @@ def handle_application(request):
     if ug.is_allowed == "1":
         group = Group.objects.filter(id=request.POST['group_id']).first()
         group.number += 1
+        if group.number == group.max_number:
+            group.end = 0
         group.save()
         ug.save()
         return HttpResponse("1")
     else:
         ug.save()
         return HttpResponse("2")
-
 
 def authority_translate(request):
     if not judge_login(request): return jump_not_login(request)
