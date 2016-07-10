@@ -67,7 +67,7 @@ def userinfo(request):
 # 图片裁切
 def deal_image(name,data):
     im = Image.open(name)
-    im = im.rotate(data['rotate']*-1)
+    # im = im.rotate(data['rotate']*-1)
     # box = im.copy() #直接复制图像
     box = (int(data['x']), int(data['y']), int(data['width']+data['x']), int(data['height'] +data['y']))
     region = im.crop(box)
