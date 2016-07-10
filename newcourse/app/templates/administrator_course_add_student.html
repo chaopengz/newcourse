@@ -23,12 +23,7 @@
                       <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#mymodal" >批量导入</button>
                   </div>
               </div>
-
-
-
-
           </div>
-
 
     <!-- .批量导入弹窗 -->
 <div class="modal" id="mymodal">
@@ -95,24 +90,32 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <table class="table table-striped">
-                <tr>
+              <table class="table table-striped" id="table1">
+              <thead>
+                                <tr>
                   <th>学号</th>
                   <th>姓名</th>
                     <th >操作</th>
                 </tr>
-                  {% for student in students %}
+              </thead>
+                <tbody>
+                                  {% for student in students %}
                     <th> {{ student.name }}</th>
                       <th> {{ student.real_name }}</th>
                     <th><button type="button" class="btn btn-primary" onclick="remove_student({{ student.id }})">移除</button></th>
                 </tr>
                 {% endfor %}
+                </tbody>
+
               </table>
             </div>
             <!-- /.box-body -->
           </div>
-
+                 <a href="/administrator/course/courseInfo/{{ cid }}/" class="btn btn-default" >返回</a>
 <script>
+$(function () {
+    set_table("table1");
+  });
     function remove_student(sid){
         cid=$('#cid').val()
         self.location.href="/administrator/course/remove_student/?cid="+cid+"&sid="+sid;

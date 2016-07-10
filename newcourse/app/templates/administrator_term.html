@@ -22,15 +22,18 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body no-padding">
-              <table class="table table-striped">
-                <tr>
+              <table class="table table-striped" id="table1">
+              <thead>
+                              <tr>
                     <th>#</th>
                   <th>学期名</th>
                   <th>起止日期</th>
                   <th >状态</th>
                     <th >操作</th>
                 </tr>
-                  {% for term in res %}
+              </thead>
+              <tbody>
+               {% for term in res %}
                       <th> {{ forloop.counter }}</th>
                     <th> {{ term.term.name }}</th>
 
@@ -47,13 +50,17 @@
                         </div>
                         </th>
                 </tr>
-                {% endfor %}
+               {% endfor %}
+              </tbody>
               </table>
             </div>
             <!-- /.box-body -->
           </div>
 
 <script>
+$(function () {
+    set_table("table1");
+  });
     function checkTerm(termId){
         self.location.href="/administrator/term/termInfo/"+termId;
     }

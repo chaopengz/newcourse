@@ -62,13 +62,15 @@ def main(request):
         res.append(TermShow(term, isrun))
     return render_to_response('administrator_term.html', locals())
 
-# 比较学期的起止日期与系统当前日期，从而返回该学期是否已经结束
-def compare_time(time1,time2):
-    nowtime=datetime.date.today()
-    if (nowtime - time1).days > 0 and (time2-nowtime).days>0:
+# 比较课程的起止日期与系统当前日期，从而返回该课程是否已经结束
+def compare_time(time1, time2,cmptime=datetime.date.today()):
+    print (time2 - cmptime).days
+    if (cmptime - time1).days >= 0 and (time2 - cmptime).days >= 0:
         return True
     else:
         return False
+
+
 class TermShow:
     def __init__(self,term,isrun):
         self.term=term
@@ -110,12 +112,13 @@ def save_term(request):
     if not judge_auth(request, '1'): return jump_no_auth(request)
 
     tname=request.POST['t_name']
-    tweek=request.POST['t_week']
+
     tdate=request.POST['t_date']
     sdatestr=tdate[0:10]
     edatestr=tdate[13:23]
     sdate=datetime.datetime.strptime(sdatestr, "%m/%d/%Y").date()
     edate=datetime.datetime.strptime(edatestr, "%m/%d/%Y").date()
+    tweek=((edate-sdate).days)/7
 
     if request.POST.get('t_id'):
         # 修改
