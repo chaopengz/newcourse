@@ -85,6 +85,7 @@ urlpatterns = [
     url(r'^administrator/term/changeTerm/(?P<termId>\d+)/$', 'app.administrator_term.changeTermShow'),
     url(r'^administrator/term/addTerm/$', 'app.administrator_term.modifyTerm'),
     url(r'^administrator/term/saveTerm/$', 'app.administrator_term.save_term'),
+    url(r'^administrator/term/delete_term/$', 'app.administrator_term.delete_term'),
 
     url(r'^administrator/$', 'app.administrator.administrator'),
     url(r'^administrator/course/$', 'app.administrator_course.main'),
@@ -93,8 +94,10 @@ urlpatterns = [
     url(r'^administrator/course/addCourse/$', 'app.administrator_course.addCourseShow'),
     url(r'^administrator/course/add_course_many/$', 'app.administrator_course.add_course_many'),
     url(r'^administrator/course/saveCourse/$', 'app.administrator_course.save_course'),
+    url(r'^administrator/course/delete_course/$', 'app.administrator_course.delete_course'),
     url(r'^administrator/course/student/$', 'app.administrator_course.student'),
     url(r'^administrator/course/add_student/$', 'app.administrator_course.add_student'),
+    url(r'^administrator/course/delete_student/$', 'app.administrator_course.delete_student'),
     url(r'^administrator/course/add_course_select_many/$', 'app.administrator_course.add_course_select_many'),
     url(r'^administrator/course/remove_student/$', 'app.administrator_course.remove_student'),
 
@@ -104,6 +107,7 @@ urlpatterns = [
     url(r'^administrator/teacher/add_teacher/$', 'app.administrator_teacher.add_teacher'),
     url(r'^administrator/teacher/add_teacher_many/$', 'app.administrator_teacher.add_teacher_many'),
     url(r'^administrator/teacher/save_teacher/$', 'app.administrator_teacher.save_teacher'),
+    url(r'^administrator/teacher/delete_teacher/$', 'app.administrator_teacher.delete_teacher'),
 
     url(r'^administrator/student/$', 'app.administrator_student.main'),
     url(r'^administrator/student/reset_password/(?P<tId>\d+)/$', 'app.administrator_student.reset_password'),

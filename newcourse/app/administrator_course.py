@@ -175,11 +175,6 @@ def changeCourseShow(request, courseId):
 def save_course(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '1'): return jump_no_auth(request)
-    list_num = 2
-    page_name = '课程详情'
-    links = [{'name': '课程管理', 'page': '/administrator/course/'},
-             {'name': '课程详情', 'page': '/administrator/course/courseInfo/'}]
-    user = User.objects.filter(name=request.session['name']).first()
 
     tname = request.POST['t_name']
     tintroduction = request.POST['t_introduction']
@@ -219,6 +214,24 @@ def save_course(request):
 
     return HttpResponseRedirect('/administrator/course/courseInfo/' + str(course.id))
 
+def delete_course(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 'c_id' in request.POST:
+        cid=request.POST['c_id']
+        try:
+            course=Course.objects.filter(id=cid).first()
+            course.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def student(request):
     if not judge_login(request): return jump_not_login(request)

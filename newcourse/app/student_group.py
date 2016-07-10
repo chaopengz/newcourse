@@ -92,13 +92,14 @@ def handle_application(request):
     if ug.is_allowed == "1":
         group = Group.objects.filter(id=request.POST['group_id']).first()
         group.number += 1
+        if group.number == group.max_number:
+            group.end = 0
         group.save()
         ug.save()
         return HttpResponse("1")
     else:
         ug.save()
         return HttpResponse("2")
-
 
 def authority_translate(request):
     if not judge_login(request): return jump_not_login(request)
@@ -116,9 +117,14 @@ def handle_group(request):
         handle_type = request.POST['type']
         if handle_type == "1":
             group = Group.objects.filter(id=gid).first()
-            group.end = 0
-            group.save()
-            return HttpResponse("成功关闭组队申请！")
+            if(group.end==1):
+                group.end = 0
+                group.save()
+                return HttpResponse("成功关闭组队申请！")
+            else:
+                group.end = 1
+                group.save()
+                return HttpResponse("成功开启组队申请！")
         else:
             UserGroup.objects.filter(group_id=gid).delete()
             GroupCourse.objects.filter(group_id=gid).delete()
@@ -180,9 +186,16 @@ def apply(request):
                 groupcourse.course_id = course.id
                 groupcourse.group_id = group.id
                 groupcourse.save()
-                return HttpResponse('申请成功')
-            return HttpResponse('你的团队中已经有人加入了这门课程')
-        return HttpResponse("这门课不可以团队选课")
-    return  HttpResponse("你不是这个团队的负责人")
+                request.session['message'] = "申请成功\n"
+                request.session['nexturl'] = "/student/group/applyforcourse/"
+                return HttpResponseRedirect('/info/')
+            request.session['message'] = "你的团队中已经有人加入了这门课程\n"
+            request.session['nexturl'] = "/student/group/applyforcourse/"
+            return HttpResponseRedirect('/info/')
+        request.session['message'] = "这门课不可以团队选课\n"
+        request.session['nexturl'] = "/student/group/applyforcourse/"
+        return HttpResponseRedirect('/info/')
+    request.session['message'] = "你不是这个团队的负责人\n"
+    request.session['nexturl'] = "/student/group/applyforcourse/"
+    return HttpResponseRedirect('/info/')
 
-    return render_to_response('student_group_applyforcourse_i.html', locals())
