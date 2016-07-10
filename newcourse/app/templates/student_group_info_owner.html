@@ -203,6 +203,7 @@
             }
         }
         function  authority_translate(gid,uid) {
+
             if(confirm('确定要把权限转让给该同学么？')){
                 $.post(
                     "/student/groups/authority_translate/",
