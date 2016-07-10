@@ -2,9 +2,15 @@
 
 {% block content %}
     <div class="btn-group">
-        <button type="button" style="max-width:100px" onclick="closegroup({{ group.id }})"
+{% if group.end %}
+        <button type="button" style="max-width:100px" onclick="openORclosegroup({{ group.id }})"
                 class="btn  btn-warning">关闭组队
+    {% else %}
+             <button type="button" style="max-width:100px" onclick="openORclosegroup({{ group.id }})"
+                class="btn  btn-primary">打开组队
         </button>
+        </button>
+        {% endif %}
         <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
                 class="btn  btn-info">解散团队
         </button>
@@ -119,6 +125,7 @@
     </div>
 
     <script>
+
         function accept(gid, uid) {
             $.post(
                     "/student/groups/handle_application/",
@@ -152,8 +159,7 @@
                     }
             );
         }
-
-        function closegroup(gid) {
+        function openORclosegroup(gid) {
             $.post(
                     "/student/groups/handle_group/",
                     {
