@@ -137,17 +137,40 @@ def student_course_i_homework_I(request, i, I):
     if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
         allow_upload = 0
     if request.method == "POST":
+        uf = UserForm(request.POST, request.FILES)
+
+        if not uf.is_valid():
+            request.session['message'] = "作业描述或文件为空"
+            request.session['nexturl'] = str1+'/homework/'+ str(I)
+            return HttpResponseRedirect('/info/')
+
+
+        '''description = uf.cleaned_data['Description']
+        filepath = uf.cleaned_data['File']
+        if not description:
+            request.session['message'] = "作业描述为空"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')
+
+        if not filepath:
+            request.session['message'] = "未选择文件"
+            request.session['nexturl'] = str1
+            return HttpResponseRedirect('/info/')'''
+
         if not administrator_course.compare_time(taskrequirement.start_date, taskrequirement.end_date):
             request.session['message'] = "本次作业已过期"
             request.session['nexturl'] = str1
             return HttpResponseRedirect('/info/')
 
-        uf = UserForm(request.POST, request.FILES)
+
         if uf.is_valid():
             # 获取表单信息
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
             # 写入数据库】
+            task_file = TaskFile.objects.filter(task_requirement_id=taskrequirement.id, user=user)
+            if task_file:
+                task_file[0].delete()
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
@@ -167,6 +190,9 @@ def student_course_i_homework_I(request, i, I):
                  request.session['message'] = "本次作业已过期"
                  request.session['nexturl'] = myurl
                  return HttpResponseRedirect('/info/')
+            task_file = TaskFile.objects.filter(task_requirement_id=taskrequirement.id, user=user)
+            if task_file:
+                task_file[0].delete()
             task_file = TaskFile()
             task_file.name = taskrequirement.name
             task_file.is_file = False
@@ -225,6 +251,8 @@ def student_course_i_homework_I_upload(request, i, I):
             description = uf.cleaned_data['Description']
             filepath = uf.cleaned_data['File']
             # 写入数据库】
+            task_file = TaskFile.objects.get(task_requirement = task,user = user)
+            task_file.delete()
             task_file = TaskFile()
             task_file.name = description
             task_file.server_path = filepath
