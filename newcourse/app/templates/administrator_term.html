@@ -24,13 +24,15 @@
             <div class="box-body no-padding">
               <table class="table table-striped">
                 <tr>
+                    <th>#</th>
                   <th>学期名</th>
                   <th>起止日期</th>
                   <th >状态</th>
                     <th >操作</th>
                 </tr>
                   {% for term in res %}
-                    <th> {{ term.term.name|slice:'15'}}</th>
+                      <th> {{ forloop.counter }}</th>
+                    <th> {{ term.term.name }}</th>
 
                     <th> {{ term.term.start_date }} - {{ term.term.end_date }}</th>
                       {% if term.isrun %}
