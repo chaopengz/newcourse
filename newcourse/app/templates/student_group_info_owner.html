@@ -1,5 +1,21 @@
 {% extends "student_group_info.html" %}
 
+          <li id="list1">
+            <a href="/student/info/"><i class="fa fa-link"></i> <span>我的信息</span></a>
+          </li>
+          <li id="list2">
+            <a href="/student/course/"><i class="fa fa-link"></i> <span>我的课程</span></a>
+          </li>
+          <li id="list3">
+            <a href="/student/mygroup/"><i class="fa fa-link"></i> <span>我的团队</span></a>
+          </li>
+       <li id="list4">
+            <a href="/student/groups/"><i class="fa fa-link"></i> <span>所有团队</span></a>
+          </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+{#     {% endblock %}#}
+
 {% block content %}
     <div class="btn-group">
 {% if group.end %}
@@ -14,9 +30,11 @@
         <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
                 class="btn  btn-info">解散团队
         </button>
-        <a href="/student/group/applyforcourse/" class="btn btn-success">加入课程</a>
+        <a href="/student/group/applyforcourse/">加入课程</a>
+
     </div>
-    <div class="box box-solid">
+
+    <div class="box ">
         <div class="box-header with-border">
             <i class="fa fa-text-width"></i>
 
@@ -44,12 +62,65 @@
             </dl>
         </div>
     </div>
+
+
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">团队所选课程</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>课程名</th>
+                    <th>上课时间</th>
+                    <th>任课教师</th>
+                    <th>是否允许团队选课</th>
+                    <th>课程简介</th>
+                    <th>进入课程</th>
+                </tr>
+                {% if course_teachers_len > 0  %}
+                        {% for course_teacher in course_teachers %}
+                            <tr>
+                            <th>{{ forloop.counter  }}</th>
+                                <th>{{ course_teacher.0.name }}</th>
+                                <th>{{ course_teacher.0.start_date }}--{{ course_teacher.0.end_date }}</th>
+                                <th>{{ course_teacher.1.name }}</th>
+                                {% ifequal course_teacher.0.is_single 0 %}
+                                    <td><span class="label label-success">允许</span></td>
+                                {% endifequal %}
+                                {% ifequal course_teacher.0.is_single 1 %}
+                                    <td><span class="label label-warning">不允许</span></td>
+                                {% endifequal %}
+                            <th>
+                                <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course_teacher.0.introduction  }}">
+                                        {{ course_teacher.0.introduction|slice:'25'  }}...
+                                </a>
+                            </th>
+                                <th><a href="/student/course/{{course_teacher.0.id  }}" class = "btn btn-block btn-primary">查看详情</a></th>
+                            </tr>
+                        {% endfor %}
+                {% else %}
+                         <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                        <th>无</th>
+                         <th>无</th>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">团队成员列表</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body no-padding">
+        <div class="box-body">
             <table class="table table-striped">
                 <tr>
                     <th>成员昵称</th>
@@ -81,12 +152,14 @@
         </div>
         <!-- /.box-body -->
     </div>
+
+
     <div class="box">
         <div class="box-header">
             <h3 class="box-title">申请列表</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body no-padding">
+        <div class="box-body ">
             <table class="table table-striped">
                 <tr>
                     <th>申请人昵称</th>
@@ -123,6 +196,7 @@
         </div>
         <!-- /.box-body -->
     </div>
+
 
     <script>
 
