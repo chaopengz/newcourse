@@ -230,6 +230,53 @@ def course_task_grade(request):
     return HttpResponse(json.dumps(True))
 
 
+def course_task_grade_many(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '1'): return jump_no_auth(request)
+    if 'infolist' in request.FILES:
+        file = request.FILES.get('infolist', None)
+        filedata=file.read()
+        basename=str(time.time()).replace('.','_')+str(random.randrange(0,99999,1))
+        path='%s/uploads/' % (os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media'))
+        # 如果文件夹不存在，创建文件夹
+        if not os.path.exists(path):
+            os.makedirs(path)
+        fullpath=path+basename
+        f = open(fullpath, 'wb')
+        f.write(filedata)
+        f.close()
+        error_list=[]
+        task_id= request.session['task_id']
+        with open(fullpath,'rb') as f:
+            reader = csv.reader(f)
+            rownum=0
+            for row in reader:
+                    if len(TaskFile.objects.filter(task_requirement__id=task_id)) == 0:
+                        try:
+                            User.objects.get(name=row[0].decode('gb2312'))
+                        except User.DoesNotExist:
+                            error_list.append(row)
+                            continue
+                    else:
+                        user_temp = User.objects.get(name=row[0].decode('gb2312'))
+                        task_file = TaskFile.objects.filter(user=user_temp)
+                        task_file.grade = row[1]
+                        task_file.comment = row[2].decode('gb2312')
+                        task_file.save()
+        os.remove(fullpath)
+        for row in error_list:
+            row[0]=row[0].decode('gb2312')
+            row[2]=row[2].decode('gb2312')
+        response_data = {}
+        response_data['error_info'] = 'success'
+        response_data['error_list'] = error_list
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        response_data = {}
+        response_data['error_info'] = 'failed'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 def course_task_comment(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '3'): return jump_no_auth(request)
