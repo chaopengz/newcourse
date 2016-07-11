@@ -179,7 +179,7 @@ def save_course(request):
     tintroduction = request.POST['t_introduction']
     tteacher = request.POST['t_teacher']
     tterm = request.POST['t_term']
-    if request.POST['t_is_single'] == 2:
+    if str(request.POST['t_is_single']) == '2':
         tis_single = 0
     else:
         tis_single = 1
