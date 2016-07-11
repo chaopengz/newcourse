@@ -1,0 +1,94 @@
+{% extends "student_course_i.html" %}
+
+{% block content %}
+    <!-- DIRECT CHAT SUCCESS -->
+    <div class="box box-success direct-chat direct-chat-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">课程在线交流</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- Conversations are loaded here -->
+
+            <div class="direct-chat-messages">
+
+                <div id="msg-list-div" class="panel-body">
+
+                    <ul id="msg-list">
+                                {% for obj in chat %}
+                                    {% if  not obj.user.id == loginUser.id %}
+
+                                        <div class="direct-chat-msg">
+                                            <div class="direct-chat-info clearfix">
+                                                <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
+                                                <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
+                                            </div>
+                                            <!-- /.direct-chat-info -->
+                                            <img class="direct-chat-img"
+                                                 src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                                 alt="Message User Image">
+                                            <!-- /.direct-chat-img -->
+                                            <div class="direct-chat-text">
+                                                {{ obj.message }}
+                                                {{ loginUser.id }}{{ loginUser.read_name }}{{ obj.user.id }}                      </div>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                    {% else %}
+                                        <div class="direct-chat-msg right">
+                                            <div class="direct-chat-info clearfix">
+                                                <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
+                                                <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
+                                            </div>
+                                            <!-- /.direct-chat-info -->
+                                            <img class="direct-chat-img"
+                                                 src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                                 alt="Message User Image">
+                                            <!-- /.direct-chat-img -->
+                                            <div class="direct-chat-text">
+                                                {{ obj.message }}
+                                                {{ loginUser.id }}{{ obj.user.id }}                         </div>
+                                            <!-- /.direct-chat-text -->
+                                        </div>
+                                    {% endif %}
+
+                                {% endfor %}
+                        <script>
+                            var chatlist = document.getElementById('msg-list-div');
+                            chatlist.scrollTop = chatlist.scrollHeight;
+                        </script>
+                    </ul>
+                </div>
+
+
+                <!-- Message. Default to the left -->
+
+                <!-- /.direct-chat-msg -->
+
+                <!-- Message to the right -->
+
+                <!-- /.direct-chat-msg -->
+            </div>
+            <!--/.direct-chat-messages-->
+
+            <!-- /.direct-chat-pane -->
+        </div>
+        <!-- /.box-body -->
+        <form id="chat-form" method="post" action="/chatpost/">
+            <div class="box-footer">
+                <div class="input-group">
+                    <input class="form-control" id="chat-msg" name="chat-msg" placeholder="Type message...">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-flat">Send{{ loginUser.id }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-footer-->
+    </div>
+
+    <!--/.direct-chat -->
+    <!-- /.col -->
+    <script src="/static/chat.js"></script>
+
+{% endblock %}

@@ -6,12 +6,15 @@
         <li class="header">菜单</li>
         <!-- Optionally, you can add icons to the links -->
           <li id="list1">
-            <a href="/teacher/course/task/"><i class="fa fa-link"></i> <span>课程作业</span></a>
+            <a href="/teacher/course/{{ course.id }}"><i class="fa fa-link"></i> <span>课程信息</span></a>
           </li>
           <li id="list2">
-            <a href="/teacher/course/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+            <a href="/teacher/course/task/"><i class="fa fa-link"></i> <span>课程作业</span></a>
           </li>
           <li id="list3">
+            <a href="/teacher/course/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
+          </li>
+          <li id="list4">
             <a href="/teacher/course/message/"><i class="fa fa-link"></i> <span>课程交流</span></a>
           </li>
       </ul>
@@ -30,7 +33,7 @@
               <dl class="dl-horizontal">
                 <dt>课程名</dt><dd>{{ course.name }}</dd>
                   <dt>课程简介</dt><dd>{{ course.introduction|slice:'25' }}</dd>
-                  <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
+                  <dt>课程教师</dt><dd>{{ teacher.real_name }}</dd>
                   <dt>课程起止日期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
                   <dt>课程所属学期</dt><dd>{{ term.name }}</dd>
                   <dt>课程类型</dt><dd>
@@ -50,7 +53,8 @@
             <h3 class="box-title">已加入课程的团队列表</h3>
         </div>
       <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+          <table class="table table-striped" id="table1">
+          <thead>
                 <tr>
                   <th>#</th>
                     <th>团队名称</th>
@@ -58,13 +62,15 @@
                     <th>团队人数</th>
                      <th>操作</th>
                 </tr>
+                </thead>
+                 <tbody>
                   {% for coursegroup in coursegroups %}
                     {% ifequal coursegroup.is_allowed 1 %}
                     <tr href="/group/">
-                        <td>{{ coursegroup.group.id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ coursegroup.group.name}}</td>
                         <td>{{ coursegroup.group.user.name}}</td>
-                        <td>{{ coursegroup.group.max_number }}</td>
+                        <td>{{ coursegroup.group.number }}</td>
                         <td>
                             <input type="button"  value="移除"  id="{{ coursegroup.id }}" class="btn btn-danger" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" > </input>
                         </td>
@@ -72,7 +78,7 @@
                       {% endifequal %}
 
                   {% endfor %}
-
+          </tbody>
            </table>
        </div>
 </div>
@@ -81,19 +87,24 @@
             <h3 class="box-title">申请列表</h3>
         </div>
           <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+          <table class="table table-striped" id="table2">
+           <thead>
                 <tr>
                   <th>#</th>
                   <th>团队名称</th>
                   <th>团队负责人</th>
-                  <th>批准加入课程</th>
+                  <th>团队人数</th>
+                  <th>操作</th>
                 </tr>
+                </thead>
+            <tbody>
                   {% for coursegroup in coursegroups %}
                       {% ifequal coursegroup.is_allowed 0 %}
                     <tr href="/group/">
-                        <td>{{ coursegroup.group.id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ coursegroup.group.name}}</td>
                         <td>{{ coursegroup.group.user.name}}</td>
+                        <td>{{ coursegroup.group.number }}</td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
@@ -103,7 +114,7 @@
                     </tr>
                       {% endifequal %}
                   {% endfor %}
-
+                </tbody>
            </table>
        </div>
 </div>
@@ -113,10 +124,10 @@
         $("input[type='button'][value='移除']").bind('click', function () {
                 $.ajax(
                         {
-                            url: "/teacher/course/groupdelete/",
+                            url: "/teacher/course/group_delete/",
                             type: "POST",
                             data: {
-                                "groupid": $(this).attr("id"),
+                                "course_group_id": $(this).attr("id"),
                             },
                             dataType: "json",
                             success: function (data) {
@@ -184,5 +195,8 @@
                   });
         });
         });
+    $(function () {
+    set_table("table1");set_table("table2");
+  });
 </script>
      {% endblock %}

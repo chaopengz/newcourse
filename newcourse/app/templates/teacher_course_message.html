@@ -1,47 +1,132 @@
 {% extends "teacher_course.html" %}
 
 {% block content %}
-    <!-- Chat box -->
-          <div class="box box-success">
-            <div class="box-header">
-              <i class="fa fa-comments-o"></i>
-              <h3 class="box-title">课程交流</h3>
+    {#    <!-- Chat box -->#}
+    {#          <div class="box box-success">#}
+    {#            <div class="box-header">#}
+    {#              <i class="fa fa-comments-o"></i>#}
+    {#              <h3 class="box-title">课程交流</h3>#}
+    {##}
+    {#            </div>#}
+    {#            <div class="box-body chat" id="chat-body">#}
+    {#        <div id="msg-list-div" class="panel-body">#}
+    {##}
+    {#            <ul id="msg-list">#}
+    {#              {% for obj in chat %}#}
+    {#    <div class="item">#}
+    {#        <img src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg" alt="user image" class="online">#}
+    {#        <p class="message">#}
+    {#                  <a href="#" class="name">#}
+    {#                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ obj.created }}</small>{{ obj.user.real_name }}#}
+    {#                      </a>#}
+    {#         {{ obj.message }}</p>#}
+    {#              </div>#}
+    {#        {% endfor %}#}
+    {#              <script>#}
+    {#                    var chatlist = document.getElementById('msg-list-div');#}
+    {#                    chatlist.scrollTop = chatlist.scrollHeight;#}
+    {#                </script>#}
+    {#            </ul></div>#}
+    {#              <!-- /.item -->#}
+    {#            </div>#}
+    {#            <!-- /.chat -->#}
+    {#              <form id="chat-form" method="post" action="/chatpost/">#}
+    {#            <div class="box-footer">#}
+    {#              <div class="input-group">#}
+    {#                <input class="form-control" id="chat-msg" name="chat-msg" placeholder="Type message...">#}
+    {##}
+    {#                <div class="input-group-btn">#}
+    {#                        <button type="submit" class="btn btn-primary btn-flat">Send</button>#}
+    {#                </div>#}
+    {#              </div>#}
+    {#            </div>#}
+    {#            </form>#}
+    {#          </div>#}
 
-            </div>
-            <div class="box-body chat" id="chat-body">
-        <div id="msg-list-div" class="panel-body">
+    <div class="box box-success direct-chat direct-chat-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">课程在线交流</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <!-- Conversations are loaded here -->
 
-            <ul id="msg-list">
-              {% for obj in chat %}
-    <div class="item">
-        <img src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg" alt="user image" class="online">
-        <p class="message">
-                  <a href="#" class="name">
-                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> {{ obj.created }}</small>{{ obj.user.real_name }}
-                      </a>
-         {{ obj.message }}</p>
-              </div>
-        {% endfor %}
-              <script>
-                    var chatlist = document.getElementById('msg-list-div');
-                    chatlist.scrollTop = chatlist.scrollHeight;
-                </script>
-            </ul></div>
-              <!-- /.item -->
-            </div>
-            <!-- /.chat -->
-              <form id="chat-form" method="post" action="/chatpost/">
-            <div class="box-footer">
-              <div class="input-group">
-                <input class="form-control" id="chat-msg" name="chat-msg" placeholder="Type message...">
+            <div class="direct-chat-messages">
 
-                <div class="input-group-btn">
-                        <button type="submit" class="btn btn-primary btn-flat">Send</button>
+                <div id="msg-list-div" class="panel-body">
+
+                    <ul id="msg-list">
+                        {% for obj in chat %}
+                            {% if  not obj.user.id == loginUser.id %}
+
+                                <div class="direct-chat-msg">
+                                    <div class="direct-chat-info clearfix">
+                                        <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
+                                        <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
+                                    </div>
+                                    <!-- /.direct-chat-info -->
+                                    <img class="direct-chat-img"
+                                         src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                         alt="Message User Image">
+                                    <!-- /.direct-chat-img -->
+                                    <div class="direct-chat-text">
+                                        {{ obj.message }}
+                                    </div>
+                                    <!-- /.direct-chat-text -->
+                                </div>
+                            {% else %}
+                                <div class="direct-chat-msg right">
+                                    <div class="direct-chat-info clearfix">
+                                        <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
+                                        <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
+                                    </div>
+                                    <!-- /.direct-chat-info -->
+                                    <img class="direct-chat-img"
+                                         src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                         alt="Message User Image">
+                                    <!-- /.direct-chat-img -->
+                                    <div class="direct-chat-text">
+                                        {{ obj.message }}
+                                    </div>
+                                    <!-- /.direct-chat-text -->
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                        <script>
+                            var chatlist = document.getElementById('msg-list-div');
+                            chatlist.scrollTop = chatlist.scrollHeight;
+                        </script>
+                    </ul>
                 </div>
-              </div>
+
+
+                <!-- Message. Default to the left -->
+
+                <!-- /.direct-chat-msg -->
+
+                <!-- Message to the right -->
+
+                <!-- /.direct-chat-msg -->
             </div>
-            </form>
-          </div>
+            <!--/.direct-chat-messages-->
+
+            <!-- /.direct-chat-pane -->
+        </div>
+        <!-- /.box-body -->
+        <form id="chat-form" method="post" action="/chatpost/">
+            <div class="box-footer">
+                <div class="input-group">
+                    <input class="form-control" id="chat-msg" name="chat-msg" placeholder="Type message...">
+
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-primary btn-flat">Send{{ loginUser.id }}</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /.box-footer-->
+    </div>
     <script src="/static/chat.js"></script>
 {% endblock %}
 

@@ -20,7 +20,8 @@
                 </div>
     {% endifequal %}
     <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+           <table class="table table-striped" id="table1">
+           <thead>
                 <tr>
                   <th>#</th>
                   <th>资源描述</th>
@@ -29,6 +30,8 @@
                     <th>上传时间</th>
                      <th>操作</th>
                 </tr>
+           </thead>
+           <tbody>
                   {% for resource in resources %}
                     <tr href="/teacher/resource/">
                         <td>{{ forloop.counter  }}</td>
@@ -56,6 +59,7 @@
                         </td>
                     </tr>
                   {% endfor %}
+                </tbody>
            </table>
        </div>
 
@@ -173,6 +177,9 @@
                         });
         });
         });
+    $(function () {
+    set_table("table1");
+  });
 </script>
 {% endblock %}
 

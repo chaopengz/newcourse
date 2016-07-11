@@ -13,7 +13,8 @@
       </div>
     {% endifequal %}
     <div class="box-body table-responsive no-padding">
-           <table class="table table-hover">
+           <table class="table table-striped" id="table1">
+           <thead>
                 <tr>
                   <th>#</th>
                     <th>作业名称</th>
@@ -22,6 +23,8 @@
                     <th>作业要求</th>
                     <th>进入作业</th>
                 </tr>
+                </thead>
+                <tbody>
                   {% for task in tasks %}
                     <tr href="/task/">
                         <td>{{ forloop.counter  }}</td>
@@ -41,6 +44,7 @@
 
                     </tr>
                   {% endfor %}
+           </tbody>
 
            </table>
        </div>
@@ -48,6 +52,9 @@
        <script>$(function ()
       { $("[data-toggle='popover']").popover();
       });
+       $(function () {
+    set_table("table1");
+  });
    </script>
 {% endblock %}
 

@@ -1,5 +1,33 @@
 <!-- /.box-header -->
  {% extends "teacher.html" %}
+
+{% block sidebar %}
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header">菜单</li>
+        <!-- Optionally, you can add icons to the links -->
+          <li id="list1">
+            <a href="/student/info/"><i class="fa fa-link"></i> <span>我的信息</span></a>
+          </li>
+          <li id="list2">
+              <a href="/student/course/">
+                <i class="fa fa-link"></i> <span>我的课程</span>
+                 <span class="pull-right-container">
+                 <i class="fa fa-angle-left pull-right"></i>
+                 </span>
+                </a>
+          <ul class="treeview-menu menu-open" style="display: block;">
+              {% for course in res %}
+                   <li><a href="{{course.course.id  }}"><i class="fa fa-circle-o"></i>{{ course.course.name }}</a></li>
+              {% endfor %}
+          </ul>
+            <!--<a href="/student/course/"><i class="fa fa-link"></i> <span>我的课程</span></a>-->
+          </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+     {% endblock %}
+
+
    {% block content %}
        <div class="box-body table-responsive no-padding">
            <table class="table table-striped" id="table1">
@@ -8,7 +36,7 @@
                   <th>#</th>
                   <th>课程名</th>
                   <th>上课时间</th>
-                  <th>是否允许团体选课</th>
+                  <th>团体选课</th>
                     <th>状态</th>
                   <th>课程简介</th>
                      <th>进入课程</th>
@@ -38,7 +66,7 @@
                                 {{ course.course.introduction|slice:'25'  }}
                             </a>
                         </td>
-                        <td><a  href="/teacher/course/{{course.id  }}" class = "btn btn-block btn-primary" >查看详情</a></td>
+                        <td><a  href="/teacher/course/{{course.course.id  }}" class = "btn btn-block btn-primary" >查看详情</a></td>
 
                         </tr>
                   {% endfor %}
@@ -51,7 +79,8 @@
       });
 
        $(function () {
-    set_table("table1");
+    set_table("table1");set_table("table2");
+
   });
    </script>
 
