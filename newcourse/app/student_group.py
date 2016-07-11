@@ -102,7 +102,12 @@ def handle_application(request):
     ug.is_allowed = request.POST['is_allowed']
     if ug.is_allowed == "1":
         group = Group.objects.filter(id=request.POST['group_id']).first()
+        if group.number ==group.max_number:
+            ug.is_allowed = 2
+            ug.save()
+            return HttpResponse("2")
         group.number += 1
+
         if group.number == group.max_number:
             group.end = 0
         group.save()
