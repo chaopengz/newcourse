@@ -12,7 +12,7 @@
               <dl class="dl-horizontal">
                 <dt>课程名</dt><dd>{{ course.name }}</dd>
                   <dt>课程简介</dt><dd>{{ course.introduction }}</dd>
-                  <dt>课程教师</dt><dd>{{ teacher.name }}</dd>
+                  <dt>课程教师</dt><dd>{{ teacher.real_name }}</dd>
                   <dt>课程起止日期</dt><dd>{{ term.start_date }} - {{ term.end_date }}</dd>
                   <dt>课程所属学期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
                   <dt>课程类型</dt><dd>
@@ -23,7 +23,7 @@
                     {% endif %}
                      <dt>申请加入</dt><dd>
                   {% if not groupcourse %}
-                  <a href="/student/group/apply/">加入课程</a>
+                  <a href="/student/group/apply/" >加入课程</a>
                     {% endif %}
                  {% ifequal groupcourse.0.is_allowed  0 %}
                   等待审核

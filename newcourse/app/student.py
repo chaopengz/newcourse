@@ -421,6 +421,7 @@ def one_click_download(request):
 
 
 def student_group(request):
+    page_name = '所有团队'
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}]
