@@ -104,7 +104,11 @@ def course_resource_publish(request):
 
             course_id = int(request.session['course_id'])
             resources = Resource.objects.filter(course_id=course_id)
-            return HttpResponseRedirect('/teacher/course/resource/')
+
+            request.session['message'] = "上传资源成功"
+            request.session['nexturl'] = "/teacher/course/resource/"
+            return HttpResponseRedirect('/info/')
+            # return HttpResponseRedirect('/teacher/course/resource/')
     else:
         uf = UserForm()
 
