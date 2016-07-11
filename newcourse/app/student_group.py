@@ -67,6 +67,8 @@ def info(request, i):  # i stands for the groupId
     group = Group.objects.filter(id=i).first()  # 组的信息
     group_courses = GroupCourse.objects.filter(group_id=i,is_allowed='1') #the courses which the group took
 
+    apply_course_len = len(GroupCourse.objects.filter(group_id=i))
+
     courses=[]
     for group_course in group_courses:
         courses.append(Course.objects.get(id=group_course.course_id))
@@ -137,10 +139,10 @@ def handle_group(request):
                 group.end = 0
                 group.save()
                 return HttpResponse("成功关闭组队申请！")
-            else:
+            '''else:
                 group.end = 1
                 group.save()
-                return HttpResponse("成功开启组队申请！")
+                return HttpResponse("成功开启组队申请！")'''
         else:
             UserGroup.objects.filter(group_id=gid).delete()
             GroupCourse.objects.filter(group_id=gid).delete()
@@ -157,8 +159,8 @@ def applyforcourse(request):
         links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
     courses = Course.objects.filter(is_single = 0)
     #for course in courses:
-       # if GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
-          #  courses.remove(course)
+        #if GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
+            #courses.remove(course)
     return render_to_response('student_group_applyforcourse.html',locals())
 
 def applyforcourse_i(request,i):
