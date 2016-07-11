@@ -247,7 +247,7 @@
             );
         }
         function openORclosegroup(gid) {
-            if(cconfirm('确定要关闭组队请求么')){
+            if(confirm('确定要关闭组队请求么')){
             $.post(
                     "/student/groups/handle_group/",
                     {
