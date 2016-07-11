@@ -43,49 +43,47 @@
     {#            </form>#}
     {#          </div>#}
 
-    <div class="box box-success direct-chat direct-chat-success">
+    <div class="box box-success direct-chat direct-chat-success" style="min-height: 700px">
         <div class="box-header with-border">
             <h3 class="box-title">课程在线交流</h3>
         </div>
         <!-- /.box-header -->
-        <div class="box-body">
+        <div class="box-body" style="min-height: 700px">
             <!-- Conversations are loaded here -->
 
-            <div class="direct-chat-messages">
+            <div class="direct-chat-messages" style="min-height: 700px">
 
                 <div id="msg-list-div" class="panel-body">
 
                     <ul id="msg-list">
                         {% for obj in chat %}
                             {% if  not obj.user.id == loginUser.id %}
-
                                 <div class="direct-chat-msg">
                                     <div class="direct-chat-info clearfix">
                                         <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
-                                        <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
+                                        <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
                                     </div>
                                     <!-- /.direct-chat-info -->
                                     <img class="direct-chat-img"
-                                         src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                         src="{{ obj.user.pic }}"
                                          alt="Message User Image">
                                     <!-- /.direct-chat-img -->
-                                    <div class="direct-chat-text">
-                                        {{ obj.message }}
-                                    </div>
+                                    <div class="direct-chat-text pull-left">
+                                        {{ obj.message }}        </div>
                                     <!-- /.direct-chat-text -->
                                 </div>
                             {% else %}
                                 <div class="direct-chat-msg right">
                                     <div class="direct-chat-info clearfix">
                                         <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
-                                        <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
+                                        <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
                                     </div>
                                     <!-- /.direct-chat-info -->
                                     <img class="direct-chat-img"
-                                         src="http://wy.chaopengz.com/newcourse/dist/img/user4-128x128.jpg"
+                                         src="{{ obj.user.pic }}"
                                          alt="Message User Image">
                                     <!-- /.direct-chat-img -->
-                                    <div class="direct-chat-text">
+                                    <div class="direct-chat-text pull-right">
                                         {{ obj.message }}
                                     </div>
                                     <!-- /.direct-chat-text -->
