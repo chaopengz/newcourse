@@ -24,7 +24,7 @@
 {% block content %}
  <div class="box box-solid">
             <div class="box-header with-border">
-              <i class="fa fa-text-width"></i>
+              <i class="fa fa-graduation-cap"></i>
 
               <h3 class="box-title">课程信息</h3>
             </div>
@@ -35,7 +35,7 @@
                   <dt>课程简介</dt><dd>{{ course.introduction }}</dd>
                   <dt>课程教师</dt><dd>{{ teacher.real_name }}</dd>
                   <dt>课程起止日期</dt><dd>{{ course.start_date }} - {{ course.end_date }}</dd>
-                  <dt>课程所属学期</dt><dd>{{ term.start_date }} - {{ term.end_date }}</dd>
+                  <dt>课程所属学期</dt><dd>{{ term.name }}（{{ term.start_date }} - {{ term.end_date }}）</dd>
                   <dt>课程类型</dt><dd>
                     {% if course.is_single %}
                         普通课程

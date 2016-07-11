@@ -47,7 +47,7 @@
                     <th>是否允许团队选课</th>
 					<th>任课教师</th>
                   <th>课程简介</th>
-                     <th>进入课程</th>
+                     <th>操作</th>
                 </tr>
                 </thead>
                  <tbody>
@@ -74,7 +74,7 @@
                                 {{ course_teacher.0.course.introduction|slice:'25'  }}...
                         </a>
                     </th>
-                        <th><a href="{{course_teacher.0.course.id  }}" class = "btn btn-block btn-primary">查看详情</a></th>
+                        <th><a href="{{course_teacher.0.course.id  }}" class = "btn btn-block btn-primary">进入课程</a></th>
                     </tr>
                 {% endfor %}
                 </tbody>
