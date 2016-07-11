@@ -84,7 +84,7 @@ def info(request, i):  # i stands for the groupId
         if member.user_id !=group_user.id:
             if member.is_allowed ==1:
                 member_list.append(User.objects.get(id=member.user_id))
-            else:
+            elif member.is_allowed==0:
                 no_member_list.append(User.objects.get(id=member.user_id))
     no_member_list_len=len(no_member_list)
     uG_len = len(ug)  # 用与判断用户是否存在userGroup中
