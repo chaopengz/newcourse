@@ -218,17 +218,25 @@ def apply(request):
             if usercourse.user_id==usergroup.user_id:
                 valid = 0
                        #somebody in the group had been in the course
+    groupcourse = GroupCourse.objects.filter(group_id=group.id,course_id = course.id)
+    aplied = 0
+    if groupcourse:
+        applied = 1
     applied_user = User.objects.filter()
     if group.user_id ==user.id:
         if course.is_single == 0:
             if valid == 1:
-                groupcourse = GroupCourse()
-                #test
-                groupcourse.is_allowed = 0
-                groupcourse.course_id = course.id
-                groupcourse.group_id = group.id
-                groupcourse.save()
-                request.session['message'] = "申请成功\n"
+                if aplied ==0:
+                    groupcourse = GroupCourse()
+                    #test
+                    groupcourse.is_allowed = 0
+                    groupcourse.course_id = course.id
+                    groupcourse.group_id = group.id
+                    groupcourse.save()
+                    request.session['message'] = "申请成功\n"
+                    request.session['nexturl'] = "/student/group/applyforcourse/"
+                    return HttpResponseRedirect('/info/')
+                request.session['message'] = "你的团队中已经申请了这门课程\n"
                 request.session['nexturl'] = "/student/group/applyforcourse/"
                 return HttpResponseRedirect('/info/')
             request.session['message'] = "你的团队中已经有人加入了这门课程\n"
