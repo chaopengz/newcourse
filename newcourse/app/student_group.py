@@ -86,8 +86,11 @@ def info(request, i):  # i stands for the groupId
         if member.user_id !=group_user.id:
             if member.is_allowed ==1:
                 member_list.append(User.objects.get(id=member.user_id))
-            else:
-                no_member_list.append(User.objects.get(id=member.user_id))
+            elif member.is_allowed==0:
+                if group.end == 1:#如果开启了组队请求
+                    no_member_list.append(User.objects.get(id=member.user_id))
+                else:#如果关闭了组队请求
+                    member.is_allowed=2
     no_member_list_len=len(no_member_list)
     uG_len = len(ug)  # 用与判断用户是否存在userGroup中
     if uG_len > 0:
@@ -163,6 +166,7 @@ def applyforcourse(request):
             #courses.remove(course)
     return render_to_response('student_group_applyforcourse.html',locals())
 
+
 def applyforcourse_i(request,i):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
@@ -216,21 +220,3 @@ def apply(request):
     request.session['message'] = "你不是这个团队的负责人\n"
     request.session['nexturl'] = "/student/group/applyforcourse/"
     return HttpResponseRedirect('/info/')
-
-"""
-<li class="header">菜单</li>
-        <!-- Optionally, you can add icons to the links -->
-          <li id="list1">
-            <a href="/student/course/{{ course.id}}/"><i class="fa fa-link"></i> <span>课程信息</span></a>
-          </li>
-          <li id="list2">
-            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
-          </li>
-          <li id="list3">
-            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
-          </li>
-          <li id="list4">
-            <a href="/student/course/{{ course.id }}/message/"><i class="fa fa-link"></i> <span>课程交流</span></a>
-          </li>
-      </ul>
-      """

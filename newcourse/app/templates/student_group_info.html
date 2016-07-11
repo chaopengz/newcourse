@@ -122,6 +122,8 @@
         {% else %}
             {% if is_allowed  == 0 %}
                 <button type="button" class="btn btn-block btn-warning">审核中。。。</button>
+            {% elif is_allowed == 2 %}
+                <button type="button" class="btn btn-block btn-warning">你已被拒绝</button>
             {% else %}
                 <button type="button" class="btn btn-block btn-success">你已成功加入该团队</button>
             {% endif %}

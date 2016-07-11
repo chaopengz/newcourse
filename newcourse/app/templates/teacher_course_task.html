@@ -7,11 +7,13 @@
         </div>
     {% endifequal %}
     {% ifequal  finish 1 %}
-              <div class="callout callout-warning" style="margin-bottom: 0!important;">
+        <div class="callout callout-warning" style="margin-bottom: 10!important;">
         <h4><i class="fa fa-info"></i> 提示信息:</h4>
         该课程已结束，无法发布作业
       </div>
     {% endifequal %}
+
+
     <div class="box-body table-responsive no-padding">
            <table class="table table-striped" id="table1">
            <thead>
@@ -21,7 +23,7 @@
                   <th>作业时间</th>
                     <th>是否团队作业</th>
                     <th>作业要求</th>
-                    <th>进入作业</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,8 +42,12 @@
                                 {{ task.base_requirements|slice:'25'  }}
                             </a>
                         </td>
-                        <td><a  href="/teacher/course/task_info/{{task.id   }}" class = "btn btn-block btn-primary" >查看详情</a></td>
-
+                    <th>
+                    <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="checkTask({{ task.id  }})">查看</button>
+                            <button type="button" class="btn btn-danger" onclick="deleteTask({{ task.id  }})">删除</button>
+                        </div>
+                        </th>
                     </tr>
                   {% endfor %}
            </tbody>
@@ -49,12 +55,39 @@
            </table>
        </div>
 
-       <script>$(function ()
+       <script>
+       $(function ()
       { $("[data-toggle='popover']").popover();
       });
+
        $(function () {
     set_table("table1");
-  });
+        });
+
+       function checkTask(taskId){
+        self.location.href="/teacher/course/task_info/"+taskId;
+        }
+
+       function  deleteTask(taskId){
+       if(confirm("真的要删除这个作业吗？删除后无法撤销。")){
+                    $.ajax({
+            type: "POST",
+            url: "/teacher/course/taskdelete/",
+            data:{
+                't_id':taskId
+            },
+            dataType: "json",
+            success: function(response){
+                if(response.error_info=="success"){
+                    location.reload(true);
+                }else{
+                    alert("删除失败");
+                }
+            }
+        });
+        }
+    }
+
    </script>
 {% endblock %}
 
