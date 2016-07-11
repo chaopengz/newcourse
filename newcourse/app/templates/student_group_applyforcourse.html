@@ -1,11 +1,11 @@
 {% extends "student_group_info_owner.html" %}
 
 {% block content %}
-  <div class="box">
+  <div class="box" style="min-height: 600px;">
      <div class="box-header">
             <h3 class="box-title">课程列表</h3>
         </div>
-      <div class="box-body table-responsive no-padding">
+      <div class="box-body table-responsive no-padding" style="overflow-x: hidden;min-height: 600px;">
            <table class="table table-striped" id="table1">
            <thead>
                 <tr>
@@ -26,7 +26,7 @@
 
                         <th>{{ course_teacher.1.real_name }}</th>
                     <th>
-                        <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course_teacher.0.course.introduction  }}">
+                        <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course_teacher.0.introduction  }}">
                                 {{ course_teacher.0.introduction|slice:'25'  }}...
                         </a>
                     </th>
@@ -39,13 +39,18 @@
         </div>
 
 
-<script>$(function ()
+<script>
+
+    $(function ()
       { $("[data-toggle='popover']").popover();
       });
+
+
  $(function () {
     set_table("table1");
-
   });
+
+
    </script>
 
 {% endblock %}

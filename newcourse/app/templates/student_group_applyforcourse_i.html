@@ -23,7 +23,7 @@
                     {% endif %}
                      <dt>申请加入</dt><dd>
                   {% if not groupcourse %}
-                  <a href="/student/group/apply/" >加入课程</a>
+                  <a class="btn btn-primary" href="/student/group/apply/" >加入课程</a>
                     {% endif %}
                  {% ifequal groupcourse.0.is_allowed  0 %}
                   等待审核
