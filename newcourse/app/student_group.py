@@ -164,6 +164,7 @@ def applyforcourse(request):
           #  courses.remove(course)
     return render_to_response('student_group_applyforcourse.html',locals())
 
+
 def applyforcourse_i(request,i):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
