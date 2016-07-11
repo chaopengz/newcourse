@@ -16,7 +16,7 @@
                 </a>
           <ul class="treeview-menu menu-open" style="display: block;">
               {% for course_teacher in course_teachers %}
-                   <li><a href="{{course_teacher.0.id  }}"><i class="fa fa-circle-o"></i>{{ course_teacher.0.name }}</a></li>
+                   <li><a href="{{course_teacher.0.course.id  }}"><i class="fa fa-circle-o"></i>{{ course_teacher.0.course.name }}</a></li>
               {% endfor %}
           </ul>
             <!--<a href="/student/course/"><i class="fa fa-link"></i> <span>我的课程</span></a>-->
@@ -68,7 +68,7 @@
                         {% ifequal course_teacher.0.course.is_single 1 %}
                             <td><span class="label label-primary">不允许</span></td>
                         {% endifequal %}
-                        <th>{{ course_teacher.1.name }}</th>
+                        <th>{{ course_teacher.1.real_name }}</th>
                     <th>
                         <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ course_teacher.0.course.introduction  }}">
                                 {{ course_teacher.0.course.introduction|slice:'25'  }}...
