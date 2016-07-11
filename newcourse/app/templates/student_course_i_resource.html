@@ -16,7 +16,7 @@
                 <tbody>
                   {% for resourceclass in resourcesclasses %}
                     <tr href="/teacher/resource/">
-                        <td>{{ resourceclass.0.id }}</td>
+                        <td>{{ forloop.counter }}</td>
                         <td>{{ resourceclass.0.name }}</td>
                         <td>{{ resourceclass.1.name }}</td>
                         <td>{{ resourceclass.0.submit_time }}</td>

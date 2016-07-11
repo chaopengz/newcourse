@@ -21,7 +21,7 @@
             <tbody>
                   {% for task_done in task_dones %}
                     <tr href="/task/">
-                        <td>{{ task_done.0.id }}</td>
+                        <td>{{ forloop.counter  }}</td>
                         <td>{{ task_done.0.name }}</td>
                         <td>{{ task_done.0.start_date }}--{{ task_done.0.end_date }}</td>
                         {% ifequal task_done.0.is_single 1 %}

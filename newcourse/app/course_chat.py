@@ -16,7 +16,7 @@ def t_Home(request):
     course_id = int(request.session['course_id'])
     course = Course.objects.get(id=course_id)
     links = [{'name': '课程管理', 'page': '/teacher/course'}, {'name': course.name, 'page': '/teacher/course'},
-             {'name': '资源管理', 'page': '/teacher/course/resource'}]
+             {'name': '课程交流', 'page': '#'}]
     list_num = 4
     page_name = "课程交流"
     return render(request, "teacher_course_message.html", locals())

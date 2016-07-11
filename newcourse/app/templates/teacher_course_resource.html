@@ -3,14 +3,24 @@
 {% block content %}
 
     {% ifequal finish  0 %}
-        <div>
-            <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
-            <input id="new_class" style="margin-left: 50%" type="text" placeholder="例如：压缩文件">
-
-             <div class="btn-group">
-            <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
-            <input id="delete_class" class="btn btn-danger" type="button"  value="删除分类" >
+        <div class="box box-info">
+        <div class="box-body">
+            <div class="col-md-4">
+             <input class="btn btn-primary" type="button"  value="发布新资源" onclick="javascript:window.location.href='/teacher/course/resource_publish'">
+            </div>
+             <div class="col-md-8">
+                 <div class="input-group" style="float:right">
+                     <input id="new_class" class="form-control" type="text" placeholder="例如：压缩文件">
+                     <span class="input-group-btn">
+                            <input id="save_class" class="btn btn-primary" type="button"  value="添加分类" >
+                            <input id="delete_class" class="btn btn-danger" type="button"  value="删除分类" >
+                     </span>
+                </div>
              </div>
+        </div>
+
+
+
         </div>
     {% endifequal %}
     {% ifequal  finish 1 %}
@@ -19,8 +29,8 @@
                 该课程已结束，无法发布资源
                 </div>
     {% endifequal %}
-    <div class="box-body table-responsive no-padding">
-           <table class="table table-striped" id="table1">
+    <div class="box-body table-responsive no-padding" style="overflow-x: hidden">
+           <table class="table table-striped" id="table1" style="overflow-x: hidden">
            <thead>
                 <tr>
                   <th>#</th>

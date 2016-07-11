@@ -7,11 +7,11 @@
         <li class="header">菜单</li>
         <!-- Optionally, you can add icons to the links -->
           <li id="list1">
-            <a href="/teacher/info/"><i class="fa fa-link"></i> <span>我的信息</span></a>
+            <a href="/teacher/info/"><i class="fa fa-graduation-cap"></i> <span>我的信息</span></a>
           </li>
           <li id="list2">
               <a href="/teacher/course/">
-                <i class="fa fa-link"></i> <span>我的课程</span>
+                <i class="fa fa-book"></i> <span>我的课程</span>
                  <span class="pull-right-container">
                  <i class="fa fa-angle-left pull-right"></i>
                  </span>
@@ -29,8 +29,9 @@
 
 
    {% block content %}
-       <div class="box-body table-responsive no-padding" style="overflow-x: hidden">
-           <table class="table table-striped" id="table1">
+        <div class="box box-solid" style="min-height: 600px;overflow-x: hidden">
+       <div class="box-body table-responsive no-padding" style="min-height: 600px;overflow-x: hidden">
+           <table class="table table-striped" id="table1" >
            <thead>
                 <tr>
                   <th>#</th>
@@ -73,7 +74,7 @@
                 </tbody>
            </table>
        </div>
-
+</div>
        <script>$(function ()
       { $("[data-toggle='popover']").popover();
       });
