@@ -45,12 +45,11 @@ def Post(request):
         user = User.objects.filter(name=request.session['name']).first()
         # if 'course_id' in request.session:
         courseId = request.session['course_id']
-        # createTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         c = Chat(user=user, message=msg, courseid=courseId)
         if msg != '':
             # print user, msg, courseId
             c.save()
-        return JsonResponse({'msg': msg, 'user': c.user.real_name})
+        return JsonResponse({'msg': msg, 'user': c.user.real_name, 'pic': c.user.pic, 'time': c.created})
     else:
         return HttpResponse('Request must be POST.')
 
