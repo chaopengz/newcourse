@@ -15,15 +15,16 @@
                 <tr>
                     <th>团队名</th>
                     <th>上限人数</th>
+                    <th>现有人数</th>
                     <th>团队负责人</th>
                     <th>加入情况</th>
-                    <th>现有人数</th>
                     <th>操作</th>
                 </tr>
                 {% for obj in uG %}
                     <th> {{ obj.group.name }}</th>
 
                     <th> {{ obj.group.max_number }}</th>
+                    <th>{{ obj.group.number }}</th>
                     <th> {{ obj.group.user.real_name }}</th>
 
 
@@ -32,7 +33,7 @@
                     {% else %}
                         <th style="color: #ff6600">待审核</th>
                     {% endif %}
-                    <th>{{ obj.group.number }}</th>
+
                     <th>
                         <button type="button" class="btn btn-block btn-primary"
                                 onclick="checkCourse({{ obj.group_id }})">查看团队详情
