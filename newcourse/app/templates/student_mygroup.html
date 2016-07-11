@@ -33,6 +33,8 @@
 
                     {% if obj.is_allowed == 1 %}
                         <th style="color: #00ff66">已加入</th>
+                     {% elif obj.is_allowed == 2 %}
+                        <th style="color: red">已被拒绝</th>
                     {% else %}
                         <th style="color: #ff6600">待审核</th>
                     {% endif %}
