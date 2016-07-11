@@ -105,7 +105,11 @@ def course_resource_publish(request):
 
             course_id = int(request.session['course_id'])
             resources = Resource.objects.filter(course_id=course_id)
-            return HttpResponseRedirect('/teacher/course/resource/')
+
+            request.session['message'] = "上传资源成功"
+            request.session['nexturl'] = "/teacher/course/resource/"
+            return HttpResponseRedirect('/info/')
+            # return HttpResponseRedirect('/teacher/course/resource/')
     else:
         uf = UserForm()
 
@@ -143,6 +147,32 @@ def course_resource_class_delete(request):
         return HttpResponse(json.dumps(False))
     resource_class.delete()
     return HttpResponse(json.dumps(True))
+
+def group_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    # usergroup=UserGroup.objects.get(pk=request.POST['groupid'])
+    # taskfile.delete()
+    return HttpResponse(json.dumps(True))
+
+def taskdelete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    if 't_id' in request.POST:
+        tid=request.POST['t_id']
+        try:
+            tr=TaskRequirement.objects.filter(id=tid).first()
+            tr.delete()
+            response_data = {}
+            response_data['error_info'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        except:
+            response_data = {}
+            response_data['error_info'] = 'failed'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {}
+    response_data['error_info'] = 'failed'
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 def course_task(request):
      if not judge_login(request): return jump_not_login(request)
@@ -197,7 +227,10 @@ def course_task_publish(request):
         task.start_date =start_y + '-' + start_m + '-' + start_d
         task.end_date = end_y + '-' + end_m + '-' + end_d
         task.save()
-        return HttpResponseRedirect('/teacher/course/task')
+
+        request.session['message'] = "上传作业成功"
+        request.session['nexturl'] = "/teacher/course/task"
+        return HttpResponseRedirect('/info/')
 
 
 def course_task_info(request, task_id):
