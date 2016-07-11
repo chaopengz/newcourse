@@ -13,21 +13,6 @@
         <div class="direct-chat-msg">
             <div class="direct-chat-info clearfix">
                 <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
-                <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
-            </div>
-            <!-- /.direct-chat-info -->
-            <img class="direct-chat-img"
-                 src="{{ obj.user.pic }}"
-                 alt="Message User Image">
-            <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">
-                {{ obj.message }}        </div>
-            <!-- /.direct-chat-text -->
-        </div>
-    {% else %}
-        <div class="direct-chat-msg right">
-            <div class="direct-chat-info clearfix">
-                <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
                 <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>
             </div>
             <!-- /.direct-chat-info -->
@@ -35,7 +20,22 @@
                  src="{{ obj.user.pic }}"
                  alt="Message User Image">
             <!-- /.direct-chat-img -->
-            <div class="direct-chat-text">
+            <div class="direct-chat-text pull-left">
+                {{ obj.message }}        </div>
+            <!-- /.direct-chat-text -->
+        </div>
+    {% else %}
+        <div class="direct-chat-msg right">
+            <div class="direct-chat-info clearfix">
+                <span class="direct-chat-name pull-right">{{ obj.user.real_name }}</span>
+                <span class="direct-chat-timestamp pull-right">{{ obj.created }}</span>
+            </div>
+            <!-- /.direct-chat-info -->
+            <img class="direct-chat-img"
+                 src="{{ obj.user.pic }}"
+                 alt="Message User Image">
+            <!-- /.direct-chat-img -->
+            <div class="direct-chat-text  pull-right">
                 {{ obj.message }}
             </div>
             <!-- /.direct-chat-text -->

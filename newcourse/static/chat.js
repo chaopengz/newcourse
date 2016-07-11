@@ -8,7 +8,7 @@ $('#chat-form').on('submit', function (event) {
 
         success: function (json) {
             $('#chat-msg').val('');
-            $('#msg-list').append('<div class="direct-chat-msg right"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-right">' + json.user + '</span><span class="direct-chat-timestamp pull-left">' + json.time + '</span></div><img class="direct-chat-img" src="' + json.pic + '"alt="Message User Image"> <div class="direct-chat-text">' + json.msg + '</div></div>');
+            $('#msg-list').append('<div class="direct-chat-msg right"><div class="direct-chat-info clearfix"><span class="direct-chat-name pull-right">' + json.user + '</span><span class="direct-chat-timestamp pull-right">' + json.time + '</span></div><img class="direct-chat-img" src="' + json.pic + '"alt="Message User Image"> <div class="direct-chat-text  pull-right">' + json.msg + '</div></div>');
 
             var chatlist = document.getElementById('msg-list-div');
             chatlist.scrollTop = chatlist.scrollHeight;
