@@ -59,9 +59,9 @@ def info(request, i):  # i stands for the groupId
     if not judge_auth(request, '2'): return jump_no_auth(request)
     request.session['group_id'] = i
     list_num = request.session['list_num']
-    links = [{'name': '学生页面', 'page': '/student/', 'name': '所有团队', 'page': '/student/groups/'}]
+    links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '所有团队', 'page': '/student/groups/'}]
     if list_num == 3:
-        links = [{'name': '学生页面', 'page': '/student/', 'name': '我的团队', 'page': '/student/mygroup/'}]
+        links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '我的团队', 'page': '/student/mygroup/'}]
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
@@ -152,13 +152,21 @@ def applyforcourse(request):
     if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
     list_num = request.session['list_num']
-    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}]
+    group = Group.objects.get(id = request.session['group_id'])
+    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}, {'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)}]
     if list_num == 3:
-        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
-    courses = Course.objects.filter(is_single = 0)
-    #for course in courses:
-       # if GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
-          #  courses.remove(course)
+        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'},{'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)+'/'}]
+    #courses2 = Course.objects.filter(is_single = 0)
+    #courses = []
+    #for course in courses2:
+     #   if not GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
+     #       courses.append(course)
+    course_teachers = []
+    courses = Course.objects.filter(is_single=0)
+    for course in courses:
+        course.start_date = course.start_date.strftime("%Y年%m月%d日")
+        course.end_date = course.end_date.strftime("%Y年%m月%d日")
+        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
     return render_to_response('student_group_applyforcourse.html',locals())
 
 def applyforcourse_i(request,i):
@@ -174,6 +182,7 @@ def applyforcourse_i(request,i):
     teacher = User.objects.get(id = course.teacher_id)
     term = Term.objects.get(id = course.term_id)
     group = Group.objects.get(id = request.session["group_id"])
+    groupcourse = GroupCourse.objects.filter(group_id=group.id,course_id=course.id)
     return render_to_response('student_group_applyforcourse_i.html', locals())
 
 def apply(request):

@@ -22,7 +22,18 @@
                         团队课程
                     {% endif %}
                      <dt>申请加入</dt><dd>
+                  {% if not groupcourse %}
                   <a href="/student/group/apply/">加入课程</a>
+                    {% endif %}
+                 {% ifequal groupcourse.0.is_allowed  0 %}
+                  等待审核
+                  {% endifequal %}
+                  {% ifequal groupcourse.0.is_allowed  1 %}
+                  已加入
+                  {% endifequal %}
+                   {% ifequal groupcourse.0.is_allowed  2 %}
+                  已拒绝
+                  {% endifequal %}
               </dd>
               </dl>
             </div>
