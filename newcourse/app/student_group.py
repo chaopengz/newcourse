@@ -32,6 +32,7 @@ def addGroup(request):
 
 
 def myGroup(request):
+    page_name = '我的团队'
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     links = [{'name': '学生页面', 'page': '/student/'}]
@@ -55,23 +56,28 @@ def join(request):
 
 
 def info(request, i):  # i stands for the groupId
+    page_name = "团队详情"
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     request.session['group_id'] = i
     list_num = request.session['list_num']
-    links = [{'name': '学生页面', 'page': '/student/', 'name': '所有团队', 'page': '/student/groups/'}]
+    links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '所有团队', 'page': '/student/groups/'}]
     if list_num == 3:
-        links = [{'name': '学生页面', 'page': '/student/', 'name': '我的团队', 'page': '/student/mygroup/'}]
+        links = [{'name': '学生页面', 'page': '/student/'},{ 'name': '我的团队', 'page': '/student/mygroup/'}]
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
     group_courses = GroupCourse.objects.filter(group_id=i,is_allowed='1') #the courses which the group took
+
+    apply_course_len = len(GroupCourse.objects.filter(group_id=i))
 
     courses=[]
     for group_course in group_courses:
         courses.append(Course.objects.get(id=group_course.course_id))
     course_teachers=[]
     for course in courses:
+        course.start_date = course.start_date.strftime("%Y年%m月%d日")
+        course.end_date = course.end_date.strftime("%Y年%m月%d日")
         course_teachers.append([course, User.objects.get(id=course.teacher_id)])
     sorted(course_teachers,)
     course_teachers_len=len(course_teachers)
@@ -140,10 +146,10 @@ def handle_group(request):
                 group.end = 0
                 group.save()
                 return HttpResponse("成功关闭组队申请！")
-            else:
+            '''else:
                 group.end = 1
                 group.save()
-                return HttpResponse("成功开启组队申请！")
+                return HttpResponse("成功开启组队申请！")'''
         else:
             UserGroup.objects.filter(group_id=gid).delete()
             GroupCourse.objects.filter(group_id=gid).delete()
@@ -151,33 +157,49 @@ def handle_group(request):
             return HttpResponse("成功解散团队!")
 
 def applyforcourse(request):
+    page_name = "课程列表"
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     user = User.objects.filter(name=request.session['name']).first()
     list_num = request.session['list_num']
-    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}]
+    group = Group.objects.get(id = request.session['group_id'])
+    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'}, {'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)}]
     if list_num == 3:
-        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
-    courses = Course.objects.filter(is_single = 0)
-    #for course in courses:
-       # if GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
-          #  courses.remove(course)
+        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'},{'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)+'/'}]
+    #courses2 = Course.objects.filter(is_single = 0)
+    #courses = []
+    #for course in courses2:
+     #   if not GroupCourse.objects.filter(group_id = request.session['group_id'],course_id=course.id):
+     #       courses.append(course)
+    course_teachers = []
+    courses = Course.objects.filter(is_single=0)
+    for course in courses:
+        course.start_date = course.start_date.strftime("%Y年%m月%d日")
+        course.end_date = course.end_date.strftime("%Y年%m月%d日")
+        course_teachers.append([course, User.objects.get(id=course.teacher_id)])
     return render_to_response('student_group_applyforcourse.html',locals())
 
 
 def applyforcourse_i(request,i):
+    page_name = '选课'
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '2'): return jump_no_auth(request)
     list_num = request.session['list_num']
-    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'},{'name':'课程列表','page':'/student/group/applyforcourse/'}]
+    group = Group.objects.get(id=request.session['group_id'])
+    links = [{'name': '学生页面', 'page': '/student/'}, {'name': '所有团队', 'page': '/student/groups/'},{'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)},{'name':'课程列表','page':'/student/group/applyforcourse/'}]
     if list_num == 3:
-        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'}]
+        links = [{'name': '学生页面', 'page': '/student/'}, {'name': '我的团队', 'page': '/student/mygroup/'},{'name': '当前团队', 'page': '/student/group/groupInfo/'+str(group.id)},{'name':'课程列表','page':'/student/group/applyforcourse/'}]
     user = User.objects.filter(name=request.session['name']).first()
     request.session['course_id'] = i
     course = Course.objects.get(id = i)
     teacher = User.objects.get(id = course.teacher_id)
     term = Term.objects.get(id = course.term_id)
     group = Group.objects.get(id = request.session["group_id"])
+    groupcourse = GroupCourse.objects.filter(group_id=group.id,course_id=course.id)
+    course.start_date = course.start_date.strftime("%Y年%m月%d日")
+    course.end_date = course.end_date.strftime("%Y年%m月%d日")
+    term.start_date = term.start_date.strftime("%Y年%m月%d日")
+    term.end_date = term.end_date.strftime("%Y年%m月%d日")
     return render_to_response('student_group_applyforcourse_i.html', locals())
 
 def apply(request):
@@ -196,17 +218,25 @@ def apply(request):
             if usercourse.user_id==usergroup.user_id:
                 valid = 0
                        #somebody in the group had been in the course
+    groupcourse = GroupCourse.objects.filter(group_id=group.id,course_id = course.id)
+    aplied = 0
+    if groupcourse:
+        applied = 1
     applied_user = User.objects.filter()
     if group.user_id ==user.id:
         if course.is_single == 0:
             if valid == 1:
-                groupcourse = GroupCourse()
-                #test
-                groupcourse.is_allowed = 0
-                groupcourse.course_id = course.id
-                groupcourse.group_id = group.id
-                groupcourse.save()
-                request.session['message'] = "申请成功\n"
+                if aplied ==0:
+                    groupcourse = GroupCourse()
+                    #test
+                    groupcourse.is_allowed = 0
+                    groupcourse.course_id = course.id
+                    groupcourse.group_id = group.id
+                    groupcourse.save()
+                    request.session['message'] = "申请成功\n"
+                    request.session['nexturl'] = "/student/group/applyforcourse/"
+                    return HttpResponseRedirect('/info/')
+                request.session['message'] = "你的团队中已经申请了这门课程\n"
                 request.session['nexturl'] = "/student/group/applyforcourse/"
                 return HttpResponseRedirect('/info/')
             request.session['message'] = "你的团队中已经有人加入了这门课程\n"

@@ -18,19 +18,26 @@
 
 {% block content %}
     <div class="btn-group">
-{% if group.end %}
-        <button type="button" style="max-width:100px" onclick="openORclosegroup({{ group.id }})"
+        {% if group.end %}
+
+            <button type="button" style="max-width:100px" onclick="openORclosegroup({{ group.id }})"
                 class="btn  btn-warning">关闭组队
-    {% else %}
-             <button type="button" style="max-width:100px" onclick="openORclosegroup({{ group.id }})"
-                class="btn  btn-primary">打开组队
-        </button>
-        </button>
-        {% endif %}
-        <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
+            </button>
+
+            <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
                 class="btn  btn-info">解散团队
-        </button>
-        <a href="/student/group/applyforcourse/" class="btn  btn-success">加入课程</a>
+            </button>
+
+        {% else %}
+            {% if  apply_course_len == 0 %}
+                 <button type="button" style="max-width:100px" onclick="releasegroup({{ group.id }})"
+                    class="btn  btn-info">解散团队
+                </button>
+                {% endif %}
+                <a href="/student/group/applyforcourse/" class="btn  btn-success">加入课程</a>
+
+
+        {% endif %}
 
     </div>
 
@@ -86,7 +93,7 @@
                             <th>{{ forloop.counter  }}</th>
                                 <th>{{ course_teacher.0.name }}</th>
                                 <th>{{ course_teacher.0.start_date }}--{{ course_teacher.0.end_date }}</th>
-                                <th>{{ course_teacher.1.name }}</th>
+                                <th>{{ course_teacher.1.real_name }}</th>
                             <!--
                                 {% ifequal course_teacher.0.is_single 0 %}
                                     <td><span class="label label-success">允许</span></td>
@@ -240,6 +247,7 @@
             );
         }
         function openORclosegroup(gid) {
+            if(cconfirm('确定要关闭组队请求么')){
             $.post(
                     "/student/groups/handle_group/",
                     {
@@ -250,7 +258,7 @@
                         alert(json)
                         location.reload(true)
                     }
-            );
+            );}
         }
         function releasegroup(gid) {
             if(confirm('确定要解散该队伍么？')){
