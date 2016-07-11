@@ -3,13 +3,14 @@
 {% block content %}
 <div class="box box-solid">
     <div class="box-header with-border">
-        <i class="fa fa-graduation-cap"></i>
+        <i class="fa fa-institution"></i>
         <h3 class="box-title">教师信息</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <dl class="dl-horizontal">
-                  <dt>课程教师</dt><dd>{{ user.name }}</dd>
+                  <dt>教工号</dt><dd>{{ user.name }}</dd>
+                   <dt>课程教师</dt><dd>{{ user.real_name }}</dd>
               </dl>
             </div>
             <!-- /.box-body -->

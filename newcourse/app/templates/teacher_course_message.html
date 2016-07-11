@@ -55,10 +55,10 @@
 
                 <div id="msg-list-div" class="panel-body">
 
-                    <ul id="msg-list">
+                    <ul id="msg-list"  style="padding-left: 0">
                         {% for obj in chat %}
                             {% if  not obj.user.id == loginUser.id %}
-                                <div class="direct-chat-msg">
+                                <div class="direct-chat-msg left">
                                     <div class="direct-chat-info clearfix">
                                         <span class="direct-chat-name pull-left">{{ obj.user.real_name }}</span>
                                         <span class="direct-chat-timestamp pull-left">{{ obj.created }}</span>

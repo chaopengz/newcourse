@@ -121,7 +121,7 @@
             <button type="button" onclick="joinFunction()" class="btn btn-block btn-info">加入团队</button>
         {% else %}
             {% if is_allowed  == 0 %}
-                <button type="button" class="btn btn-block btn-warning">审核中。。。</button>
+                <button type="button" class="btn btn-block btn-warning">审核中...</button>
             {% elif is_allowed == 2 %}
                 <button type="button" class="btn btn-block btn-warning">你已被拒绝</button>
             {% else %}
@@ -129,7 +129,7 @@
             {% endif %}
         {% endif %}
     {% else %}
-        <button type="button" class="btn btn-block btn-danger">团队已结束申请！不可加入。</button>
+        <button type="button" class="btn btn-block btn-danger">团队已结束申请！不可加入</button>
     {% endif %}
     <script>
 

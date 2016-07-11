@@ -60,6 +60,8 @@ def Messages(request):
     # if 'course_id' in request.session:
     courseId = request.session['course_id']
     chat = Chat.objects.filter(courseid=courseId)
+    for c in chat:
+        c.created = c.created.strftime("%Y年%m月%d日%H时%M分")
     loginUser = User.objects.filter(name=request.session['name']).first()
 
     return render(request, 'messages.html', locals())

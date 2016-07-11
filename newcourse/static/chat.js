@@ -32,7 +32,7 @@ $(function () {
     $('#msg-list-div').on('scroll', function () {
         scrolling = true;
     });
-    refreshTimer = setInterval(getMessages, 500);
+    refreshTimer = setInterval(getMessages, 1000);
 });
 
 $(document).ready(function () {

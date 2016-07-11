@@ -22,7 +22,7 @@ class CourseShow:
 def compare_time(time1,time2):
     nowtime=datetime.date.today()
     print (time2-nowtime).days
-    if (nowtime - time1).days > 0 and (time2-nowtime).days>0:
+    if (nowtime - time1).days >= 0 and (time2-nowtime).days>=0:
         return 0
     else:
         return 1
