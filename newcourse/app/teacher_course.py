@@ -31,6 +31,7 @@ def course_teacher_info(request, courseId):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '3'): return jump_no_auth(request)
      page_name = '课程详情'
+     list_num = 1
      request.session['course_id'] = courseId
 
      course_id = int(request.session['course_id'])
@@ -53,7 +54,7 @@ def course_teacher_info(request, courseId):
 def course_resource(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '3'): return jump_no_auth(request)
-    list_num = 2
+    list_num = 3
     page_name = '资源列表'
     course_id = int(request.session['course_id'])
     course = Course.objects.get(id=course_id)
@@ -76,7 +77,7 @@ class UserForm(forms.Form):
 def course_resource_publish(request):
     if not judge_login(request): return jump_not_login(request)
     if not judge_auth(request, '3'): return jump_no_auth(request)
-    list_num = 2
+    list_num = 3
     user = User.objects.filter(name=request.session['name']).first()
     page_name = '资源列表'
     course_id = int(request.session['course_id'])
@@ -176,7 +177,7 @@ def taskdelete(request):
 def course_task(request):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '3'): return jump_no_auth(request)
-     list_num = 1
+     list_num = 2
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
      course = Course.objects.get(id=course_id)
@@ -194,7 +195,7 @@ def course_task(request):
 def course_task_publish(request):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '3'): return jump_no_auth(request)
-     list_num = 1
+     list_num = 2
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
      course = Course.objects.get(id=course_id)
@@ -235,7 +236,7 @@ def course_task_publish(request):
 def course_task_info(request, task_id):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '3'): return jump_no_auth(request)
-     list_num = 1
+     list_num = 2
      page_name = '作业列表'
      course_id = int(request.session['course_id'])
      course = Course.objects.get(id=course_id)
@@ -338,6 +339,15 @@ def course_task_content(request):
     id = request.POST['task_id']
     task_file = TaskFile.objects.get(pk=id)
     return HttpResponse(json.dumps(task_file.content))
+
+
+def group_delete(request):
+    if not judge_login(request): return jump_not_login(request)
+    if not judge_auth(request, '3'): return jump_no_auth(request)
+    id = request.POST['course_group_id']
+    course_group = GroupCourse.objects.get(pk=id)
+    course_group.delete()
+    return HttpResponse(json.dumps(True))
 
 
 def group_accept(request):
