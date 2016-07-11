@@ -25,10 +25,10 @@
                         <td>{{ task_done.0.name }}</td>
                         <td>{{ task_done.0.start_date }}--{{ task_done.0.end_date }}</td>
                         {% ifequal task_done.0.is_single 1 %}
-                            <td><span class="label label-success">不允许</span></td>
+                            <td><span class="label label-success">否</span></td>
                         {% endifequal %}
                         {% ifequal task_done.0.is_single 0 %}
-                            <td><span class="label label-primary">允许</span></td>
+                            <td><span class="label label-primary">是</span></td>
                         {% endifequal %}
                         <td>{{ task_done.0.base_requirements }}</td>
                         <td>
