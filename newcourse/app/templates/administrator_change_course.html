@@ -114,7 +114,7 @@ $('#date').daterangepicker(
 
 function init(){
     $("#introduction_text").val($("#introduction").val());
-    {% if course.is_simple %}
+    {% if course.is_simple == 1 %}
 
         $("#is_single1").prop("checked",true);
         $("#is_single2").prop("checked",false);

@@ -65,7 +65,7 @@ def info(request, i):  # i stands for the groupId
     user = User.objects.filter(name=request.session['name']).first()
     ug = UserGroup.objects.filter(user=user, group_id=i)
     group = Group.objects.filter(id=i).first()  # 组的信息
-    group_courses = GroupCourse.objects.filter(group_id=i) #the courses which the group took
+    group_courses = GroupCourse.objects.filter(group_id=i,is_allowed='1') #the courses which the group took
 
     courses=[]
     for group_course in group_courses:

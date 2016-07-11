@@ -92,7 +92,7 @@
                      <button type="button" style="max-width:100px"  class="btn btn-primary" onclick="changeCourse({{ course.id }})">修改</button>
                     <button type="button" style="max-width:200px"  class="btn btn-primary" onclick="add_student({{ course.id }})">
 
-                        {% if course.is_simple == 1 %}
+                        {% if course.is_single %}
                             选课学生管理
                         {% else %}
                             选课团队管理
