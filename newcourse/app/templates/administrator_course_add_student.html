@@ -134,9 +134,13 @@ $(function () {
                 console.log(data);
                 var elist = data.error_list;
                 $("#mymodal").modal({show:false});
-                $("#error_list_table").html('<tr> <th>学生学号</th>  </tr>');
+                $("#error_list_table").html('<tr> <th>学生学号</th> <th>出错信息</th> </tr>');
                 for(row in elist){
-                    $("#error_list_table").append("<tr><th>"+elist[row][0]+"</th></tr>");
+
+                    var a =("<tr>"+"<th>"+elist[row][0]+"</th>"
+                    +"<th>"+elist[row][1]+"</th>"
+                    +"</tr>");
+                    $(a).appendTo("#error_list_table");
                 }
                 $("#mymodal2").modal({show:true});
             }

@@ -295,18 +295,27 @@ def course_task_grade_many(request):
                         try:
                             User.objects.get(name=row[0].decode('gb2312'))
                         except User.DoesNotExist:
-                            error_list.append(row)
+                            error = row[:]
+                            error.append('数据库中没有该学生')
+                            error_list.append(error)
                             continue
                     else:
                         user_temp = User.objects.filter(name=row[0].decode('gb2312')).first()
-                        if len(TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp))==0 or int(row[1]) >100 or int(row[1])<0:
-                            error_list.append(row)
+                        if len(TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp))==0 :
+                            error = row[:]
+                            error.append('数据库中没有该作业的提交')
+                            error_list.append(error)
                             continue
                         else:
-                            task_file = TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp).first()
-                            task_file.grade = row[1]
-                            task_file.comment = row[2].decode('gb2312')
-                            task_file.save()
+                            if int(row[1]) >100 or int(row[1])<0:
+                                error = row[:]
+                                error.append('成绩不在合理范围内')
+                                error_list.append(error)
+                            else:
+                                task_file = TaskFile.objects.filter(task_requirement_id=task_id, user=user_temp).first()
+                                task_file.grade = row[1]
+                                task_file.comment = row[2].decode('gb2312')
+                                task_file.save()
         os.remove(fullpath)
         for row in error_list:
             row[0]=row[0].decode('gb2312')

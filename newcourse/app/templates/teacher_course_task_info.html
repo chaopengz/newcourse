@@ -196,19 +196,15 @@ function contentclick()
                 console.log(data);
                 var elist = data.error_list;
                 $("#mymodal").modal({show:false});
-                $("#error_list_table").html('<tr> <th>学号</th>  <th>成绩</th><th>评论</th> </tr>');
+                $("#error_list_table").html('<tr> <th>学号</th>  <th>成绩</th><th>评论</th> <th>出错信息</th></tr>');
 
                 for(row in elist){
                     var a =("<tr>"+"<th>"+elist[row][0]+"</th>"
                     +"<th>"+elist[row][1]+"</th>"
                     +"<th>"+elist[row][2]+"</th>"
+                    +"<th>"+elist[row][3]+"</th>"
                     +"</tr>");
                     $(a).appendTo("#error_list_table");
-{#                    $("#error_list_table").append(a);#}
-{#                    $("#error_list_table").append("<th>"+elist[row][0]+"</th>");#}
-{#                    $("#error_list_table").append("<th>"+elist[row][1]+"</th>");#}
-{#                    $("#error_list_table").append("<th>"+elist[row][2]+"</th>");#}
-{#                    $("#error_list_table").append("</tr>");#}
                 }
 
                 $("#mymodal2").modal({show:true});

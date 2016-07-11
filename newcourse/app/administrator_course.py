@@ -331,7 +331,9 @@ def add_course_select_many(request):
                         # 是否有此学生
                         User.objects.get(name=row[0].decode('gb2312'),type=2)
                     except:
-                        error_list.append(row)
+                        error = row[:]
+                        error.append('数据库中没有该学生')
+                        error_list.append(error)
                         continue
 
                     student=User.objects.get(name=row[0].decode('gb2312'),type=2)
@@ -339,6 +341,9 @@ def add_course_select_many(request):
                     try:
                         # 是否已经有这条选课记录
                         UserCourse.objects.get(user=student,course=course)
+                        error = row[:]
+                        error.append('数据库中已有该条记录')
+                        error_list.append(error)
                     except:
                          # 选课
                         new_course_select=UserCourse(
