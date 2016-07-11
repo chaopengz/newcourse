@@ -11,7 +11,8 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body no-padding">
-            <table class="table table-striped">
+            <table class="table table-striped" id="table1">
+            <thead>
                 <tr>
                     <th>团队名</th>
                     <th>上限人数</th>
@@ -20,6 +21,8 @@
                     <th>加入情况</th>
                     <th>操作</th>
                 </tr>
+                </thead>
+            <tbody>
                 {% for obj in uG %}
                     <th> {{ obj.group.name }}</th>
 
@@ -41,6 +44,7 @@
                     </th>
                     </tr>
                 {% endfor %}
+            </tbody>
             </table>
         </div>
         <!-- /.box-body -->
@@ -54,6 +58,9 @@
         function addGroup() {
             self.location.href = "/student/group/addGroup/";
         }
+        $(function () {
+    set_table("table1");
+  });
     </script>
 {% endblock %}
 
