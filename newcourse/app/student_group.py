@@ -107,6 +107,7 @@ def handle_application(request):
             ug.save()
             return HttpResponse("2")
         group.number += 1
+
         if group.number == group.max_number:
             group.end = 0
         group.save()
