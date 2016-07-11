@@ -20,13 +20,16 @@ def addGroup(request):
         user = User.objects.filter(name=request.session['name']).first()
         name = request.POST['g_name']
         maxNum = request.POST['max']
-        g = Group(name=name, max_number=maxNum, user=user)
-        g.save()
-        # Add group info to table app_userGroup
-        groupId = g.id
-        uG = UserGroup(group_id=groupId, user=user, is_allowed=1)
-        uG.save()
-        return HttpResponseRedirect('/student/mygroup/')
+        if int(maxNum)<=0:
+            return jump_with_info(request,"团队最大人数填写有误，请修改。","/student/mygroup/")
+        else:
+            g = Group(name=name, max_number=maxNum, user=user)
+            g.save()
+            # Add group info to table app_userGroup
+            groupId = g.id
+            uG = UserGroup(group_id=groupId, user=user, is_allowed=1)
+            uG.save()
+            return HttpResponseRedirect('/student/mygroup/')
     else:
         return render_to_response('student_add_group.html',locals())
 
