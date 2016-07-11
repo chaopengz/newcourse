@@ -214,21 +214,3 @@ def apply(request):
     request.session['message'] = "你不是这个团队的负责人\n"
     request.session['nexturl'] = "/student/group/applyforcourse/"
     return HttpResponseRedirect('/info/')
-
-"""
-<li class="header">菜单</li>
-        <!-- Optionally, you can add icons to the links -->
-          <li id="list1">
-            <a href="/student/course/{{ course.id}}/"><i class="fa fa-link"></i> <span>课程信息</span></a>
-          </li>
-          <li id="list2">
-            <a href="/student/course/{{ course.id}}/homework/"><i class="fa fa-link"></i> <span>作业信息</span></a>
-          </li>
-          <li id="list3">
-            <a href="/student/course/{{ course.id }}/resource/"><i class="fa fa-link"></i> <span>课程资源</span></a>
-          </li>
-          <li id="list4">
-            <a href="/student/course/{{ course.id }}/message/"><i class="fa fa-link"></i> <span>课程交流</span></a>
-          </li>
-      </ul>
-      """
