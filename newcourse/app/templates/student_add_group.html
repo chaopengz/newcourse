@@ -22,7 +22,8 @@
                     <div class="form-group">
                         <label for="inputEmail3" class="col-sm-2 control-label">上限人数</label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" name="max" id="max" placeholder="" 请输入团队所能允许加入人数最大值">
+                            <input type="number" class="form-control" name="max" id="max" placeholder=""
+                                   请输入团队所能允许加入人数最大值">
                         </div>
                     </div>
                 </div>
@@ -44,8 +45,8 @@
 
             if ($("#name").val().length <= 0 || $('#max').val().length <= 0) {
                 alert("请写入团队名称和团队上限人数！");
-            } else if (isNaN($('#max').val())) {
-                alert("上限人数必须为数字")
+            } else if (($('#max').val()) > 130 || ($('#max').val()) < 0) {
+                alert("上限人数必须为正整数且不得大于130")
             }
             else {
                 $('#form1').submit();
