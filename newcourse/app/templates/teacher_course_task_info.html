@@ -89,9 +89,9 @@
 
 
 
-    <div class="box">
-    <div class="box-body table-responsive no-padding">
-          <table class="table table-striped" id="table1">
+    <div class="box" style="min-height: 600px">
+    <div class="box-body table-responsive no-padding" style="overflow-x: hidden;min-height: 600px">
+          <table class="table table-striped" id="table1" style="overflow-x: hidden;min-height: 600px">
           <thead>
                 <tr>
                   <th>#</th>
@@ -107,7 +107,7 @@
                   {% for task in task_file %}
                     <tr href="/task/">
                         <td>{{ forloop.counter  }}</td>
-                        <td>{{ user.real_name }}</td>
+                        <td>{{ task.user.real_name }}</td>
                         <td>{{ task.name }}</td>
                         <td>{{ task.submit_time }}</td>
                         <td><input type="number" id="{{ task.id }}" min="0" max="100" class="small" value="{{ task.grade }}"></td>
