@@ -33,10 +33,10 @@
                         <td>{{ task.name }}</td>
                         <td>{{ task.start_date }}--{{ task.end_date }}</td>
                         {% ifequal task.is_single 1 %}
-                            <td><span class="label label-success">不允许</span></td>
+                            <td><span class="label label-success">否</span></td>
                         {% endifequal %}
                         {% ifequal task.is_single 0 %}
-                            <td><span class="label label-warning">允许</span></td>
+                            <td><span class="label label-warning">是</span></td>
                         {% endifequal %}
                         <td>  <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ task.base_requirements }}">
                                 {{ task.base_requirements|slice:'25'  }}
