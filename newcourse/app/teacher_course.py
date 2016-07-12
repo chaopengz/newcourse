@@ -27,6 +27,12 @@ def compare_time(time1,time2):
     else:
         return 1
 
+class groupInfo:
+    def __init__(self,coursegroup,users,str):
+        self.coursegroup=coursegroup
+        self.users=users
+        self.str=str
+
 def course_teacher_info(request, courseId):
      if not judge_login(request): return jump_not_login(request)
      if not judge_auth(request, '3'): return jump_no_auth(request)
@@ -42,6 +48,18 @@ def course_teacher_info(request, courseId):
      teacher=User.objects.filter(id=course.teacher_id).first()
      term=Term.objects.filter(id=course.term_id).first()
      coursegroups = GroupCourse.objects.filter(course=course)
+
+     coursegs=[]
+
+     for cg in coursegroups:
+         userlist=UserGroup.objects.filter(group_id=cg.group.id)
+         str=''
+         for gu in userlist:
+             str=str+gu.user.name+","+gu.user.real_name+"</br>"
+
+         cgs=groupInfo(cg,userlist,str)
+         coursegs.append(cgs)
+
      # groups = Group.objects.filter(id in GroupCourse.objects.filter(course=course).values('group'))
      groups = [Group.objects.get(pk = u.group_id) for u in coursegroups]
      isrun=compare_time(course.start_date, course.end_date)

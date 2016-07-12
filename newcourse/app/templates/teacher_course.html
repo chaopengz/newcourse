@@ -64,15 +64,19 @@
                 </tr>
                 </thead>
                  <tbody>
-                  {% for coursegroup in coursegroups %}
-                    {% ifequal coursegroup.is_allowed 1 %}
+                  {% for coursegroup in coursegs %}
+                    {% ifequal coursegroup.coursegroup.is_allowed 1 %}
                     <tr href="/group/">
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ coursegroup.group.name}}</td>
-                        <td>{{ coursegroup.group.user.name}}</td>
-                        <td>{{ coursegroup.group.number }}</td>
                         <td>
-                            <input type="button"  value="移除"  id="{{ coursegroup.id }}" class="btn btn-danger" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" > </input>
+                            <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ coursegroup.str }}">
+                                {{ coursegroup.coursegroup.group.name}}
+                             </a>
+                        </td>
+                        <td>{{ coursegroup.coursegroup.group.user.real_name}}</td>
+                        <td>{{ coursegroup.coursegroup.group.number }}</td>
+                        <td>
+                            <input type="button"  value="移除"  id="{{ coursegroup.coursegroup.id }}" class="btn btn-danger" data-widget="remove" data-toggle="tooltip" title data-original-title="Remove" > </input>
                         </td>
                     </tr>
                       {% endifequal %}
@@ -98,17 +102,22 @@
                 </tr>
                 </thead>
             <tbody>
-                  {% for coursegroup in coursegroups %}
-                      {% ifequal coursegroup.is_allowed 0 %}
+                  {% for coursegroup in coursegs %}
+                      {% ifequal coursegroup.coursegroup.is_allowed 0 %}
                     <tr href="/group/">
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ coursegroup.group.name}}</td>
-                        <td>{{ coursegroup.group.user.name}}</td>
-                        <td>{{ coursegroup.group.number }}</td>
+                        <td>
+                             <a  href="javascript:void(0);" data-placement="bottom" data-toggle="popover" data-content="{{ coursegroup.str }}">
+                                {{ coursegroup.coursegroup.group.name}}
+                             </a>
+                        </td>
+
+                        <td>{{ coursegroup.coursegroup.group.user.real_name}}</td>
+                        <td>{{ coursegroup.coursegroup.group.number }}</td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.id }}">批准</button>
-                                <button type="button" style="max-width:100px" value="拒绝" class="btn btn-warning" id="{{ coursegroup.id }}">拒绝</button>
+                                <button type="button" style="max-width:100px" value="批准" class="btn btn-success" id="{{ coursegroup.coursegroup.id }}">批准</button>
+                                <button type="button" style="max-width:100px" value="拒绝" class="btn btn-warning" id="{{ coursegroup.coursegroup.id }}">拒绝</button>
                             </div>
                         </td>
                     </tr>
@@ -120,6 +129,16 @@
 </div>
     {% endifequal %}
     <script>
+
+    $(function ()
+      { $("[data-toggle='popover']").popover(
+              {
+                  html : true
+              }
+      );
+      });
+
+
     $(function () {
         $("input[type='button'][value='移除']").bind('click', function () {
                 $.ajax(
