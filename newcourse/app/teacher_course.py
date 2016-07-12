@@ -365,7 +365,20 @@ def group_accept(request):
     id = request.POST['course_group_id']
     course_group = GroupCourse.objects.get(pk=id)
     course_group.is_allowed = 1
+
+    # jia ke
+    gid = course_group.group.id
+    studentid =UserGroup.objects.filter(group_id=gid)
+    cid=course_group.course.id
     course_group.save()
+    for s in studentid:
+        sid=s.user.id
+
+        u=UserCourse(
+            user=User.objects.get(id=sid),
+            course=Course.objects.get(id=cid)
+        )
+        u.save()
     return HttpResponse(json.dumps(True))
 
 
