@@ -110,9 +110,9 @@ class GroupCourse(models.Model):
 
 
 class Chat(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.CharField(max_length=100)
     user = models.ForeignKey('User')
-    message = models.CharField(max_length=200)
+    message = models.CharField(max_length=500)
     courseid = models.IntegerField(default=0)
 
     def __unicode__(self):
